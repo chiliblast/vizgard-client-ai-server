@@ -1,0 +1,87 @@
+body {
+    color: white !important;
+    background-color: #051710 !important;
+    font-family: 'Roboto';
+    overflow-x: hidden;
+}
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+    font-size: 3.5rem;
+    }
+}
+.bg-dark {
+    background-color: #02140d !important;
+}
+
+.active {
+    text-decoration: underline solid #12f08d 4px;
+}
+/*
+.btn {
+    width: 200px !important;
+}*/
+
+
+
+.navbar img {
+    margin-left: 5px;
+}
+
+.navbar .navbar-nav {
+    margin-left: 30px;
+}
+
+.navbar .navbar-nav .nav-item {
+    padding-left: 30px;
+}
+
+.form-check-input:checked {
+    background-color: #12f08d;
+    border-color: #12f08d;
+}
+
+.btn:hover {
+    color: white !important;
+}
+
+/*.btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  color: black !important;
+  
+}*/
+.btn-success {
+    background-color: #12f08d !important;
+    border-color: #12f08d !important;
+    color: black !important;
+    
+}
+.btn-success:disabled {
+    background-color: gray !important;
+    border-color: #12f08d !important;
+}
+.btn-secondary {
+    color: black !important;
+    
+}
+.form-control {
+    padding: 0px 2px;
+    font-size: 15px;
+    margin-top: 0px;
+}
+
+.online {
+    color: #12f08d;
+}
+
+.offline {
+    color: #FD1313;
+}
