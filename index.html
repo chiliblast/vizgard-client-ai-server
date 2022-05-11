@@ -1,8 +1,7 @@
-
 <!doctype html>
 <html lang="en">
-    
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -12,7 +11,8 @@
     <title>Vizgard</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
     <link href="css/style.css" rel="stylesheet">
 
@@ -22,36 +22,63 @@
         }
     </style>
 
-    </head>
+</head>
 
-    <body>
-        
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+<body>
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
         <div class="container-fluid">
             <img src="images/vizgard_logo.png" height="30px">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Device</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="client.html">Client</a>
-                </li>
-            </ul>
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Device</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="client.html">Client</a>
+                    </li>
+                </ul>
             </div>
         </div>
-        </nav>
+    </nav>
 
-        <main class="container">
+    <main class="container">
 
-            <div class="m-1 p-3 rounded border border-success">
+        <div class="m-1 p-3 rounded border border-success">
 
-                <div style="width: 65%;">
 
-                    <div class="row">
+            <div class="row">
+                <div class="col-4">
+                    <div>
+                        <h4>Software</h4>
+                    </div>
+                    <div>
+                        <h5>FirtifAI</h5>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <h5>Status</h5>
+                        <span id="status" style="margin-right: 24%;"></span>
+                    </div>
+                    <div class="p-1">
+                        <button type="button" class="btn btn-success btn-sm" id="fortifai-reboot">Reboot</button>
+                        <button type="button" class="btn btn-success btn-sm" id="start">Start</button>
+                        <button type="button" class="btn btn-success btn-sm" id="fortifai-shutdown">Stop</button>
+                    </div>
+
+                </div>
+                <div class="col-8 d-flex align-items-center scrollable-container" style="overflow-x: auto;">
+                    <div class="config-list">
+                        <ul id="config-list"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!--   <div style="width: 65%;">
+                 <div class="row">
                         <div class="col-3">
                             <h4>Software</h4>
                         </div>
@@ -72,214 +99,322 @@
                             <span id="status"></span>
                         </div>
                     </div>
-
                 </div>
-
-
                 <div class="p-1">
                     <button type="button" class="btn btn-success btn-sm" id="fortifai-reboot">Reboot</button>
                     <button type="button" class="btn btn-success btn-sm" id="start">Start</button>
                     <button type="button" class="btn btn-success btn-sm" id="fortifai-shutdown">Stop</button>
+                </div> -->
+
+        </div>
+
+        <!-- Config Modal -->
+        <div class="config-modal modal fade" id="configModal" tabindex="-1" aria-labelledby="configModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="configModalLabel">Config Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <textarea id="modal-body"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            onclick="onCloseModal()">Close
+                        </button>
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#fileNameModal">
+                            Save changes
+                        </button>
+                    </div>
                 </div>
-                
+            </div>
+        </div>
+        <!-- File Name Modal -->
+        <div class="config-modal modal fade" id="fileNameModal" tabindex="-1" aria-labelledby="fileNameModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="fileNameModalLabel">Config Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="fileNameInput" class="form-label">Enter File Name</label>
+                        <input type="text" class="form-control" id="fileNameInput" placeholder=""
+                            aria-describedby="filenameHelp">
+                        <small id="filenameHelp" class="form-text text-muted">
+                            Same name will overwrite the content in the existing file.
+                        </small>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            onclick="onCloseModal()">
+                            Close
+                        </button>
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                            onclick="updateConfig();onCloseModal();">
+                            Save changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="m-1 p-3 rounded border border-success">
+
+            <div style="width: 65%;">
+
+                <div class="row">
+                    <div class="col-3">
+                        <h4>System</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <h5>CPU Usage</h5>
+                    </div>
+                    <div class="col-9">
+                        <span id="cpu_usage"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <h5>CPU Temp</h5>
+                    </div>
+                    <div class="col-9">
+                        <span id="cpu_temp"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <h5>Storage</h5>
+                    </div>
+                    <div class="col-9">
+                        <span id="storage"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <h5>Serial</h5>
+                    </div>
+                    <div class="col-9">
+                        <span id="serial_number"></span>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="m-1 p-3 rounded border border-success">
-
-                <div style="width: 65%;">
-
-                    <div class="row">
-                        <div class="col-3">
-                            <h4>System</h4>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3">
-                            <h5>CPU Usage</h5>
-                        </div>
-                        <div class="col-9">
-                            <span id="cpu_usage"></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3">
-                            <h5>CPU Temp</h5>
-                        </div>
-                        <div class="col-9">
-                            <span id="cpu_temp"></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3">
-                            <h5>Storage</h5>
-                        </div>
-                        <div class="col-9">
-                            <span id="storage"></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3">
-                            <h5>Serial</h5>
-                        </div>
-                        <div class="col-9">
-                            <span id="serial_number"></span>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="p-1">
-                    <button type="button" class="btn btn-success btn-sm" id="reboot">Reboot</button>
-                    <button type="button" class="btn btn-success btn-sm" id="shutdown">Shutdown</button>
-                </div>
-                
-                <div class="p-1">
-                    <button type="button" class="btn btn-success btn-sm" id="sleep">Sleep</button>
-                    <button type="button" class="btn btn-success btn-sm" id="wake">Wake</button>
-                </div>
-                
+            <div class="p-1">
+                <button type="button" class="btn btn-success btn-sm" id="reboot">Reboot</button>
+                <button type="button" class="btn btn-success btn-sm" id="shutdown">Shutdown</button>
             </div>
-            
-        </main>
+
+            <div class="p-1">
+                <button type="button" class="btn btn-success btn-sm" id="sleep">Sleep</button>
+                <button type="button" class="btn btn-success btn-sm" id="wake">Wake</button>
+            </div>
+
+        </div>
+
+    </main>
 
 
-        <script src="bootstrap/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-        <script src="js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
-        
-        <script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <script src="js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
 
-            $(() => {
+    <script>
 
-                $("button").click(function(){
-                    this.blur();
+        $(document).ready(function () {
+            getConfigList();
+        });
+
+        function getConfigList() {
+            $.get("http://" + '82.7.160.220' + ":8000/list-config", (data) => {
+                let configList = '';
+                let firstConfig = 'vizgard.cfg';
+                data['list-config'] = data['list-config'].sort(function (x, y) { return x == firstConfig ? -1 : y == firstConfig ? 1 : 0; }); // moving vizgard.cfg to first index
+                data['list-config'].forEach((config, index) => {
+                    configList += `
+                    <li class="text-center">
+                        <h6 class="text-capitalize">${config}</h6>
+                        <button type="button" class="btn btn-success btn-sm edit" data-bs-toggle="modal" data-bs-target="#configModal" onclick="editConfig()">Edit</button>
+                    </li>
+                    `
                 });
+                $('#config-list').html(configList);
+            });
+        }
 
-                let server = $(location).attr('hostname');
-                //server = "82.7.160.220";
-
-
-                //-------------------------------------------------fortifai
-
-                $("#fortifai-reboot").click(function(){
-
-                    let body = { "ip": "127.0.0.1", "port": 8673 };
-        
-                    $.post( "http://" + server + ":8000/fortifai-reboot", body, function( data ) {
-                        console.log(data.response);
-                        
-                    });
-
-                });
-
-                $("#start").click(function(){
-        
-                    $.post( "http://" + server + ":8000/start", function( data ) {
-                        console.log(data.response);
-                        //$("#status").html( data.response );
-                    });
-
-                });
-
-                $("#fortifai-shutdown").click(function(){
-
-                    let body = { "ip": "127.0.0.1", "port": 8673 };
-        
-                    $.post( "http://" + server + ":8000/fortifai-shutdown", body, function( data ) {
-                       
-                        console.log(data.response);
-                        
-                    });
-
-                });
-
-                
-                //------------------------------------------------system
-
-                $("#reboot").click(function(){
-                    
-                    let body = { "ip": "127.0.0.1", "port": 8673 };
-
-                    $.post( "http://" + server + ":8000/reboot", body, function( data ) {
-                        console.log(data.response);
-                        
-                    });
-
-                });
-
-                $("#shutdown").click(function(){
-
-                    let body = { "ip": "127.0.0.1", "port": 8673 };
-                    
-                    $.post( "http://" + server + ":8000/shutdown", body, function( data ) {
-                        console.log(data.response);
-                        
-                    });
-
-                });
-
-
-                setInterval(getSystem, 3000);
-                
-                function getSystem() {
-
-                    $.get( "http://" + server + ":8000/jetson_state", function( data ) {
-                        
-                        //console.log(data);
-                        
-                                                
-                        if( data.status == "running" ) {
-
-                            $("#status").removeClass('offline').addClass('online');
-                            $("#status").html( "Online" );
-
-                        }
-                        else {
-                            $("#status").removeClass('online').addClass('offline');
-                            $("#status").html( "Offline" );
-                        }
-
-                            let average_cpu_usage = ( parseFloat( data.cpu_usage.cpu0 ) + parseFloat( data.cpu_usage.cpu1 ) + parseFloat( data.cpu_usage.cpu2 ) + parseFloat( data.cpu_usage.cpu3 ) + parseFloat( data.cpu_usage.cpu4 ) + parseFloat( data.cpu_usage.cpu5 ) + parseFloat( data.cpu_usage.cpu6 ) + parseFloat( data.cpu_usage.cpu7 ) ) / 8;
-                            average_cpu_usage = average_cpu_usage.toFixed(1);
-                            $("#cpu_usage").html( average_cpu_usage + " " + data.cpu_usage.unit );
-                            $("#cpu_temp").html( data.cpu_temp.value + " " + data.cpu_temp.unit );
-                            $("#storage").html( data.storage.value + " " + data.storage.unit );
-                            $("#serial_number").html( data.serial_number );
-                            
-                            $("#reboot").prop( "disabled", false );
-                            $("#shutdown").prop( "disabled", false );
-                            $("#sleep").prop( "disabled", false );
-                            $("#wake").prop( "disabled", false );
-                        
-                    
-                    }).fail(function(e) {
-                        getStatus_fail();
-                    });
-
-                }
-
-                function getStatus_fail() {
-
-                    $("#status").removeClass('online').addClass('offline');
-                    $("#status").html( "Offline" );
-
-                    $("#cpu_usage").html( "" );
-                    $("#cpu_temp").html( "" );
-                    $("#storage").html( "" );
-                    $("#serial_number").html( "" );
-                    
-                    $("#reboot").prop( "disabled", true );
-                    $("#shutdown").prop( "disabled", true );
-                    $("#sleep").prop( "disabled", true );
-                    $("#wake").prop( "disabled", true );
-                }
-                
+        function updateConfig() {
+            let fileName = $('#fileNameInput').val().replace('.cfg', '') + '.cfg';
+            let body = { file: $('#modal-body').val() }
+            let formData = new FormData();
+            formData.append("file", new Blob([$('#modal-body').val()]));
+            $.ajax({
+                type: 'POST',
+                url: "http://" + '82.7.160.220' + ":8000/update-file/" + fileName,
+                data: formData,
+                processData: false,
+                contentType: false
+            }).done(function (data) {
+                getConfigList();
+                alert("Uploaded : " + data?.uploaded);
             });
 
-            
-            
-            
-            
-        </script>
+        }
 
-    </body>
+        function editConfig() {
+            let fileName = $($(event.target).siblings('h6')[0]).text();
+            $('#fileNameInput').val(fileName);
+            $.get("http://" + '82.7.160.220' + ":8000/get-file/" + fileName, (data) => {
+                $('#modal-body').val(data);
+            })
+        }
+
+        function onCloseModal() {
+            $('#fileNameInput').val('');
+            $('#modal-body').val('');
+        }
+
+
+        $(() => {
+
+            $("button").click(function () {
+                this.blur();
+            });
+
+            let server = $(location).attr('hostname');
+            // server = "82.7.160.220";
+
+
+            //-------------------------------------------------fortifai
+
+            $("#fortifai-reboot").click(function () {
+
+                let body = { "ip": "127.0.0.1", "port": 8673 };
+
+                $.post("http://" + server + ":8000/fortifai-reboot", body, function (data) {
+                    console.log(data.response);
+
+                });
+
+            });
+
+            $("#start").click(function () {
+
+                $.post("http://" + server + ":8000/start", function (data) {
+                    console.log(data.response);
+                    //$("#status").html( data.response );
+                });
+
+            });
+
+            $("#fortifai-shutdown").click(function () {
+
+                let body = { "ip": "127.0.0.1", "port": 8673 };
+
+                $.post("http://" + server + ":8000/fortifai-shutdown", body, function (data) {
+
+                    console.log(data.response);
+
+                });
+
+            });
+
+
+            //------------------------------------------------system
+
+            $("#reboot").click(function () {
+
+                let body = { "ip": "127.0.0.1", "port": 8673 };
+
+                $.post("http://" + server + ":8000/reboot", body, function (data) {
+                    console.log(data.response);
+
+                });
+
+            });
+
+            $("#shutdown").click(function () {
+
+                let body = { "ip": "127.0.0.1", "port": 8673 };
+
+                $.post("http://" + server + ":8000/shutdown", body, function (data) {
+                    console.log(data.response);
+
+                });
+
+            });
+
+
+            setInterval(getSystem, 3000);
+
+            function getSystem() {
+
+                $.get("http://" + server + ":8000/jetson_state", function (data) {
+
+                    //console.log(data);
+
+
+                    if (data.status == "running") {
+
+                        $("#status").removeClass('offline').addClass('online');
+                        $("#status").html("Online");
+
+                    }
+                    else {
+                        $("#status").removeClass('online').addClass('offline');
+                        $("#status").html("Offline");
+                    }
+
+                    let average_cpu_usage = (parseFloat(data.cpu_usage.cpu0) + parseFloat(data.cpu_usage.cpu1) + parseFloat(data.cpu_usage.cpu2) + parseFloat(data.cpu_usage.cpu3) + parseFloat(data.cpu_usage.cpu4) + parseFloat(data.cpu_usage.cpu5) + parseFloat(data.cpu_usage.cpu6) + parseFloat(data.cpu_usage.cpu7)) / 8;
+                    average_cpu_usage = average_cpu_usage.toFixed(1);
+                    $("#cpu_usage").html(average_cpu_usage + " " + data.cpu_usage.unit);
+                    $("#cpu_temp").html(data.cpu_temp.value + " " + data.cpu_temp.unit);
+                    $("#storage").html(data.storage.value + " " + data.storage.unit);
+                    $("#serial_number").html(data.serial_number);
+
+                    $("#reboot").prop("disabled", false);
+                    $("#shutdown").prop("disabled", false);
+                    $("#sleep").prop("disabled", false);
+                    $("#wake").prop("disabled", false);
+
+
+                }).fail(function (e) {
+                    getStatus_fail();
+                });
+
+            }
+
+            function getStatus_fail() {
+
+                $("#status").removeClass('online').addClass('offline');
+                $("#status").html("Offline");
+
+                $("#cpu_usage").html("");
+                $("#cpu_temp").html("");
+                $("#storage").html("");
+                $("#serial_number").html("");
+
+                $("#reboot").prop("disabled", true);
+                $("#shutdown").prop("disabled", true);
+                $("#sleep").prop("disabled", true);
+                $("#wake").prop("disabled", true);
+            }
+
+        });
+
+
+
+
+
+    </script>
+
+</body>
+
 </html>

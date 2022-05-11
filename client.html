@@ -1,525 +1,549 @@
-
 <!doctype html>
 <html lang="en">
-    
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="images/favicon.png" />
-    <title>Vizgard</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
-    
-    <link href="css/style.css" rel="stylesheet">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+  <title>Vizgard</title>
 
-    <style>
-        #main-info {
-          margin-left: 20px;
-        }
-        #video-preview {
-          position: relative;
-          height: 33vw;
-          
-        }
-        #video-preview canvas,
-        #video-preview video,
-        #video-preview img {
-          width: 100%;
-          position: absolute;
-        }
-        .btn-connected {
-          background-color: #12ef8c !important;
-        }
+  <!-- Bootstrap core CSS -->
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
 
-        .btn-disconnected {
-          background-color: red !important;
-        }
-        #server-version {
-          padding: 5px;
-          float: right;
-        }
-        .video-input div{
-          font-size: 15px;
-          margin-bottom: 2px;
-        }
-        #json-section {
-          height: 500px;
-          overflow: auto;
-        }
-        .server-input {
-          position: relative;
-          display: flex;
-          flex-wrap: wrap;
-          align-items: stretch;
-          width: 100%;;
-        }
-        .server-input .btn {
-          margin-top: 0px;
-          height: 26px;
-          line-height: 0.5 !important;
-        }
-        .server-input span {
-            margin-top: 1px;
-        }
-        #commands-section div {
-          
-          margin: 3px;
-          padding: 3px;
-          border: solid 1px #b7b7b7;
-          cursor: pointer;
-          font-size: 14px;
-        }
+  <link href="css/style.css" rel="stylesheet">
 
-        #commands-section div input {
-          float: right;
-        }
-        .PositionInput{
-          font-size: 15px;
-        }
-        .preset-input .btn {
-          margin-left: 1px;
-        }
-        .shutdown .btn {
-          margin-left: 2px;
-        }
-    </style>
+  <style>
+    #main-info {
+      margin-left: 20px;
+    }
 
-    </head>
+    #video-preview {
+      position: relative;
+      height: 33vw;
 
-    <body>
-        
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-2">
-          <div class="container-fluid">
-              <img src="images/vizgard_logo.png" height="30px">
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="index.html">Device</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Client</a>
-                    </li>
-                </ul>
-              </div>
-          </div>
-        </nav>
+    }
 
-        <main>
+    #video-preview canvas,
+    #video-preview video,
+    #video-preview img {
+      width: 100%;
+      position: absolute;
+    }
 
-          <div class="row">
-            <div class="col-4">
-              <h4 style="margin-left: 20px;">Client</h4>
+    .btn-connected {
+      background-color: #12ef8c !important;
+    }
+
+    .btn-disconnected {
+      background-color: red !important;
+    }
+
+    #server-version {
+      padding: 5px;
+      float: right;
+    }
+
+    .video-input div {
+      font-size: 15px;
+      margin-bottom: 2px;
+    }
+
+    #json-section {
+      height: 500px;
+      overflow: auto;
+    }
+
+    .server-input {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      width: 100%;
+      ;
+    }
+
+    .server-input .btn {
+      margin-top: 0px;
+      height: 26px;
+      line-height: 0.5 !important;
+    }
+
+    .server-input span {
+      margin-top: 1px;
+    }
+
+    #commands-section div {
+
+      margin: 3px;
+      padding: 3px;
+      border: solid 1px #b7b7b7;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    #commands-section div input {
+      float: right;
+    }
+
+    .PositionInput {
+      font-size: 15px;
+    }
+
+    .preset-input .btn {
+      margin-left: 1px;
+    }
+
+    .shutdown .btn {
+      margin-left: 2px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-2">
+    <div class="container-fluid">
+      <img src="images/vizgard_logo.png" height="30px">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="index.html">Device</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Client</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="row">
+      <div class="col-4">
+        <h4 style="margin-left: 20px;">Client</h4>
+      </div>
+      <div class="col-8">
+        <div style="float: right;margin-right: 20px; margin-top: 15px; margin-bottom: -5px;">
+          <div class="server-input input-group-sm" style="font-size: 15px;">
+
+            <span id="status" style="margin-right: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+
+            <span style="margin-right: 3px;">Auto Connect</span>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="auto-connect">
             </div>
+
+            <span style="margin-right: 3px;">Server Address</span>
+            <div style="width: 120px;margin-right: 5px;">
+              <input id="server-address" type="text" value="127.0.0.1" class="form-control">
+            </div>
+
+            <span style="margin-right: 3px;">Port</span>
+            <div style="width: 50px;margin-right: 5px;">
+              <input id="server-port" type="text" value="8673" class="form-control">
+            </div>
+
+            <button id="btn-connect" class="btn btn-secondary btn-sm" type="button"
+              style="height: 25px;">Connect</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div id="main-info">&nbsp;</div>
+
+    <div class="row">
+      <div class="col-2">
+
+        <div id="commands-section" class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
+
+          <div id="cmd-toggle-detection">Object Detection <input type="checkbox" class="form-check-input" /></div>
+          <div id="cmd-toggle-model">Toggle Model</div>
+          <div id="cmd-toggle-single-tracking">Single Object Tracking <input type="checkbox" class="form-check-input" />
+          </div>
+          <div id="cmd-toggle-auto-single-track">Auto Single Track <input type="checkbox" class="form-check-input" />
+          </div>
+          <div id="cmd-toggle-pose-estimation">Pose Estimation <input type="checkbox" class="form-check-input" /></div>
+          <div id="cmd-toggle-face-redaction">Face Redaction <input type="checkbox" class="form-check-input" /></div>
+          <div id="cmd-toggle-aruco">ArUco Marker <input type="checkbox" class="form-check-input" /></div>
+          <div id="cmd-toggle-enhancement">Image Enhancement <input type="checkbox" class="form-check-input" /></div>
+          <div id="cmd-toggle-stabilization">Video Stabilization <input type="checkbox" class="form-check-input" />
+          </div>
+          <div id="cmd-toggle-graphics-display">On Screen Display <input type="checkbox" class="form-check-input" />
+          </div>
+          <div id="cmd-toggle-camera-calibration">Calibrate Mode <input type="checkbox" class="form-check-input" />
+          </div>
+          <div id="cmd-toggle-pixel-counts">Object Pixel Count <input type="checkbox" class="form-check-input" /></div>
+          <div id="cmd-toggle-long-range-mode">Long Range Mode <input type="checkbox" class="form-check-input" /></div>
+          <div id="cmd-toggle-frame-grab">Frame Grab <input type="checkbox" class="form-check-input" /></div>
+          <div id="cmd-toggle-record-video">Record Video <input type="checkbox" class="form-check-input" /></div>
+          <div id="cmd-toggle-record-position">CSV Logging<input type="checkbox" class="form-check-input" /></div>
+
+        </div>
+
+      </div>
+
+      <div class="col-7">
+
+        <div class="d-flex flex-column flex-shrink-0 text-white">
+
+          <div id="video-preview">
+            <img src="images/blacklogo.jpg">
+            <video autoplay style="display: none;"></video>
+            <canvas id="canvas-bounding-box"></canvas>
+          </div>
+
+          <div class="row mt-2">
             <div class="col-8">
-              <div style="float: right;margin-right: 20px; margin-top: 15px; margin-bottom: -5px;">
-                <div class="server-input input-group-sm" style="font-size: 15px;">
-
-                  <span id="status" style="margin-right: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-
-                  <span style="margin-right: 3px;">Auto Connect</span>
-                  <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="auto-connect">
-                  </div>
-
-                  <span style="margin-right: 3px;">Server Address</span>
-                  <div style="width: 120px;margin-right: 5px;" >
-                    <input id="server-address" type="text" value="127.0.0.1" class="form-control">
-                  </div>
-
-                  <span style="margin-right: 3px;">Port</span>
-                  <div style="width: 50px;margin-right: 5px;">
-                    <input id="server-port" type="text" value="8673" class="form-control">
-                  </div>
-
-                  <button id="btn-connect" class="btn btn-secondary btn-sm" type="button" style="height: 25px;">Connect</button>
-                
-                </div>
+              <div class="server-input input-group-sm preset-input">
+                <span>Camera Preset&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <button id="cmd-toggle-preset-1" class="btn btn-success btn-sm" type="button">1</button>
+                <button id="cmd-toggle-preset-2" class="btn btn-success btn-sm" type="button">2</button>
+                <button id="cmd-toggle-preset-3" class="btn btn-success btn-sm" type="button">3</button>
+                <button id="cmd-toggle-preset-4" class="btn btn-success btn-sm" type="button">4</button>
+                <button id="cmd-toggle-preset-5" class="btn btn-success btn-sm" type="button">5</button>
+                <button id="cmd-toggle-preset-6" class="btn btn-success btn-sm" type="button">6</button>
+                <button id="cmd-toggle-preset-7" class="btn btn-success btn-sm" type="button">7</button>
+                <button id="cmd-toggle-preset-8" class="btn btn-success btn-sm" type="button">8</button>
+                <button id="cmd-toggle-preset-9" class="btn btn-success btn-sm" type="button">9</button>
+                <button class="btn btn-success btn-sm" type="button">Save</button>
               </div>
+            </div>
+            <div class="col-4">
+              <button id="btn-switch-video" style="width: 150px;float: right;" type="button"
+                class="btn btn-success btn-sm">Switch Video Input</button>
             </div>
           </div>
 
-          
 
-          <div id="main-info">&nbsp;</div>
 
-            <div class="row">
-                <div class="col-2">
+          <div class="video-input mt-2">
 
-                  <div id="commands-section" class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
-
-                    <div id="cmd-toggle-detection">Object Detection <input type="checkbox" class="form-check-input" /></div>
-                    <div id="cmd-toggle-model">Toggle Model</div>
-                    <div id="cmd-toggle-single-tracking">Single Object Tracking <input type="checkbox" class="form-check-input" /></div>
-                    <div id="cmd-toggle-auto-single-track">Auto Single Track <input type="checkbox" class="form-check-input" /></div>
-                    <div id="cmd-toggle-pose-estimation">Pose Estimation <input type="checkbox" class="form-check-input" /></div>
-                    <div id="cmd-toggle-face-redaction">Face Redaction <input type="checkbox" class="form-check-input" /></div>
-                    <div id="cmd-toggle-aruco">ArUco Marker <input type="checkbox" class="form-check-input" /></div>
-                    <div id="cmd-toggle-enhancement">Image Enhancement <input type="checkbox" class="form-check-input" /></div>
-                    <div id="cmd-toggle-stabilization">Video Stabilization <input type="checkbox" class="form-check-input" /></div>
-                    <div id="cmd-toggle-graphics-display">On Screen Display <input type="checkbox" class="form-check-input" /></div>
-                    <div id="cmd-toggle-camera-calibration">Calibrate Mode <input type="checkbox" class="form-check-input" /></div>
-                    <div id="cmd-toggle-pixel-counts">Object Pixel Count <input type="checkbox" class="form-check-input" /></div>
-                    <div id="cmd-toggle-long-range-mode">Long Range Mode <input type="checkbox" class="form-check-input" /></div>
-                    <div id="cmd-toggle-frame-grab">Frame Grab <input type="checkbox" class="form-check-input" /></div>
-                    <div id="cmd-toggle-record-video">Record Video <input type="checkbox" class="form-check-input" /></div>
-                    <div id="cmd-toggle-record-position">CSV Logging<input type="checkbox" class="form-check-input" /></div>
-                    
-                  </div>
-
-                </div>
-                
-                <div class="col-7">
-                    
-                    <div class="d-flex flex-column flex-shrink-0 text-white" >
-                      
-                        <div id="video-preview">
-                          <img src="images/blacklogo.jpg">
-                          <video autoplay style="display: none;"></video>
-                          <canvas id="canvas-bounding-box"></canvas>
-                        </div>
-                        
-                        <div class="row mt-2">
-                          <div class="col-8">
-                            <div class="server-input input-group-sm preset-input">
-                              <span>Camera Preset&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                              <button id="cmd-toggle-preset-1" class="btn btn-success btn-sm" type="button">1</button>
-                              <button id="cmd-toggle-preset-2" class="btn btn-success btn-sm" type="button">2</button>
-                              <button id="cmd-toggle-preset-3" class="btn btn-success btn-sm" type="button">3</button>
-                              <button id="cmd-toggle-preset-4" class="btn btn-success btn-sm" type="button">4</button>
-                              <button id="cmd-toggle-preset-5" class="btn btn-success btn-sm" type="button">5</button>
-                              <button id="cmd-toggle-preset-6" class="btn btn-success btn-sm" type="button">6</button>
-                              <button id="cmd-toggle-preset-7" class="btn btn-success btn-sm" type="button">7</button>
-                              <button id="cmd-toggle-preset-8" class="btn btn-success btn-sm" type="button">8</button>
-                              <button id="cmd-toggle-preset-9" class="btn btn-success btn-sm" type="button">9</button>
-                              <button class="btn btn-success btn-sm" type="button">Save</button>
-                            </div>
-                          </div>
-                          <div class="col-4">
-                            <button id="btn-switch-video" style="width: 150px;float: right;" type="button" class="btn btn-success btn-sm">Switch Video Input</button>
-                          </div>
-                        </div>
-                        
-                        
-
-                        <div class="video-input mt-2">
-
-                          <div class="server-input input-group-sm">
-                            <span>Server Video In&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            <div style="width: 75%">
-                              <input id="server-video-in" type="text" value="" class="form-control">
-                            </div>
-                            &nbsp;
-                            <button id="btn-update-server-video-in" class="btn btn-success btn-sm" type="button">Update</button>
-                          </div>
-
-                          <div class="server-input input-group-sm mt-1">
-                            <span>Server Video Out&nbsp;</span>
-                            <div style="width: 75%">
-                              <input id="server-video-out" type="text" value="" class="form-control">
-                            </div>
-                            &nbsp;
-                            <button id="btn-update-server-video-out" class="btn btn-success btn-sm" type="button">Update</button>
-                          </div>
-
-                          <div class="server-input input-group-sm mt-1">
-                            <span>Client Video In&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            <div style="width: 75%">
-                              <input id="client-video-in" type="text" value="" class="form-control">
-                            </div>
-                            &nbsp;
-                            <button id="btn-update-client-video" class="btn btn-success btn-sm" type="button">Update</button>
-                          </div>
-
-                        </div>
-
-                        <div class="server-input input-group-sm shutdown">
-                          <button id="btn-shutdown" class="btn btn-success btn-sm" type="button">Shutdown Server</button> 
-                          <button id="btn-reboot-jetson" class="btn btn-success btn-sm" type="button">Reboot VizEdge</button>
-                          <button id="btn-shutdown-jetson" class="btn btn-success btn-sm" type="button">Shutdown VizEdge</button>
-                        </div>
-
-                        
-                        <div class="PositionInput"> 
-                          <label for ="PositionInput">Input Status: </label>:
-                          <div id="gps"></div>
-                          <div id="ais"></div>
-                        </div>
-                      </div>
-                </div>
-
-                <div class="col-3">
-                  <div id="json-section">
-                    <pre></pre>
-                  </div>
-                </div>
-
+            <div class="server-input input-group-sm">
+              <span>Server Video In&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <div style="width: 75%">
+                <input id="server-video-in" type="text" value="" class="form-control">
+              </div>
+              &nbsp;
+              <button id="btn-update-server-video-in" class="btn btn-success btn-sm" type="button">Update</button>
             </div>
 
-            
+            <div class="server-input input-group-sm mt-1">
+              <span>Server Video Out&nbsp;</span>
+              <div style="width: 75%">
+                <input id="server-video-out" type="text" value="" class="form-control">
+              </div>
+              &nbsp;
+              <button id="btn-update-server-video-out" class="btn btn-success btn-sm" type="button">Update</button>
+            </div>
 
-            
-            
-        </main>
+            <div class="server-input input-group-sm mt-1">
+              <span>Client Video In&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <div style="width: 75%">
+                <input id="client-video-in" type="text" value="" class="form-control">
+              </div>
+              &nbsp;
+              <button id="btn-update-client-video" class="btn btn-success btn-sm" type="button">Update</button>
+            </div>
 
-        <footer id="server-version">Server V?</footer>
-        
-        <script src="bootstrap/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-        <!--script src="js/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script-->
-        <script src="js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
-        <script>
-          $(() => {
+          </div>
 
-            $("button").click(function(){
-                this.blur();
-            });
+          <div class="server-input input-group-sm shutdown">
+            <button id="btn-shutdown" class="btn btn-success btn-sm" type="button">Shutdown Server</button>
+            <button id="btn-reboot-jetson" class="btn btn-success btn-sm" type="button">Reboot VizEdge</button>
+            <button id="btn-shutdown-jetson" class="btn btn-success btn-sm" type="button">Shutdown VizEdge</button>
+          </div>
 
-            $("input").click(function(){
-                this.blur();
-            });
 
-            let server = $(location).attr('hostname');
-            $("#server-address").val( server);
+          <div class="PositionInput">
+            <label for="PositionInput">Input Status: </label>:
+            <div id="gps"></div>
+            <div id="ais"></div>
+          </div>
+        </div>
+      </div>
 
-            const canvas = document.getElementById('canvas-bounding-box');
-            const ctx = canvas.getContext('2d');
-      
-            canvas.addEventListener('mouseup', e => {
-              if (ws.readyState === WebSocket.OPEN) {
-                const rect = canvas.getBoundingClientRect();
-                ws.send(`single-track ${parseInt((e.clientX - rect.left) * canvas.width / rect.width)} ${parseInt((e.clientY - rect.top) * canvas.height / rect.height)}`);
+      <div class="col-3">
+        <div id="json-section">
+          <pre></pre>
+        </div>
+      </div>
+
+    </div>
+
+
+
+
+
+  </main>
+
+  <footer id="server-version">Server V?</footer>
+
+  <script src="bootstrap/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+  <!--script src="js/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script-->
+  <script src="js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+  <script>
+    $(() => {
+
+      $("button").click(function () {
+        this.blur();
+      });
+
+      $("input").click(function () {
+        this.blur();
+      });
+
+      let server = $(location).attr('hostname');
+      $("#server-address").val(server);
+
+      const canvas = document.getElementById('canvas-bounding-box');
+      const ctx = canvas.getContext('2d');
+
+      canvas.addEventListener('mouseup', e => {
+        if (ws.readyState === WebSocket.OPEN) {
+          const rect = canvas.getBoundingClientRect();
+          ws.send(`single-track ${parseInt((e.clientX - rect.left) * canvas.width / rect.width)} ${parseInt((e.clientY - rect.top) * canvas.height / rect.height)}`);
+        }
+      });
+
+      let ws;
+
+      $('#btn-connect').click(function () {
+
+        if ($(this).hasClass('btn-connected')) {
+          ws.close();
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          $('#json-section pre').html('');
+          return;
+        }
+
+        ws = new WebSocket(`ws://${$('#server-address').val()}:${$('#server-port').val()}`);
+        ws.onclose = () => $('#btn-connect').html('Disconnected').removeClass('btn-connected').addClass('btn-disconnected');
+        ws.onerror = () => alert('Error!');
+        ws.onmessage = e => {
+          const json = JSON.parse(e.data);
+          if (json.objects) {
+            // main info
+            $('#main-info').html(`${json.width} x ${json.height} | FPS Capture: ${json.fpsCap} | FPS Detection: ${json.fpsDet} | Delay: ${json.delay}`);
+            if (json.width != canvas.width) canvas.width = json.width;
+            if (json.height != canvas.height) canvas.height = json.height;
+
+            $('#gps').html(`Position: ${json.posStatus}`);
+            $('#ais').html(`AIS: ${json.aisStatus}`);
+            // objects json
+            $('#json-section pre').html(JSON.stringify(json.objects, null, 2));
+
+            // draw bounding boxes on canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            json.objects.forEach(({ singleTracking, x, y, w, h }) => {
+              ctx.beginPath();
+              ctx.strokeStyle = singleTracking ? '#ffa500' : '#50ff00';
+              if (singleTracking) {
+                var delta = Math.max(w, h);
+                delta = delta / 5
+                ctx.beginPath();
+                ctx.moveTo(x + w / 2 - delta / 3, y + h / 2);
+                ctx.lineTo(x + w / 2 + delta / 3, y + h / 2);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(x + w / 2, y + h / 2 - delta / 3);
+                ctx.lineTo(x + w / 2, y + h / 2 + delta / 3);
+                ctx.stroke();
               }
+              ctx.lineWidth = 2;
+              ctx.rect(x, y, w, h);
+              ctx.stroke();
             });
-      
-            let ws;
-      
-            $('#btn-connect').click(function () {
+          } else {
+            $('#server-version').html('Server ' + json.version);
+            $('#server-video-in').val(json.serverIn);
+            $('#server-video-out').val(json.serverOut);
+            // TODO: Unify naming convention for code generalization
+            $('#cmd-toggle-detection input').prop('checked', json.detection);
+            $('#cmd-toggle-pose-estimation input').prop('checked', json.poseEstimation);
+            $('#cmd-toggle-single-tracking input').prop('checked', json.singleTracking);
+            $('#cmd-toggle-auto-single-track input').prop('checked', json.autoSingleTrack);
+            $('#cmd-toggle-face-redaction input').prop('checked', json.faceRedaction);
+            $('#cmd-toggle-aruco input').prop('checked', json.arucoDetection);
+            $('#cmd-toggle-enhancement input').prop('checked', json.enhancement);
+            $('#cmd-toggle-stabilization input').prop('checked', json.stabilization);
+            $('#cmd-toggle-graphics-display input').prop('checked', json.graphicsDisplay);
+            $('#cmd-toggle-camera-calibration input').prop('checked', json.cameraCalibration);
+            $('#cmd-toggle-pixel-counts input').prop('checked', json.pixelCounts);
+            $('#cmd-toggle-long-range-mode input').prop('checked', json.longRangeMode);
+            $('#cmd-toggle-frame-grab input').prop('checked', json.frameGrab);
+            $('#cmd-toggle-record-video input').prop('checked', json.recordingVideo);
+            $('#cmd-toggle-record-position input').prop('checked', json.recordPositionDtaa);
+            $('#cmd-toggle-model').html('Toggle Model');
+            for (const c in json.classes) {
+              $('#cmd-toggle-model').append(`<div data-class="${c}">${c}<input type="checkbox" ${json.classes[c] && 'checked'}></div>`);
+            }
+          }
+        }
+        ws.onopen = () => $('#btn-connect').html('Connected!').removeClass('btn-disconnected').addClass('btn-connected')
+      });
 
-              if ($(this).hasClass('btn-connected')) {
-                ws.close();
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                $('#json-section pre').html('');
-                return;
-              }
-      
-              ws = new WebSocket(`ws://${$('#server-address').val()}:${$('#server-port').val()}`);
-              ws.onclose = () => $('#btn-connect').html('Disconnected').removeClass('btn-connected').addClass('btn-disconnected');
-              ws.onerror = () => alert('Error!');
-              ws.onmessage = e => {
-                const json = JSON.parse(e.data);
-                if (json.objects) {
-                  // main info
-                  $('#main-info').html(`${json.width} x ${json.height} | FPS Capture: ${json.fpsCap} | FPS Detection: ${json.fpsDet} | Delay: ${json.delay}`);
-                  if (json.width != canvas.width) canvas.width = json.width;
-                  if (json.height != canvas.height) canvas.height = json.height;
-      
-                  $('#gps').html(`Position: ${json.posStatus}`);
-                  $('#ais').html(`AIS: ${json.aisStatus}`);
-                  // objects json
-                  $('#json-section pre').html(JSON.stringify(json.objects, null, 2));
-      
-                  // draw bounding boxes on canvas
-                  ctx.clearRect(0, 0, canvas.width, canvas.height);
-                  json.objects.forEach(({ singleTracking, x, y, w, h }) => {
-                    ctx.beginPath();
-                    ctx.strokeStyle = singleTracking ? '#ffa500' : '#50ff00';
-                    if (singleTracking)
-                    {
-                      var delta = Math.max(w, h);
-                      delta = delta / 5
-                      ctx.beginPath();
-                      ctx.moveTo(x + w / 2 - delta / 3, y + h / 2);
-                      ctx.lineTo(x + w / 2 + delta / 3, y + h / 2);
-                      ctx.stroke();
-                      ctx.beginPath();
-                      ctx.moveTo(x + w / 2, y + h / 2 - delta / 3);
-                      ctx.lineTo(x + w / 2, y + h / 2 + delta / 3);
-                      ctx.stroke();
-                    }
-                    ctx.lineWidth = 2;
-                    ctx.rect(x, y, w, h);
-                    ctx.stroke();
-                  });
-                } else {
-                  $('#server-version').html('Server ' + json.version);
-                  $('#server-video-in').val(json.serverIn);
-                  $('#server-video-out').val(json.serverOut);
-                  // TODO: Unify naming convention for code generalization
-                  $('#cmd-toggle-detection input').prop('checked', json.detection);
-                  $('#cmd-toggle-pose-estimation input').prop('checked', json.poseEstimation);
-                  $('#cmd-toggle-single-tracking input').prop('checked', json.singleTracking);
-                  $('#cmd-toggle-auto-single-track input').prop('checked', json.autoSingleTrack);
-                  $('#cmd-toggle-face-redaction input').prop('checked', json.faceRedaction);
-                  $('#cmd-toggle-aruco input').prop('checked', json.arucoDetection);
-                  $('#cmd-toggle-enhancement input').prop('checked', json.enhancement);
-                  $('#cmd-toggle-stabilization input').prop('checked', json.stabilization);
-                  $('#cmd-toggle-graphics-display input').prop('checked', json.graphicsDisplay);
-                  $('#cmd-toggle-camera-calibration input').prop('checked', json.cameraCalibration);
-                  $('#cmd-toggle-pixel-counts input').prop('checked', json.pixelCounts);
-                  $('#cmd-toggle-long-range-mode input').prop('checked', json.longRangeMode);
-                  $('#cmd-toggle-frame-grab input').prop('checked', json.frameGrab);
-                  $('#cmd-toggle-record-video input').prop('checked', json.recordingVideo);
-                  $('#cmd-toggle-record-position input').prop('checked', json.recordPositionDtaa);
-                  $('#cmd-toggle-model').html('Toggle Model');
-                  for (const c in json.classes) {
-                    $('#cmd-toggle-model').append(`<div data-class="${c}">${c}<input type="checkbox" ${json.classes[c] && 'checked'}></div>`);
-                  }
-                }
-              }
-              ws.onopen = () => $('#btn-connect').html('Connected!').removeClass('btn-disconnected').addClass('btn-connected')
-            });
-      
-            ['detection', 'model', 'single-tracking', 'pose-estimation', 'auto-single-track', 'face-redaction', 'aruco', 'enhancement', 'stabilization', 'graphics-display', 'camera-calibration', 'pixel-counts', 'long-range-mode', 'frame-grab', 'record-video', 'record-position'].forEach(feature =>
-              $('#cmd-toggle-' + feature).click(e => {
-                if (ws.readyState === WebSocket.OPEN) {
-                  ws.send('toggle-' + feature);
-                }
-              })
-            );
-      
-            ['1', '2', '3', '4', '5', '6', '7', '8', '9'].forEach(preset =>
-              $('#cmd-toggle-preset-' + preset).click(e => {
-                if (ws.readyState === WebSocket.OPEN) {
-                  ws.send('toggle-preset-' + preset);
-                }
-              })
-            );
-      
-            $('#cmd-toggle-model').on('click', 'div', function(e) {
-              e.stopPropagation();
-              if (ws.readyState === WebSocket.OPEN) {
-                ws.send(`toggle-model-class ${$(this).data('class')}`);
-              }
-            });
-      
-            $('#btn-update-server-video-in').click(() => {
-              if (ws.readyState === WebSocket.OPEN) {
-                ws.send(`update-sever-video-in ${$('#server-video-in').val()}`)
-              }
-            });
-      
-            $('#btn-update-server-video-out').click(() => {
-              if (ws.readyState === WebSocket.OPEN) {
-                ws.send(`update-sever-video-out ${$('#server-video-out').val()}`)
-              }
-            });
-      
-            $('#btn-switch-video').click(() => {
-              if (ws.readyState === WebSocket.OPEN) {
-                ws.send('switch-video');
-              }
-            });
-      
-            $('#btn-update-client-video').click(() => {
-              const src = $('#client-video-in').val();
-              if (src) {
-                $('#video-preview img').hide();
-                $('#video-preview video').attr('src', src).show();
-              } else {
-                $('#video-preview video').attr('src', '').hide();
-                $('#video-preview img').show();
-              }
-            });
-      
-            $('#btn-shutdown').click(() => {
-              if (ws.readyState === WebSocket.OPEN) {
-                ws.send('shutdown');
-              }
-            });
-            $('#btn-reboot-jetson').click(() => {
-              if (ws.readyState === WebSocket.OPEN) {
-                ws.send('reboot-jetson');
-              }
-            });
-      
-            $('#btn-shutdown-jetson').click(() => {
-              if (ws.readyState === WebSocket.OPEN) {
-                ws.send('shutdown-jetson');
-              }
-            });
-      
-            $('#btn-toggle-moveleft').click(() => {
-              if (ws.readyState === WebSocket.OPEN) {
-                ws.send('toggle-moveleft');
-              }
-            });
-      
-            $('#btn-toggle-moveright').click(() => {
-              if (ws.readyState === WebSocket.OPEN) {
-                ws.send('toggle-moveright');
-              }
-            });
-      
-            $('#btn-toggle-moveup').click(() => {
-              if (ws.readyState === WebSocket.OPEN) {
-                ws.send('toggle-moveup');
-              }
-            });
-      
-            $('#btn-toggle-movedown').click(() => {
-              if (ws.readyState === WebSocket.OPEN) {
-                ws.send('toggle-movedown');
-              }
-            });
-      
-            $('#btn-toggle-zoomin').click(() => {
-              if (ws.readyState === WebSocket.OPEN) {
-                ws.send('toggle-zoomin');
-              }
-            });
-      
-            $('#btn-toggle-zoomout').click(() => {
-              if (ws.readyState === WebSocket.OPEN) {
-                ws.send('toggle-zoomout');
-              }
-            });
+      ['detection', 'model', 'single-tracking', 'pose-estimation', 'auto-single-track', 'face-redaction', 'aruco', 'enhancement', 'stabilization', 'graphics-display', 'camera-calibration', 'pixel-counts', 'long-range-mode', 'frame-grab', 'record-video', 'record-position'].forEach(feature =>
+        $('#cmd-toggle-' + feature).click(e => {
+          if (ws.readyState === WebSocket.OPEN) {
+            ws.send('toggle-' + feature);
+          }
+        })
+      );
 
-            
-            //server = "82.7.160.220";
-            setInterval(getSystem, 3000);
-                
-                function getSystem() {
+      ['1', '2', '3', '4', '5', '6', '7', '8', '9'].forEach(preset =>
+        $('#cmd-toggle-preset-' + preset).click(e => {
+          if (ws.readyState === WebSocket.OPEN) {
+            ws.send('toggle-preset-' + preset);
+          }
+        })
+      );
 
-                    $.get( "http://" + server + ":8000/jetson_state", function( data ) {
-                         
-                        if( data.status == "running" ) {
+      $('#cmd-toggle-model').on('click', 'div', function (e) {
+        e.stopPropagation();
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(`toggle-model-class ${$(this).data('class')}`);
+        }
+      });
 
-                          $("#status").removeClass('offline').addClass('online');
-                          $("#status").html( "Online" );
+      $('#btn-update-server-video-in').click(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(`update-sever-video-in ${$('#server-video-in').val()}`)
+        }
+      });
 
-                          if( $("#auto-connect").is(":checked") == true && $("#btn-connect").hasClass('btn-connected') == false ) {
-                            $( "#btn-connect" ).trigger( "click" );
-                          }
-                            
+      $('#btn-update-server-video-out').click(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(`update-sever-video-out ${$('#server-video-out').val()}`)
+        }
+      });
 
-                        }
-                        else {
-                            getStatus_notRunning();
-                        }
-                        
-                    
-                    }).fail(function(e) {
-                        getStatus_notRunning();
-                    });
+      $('#btn-switch-video').click(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send('switch-video');
+        }
+      });
 
-                }
+      $('#btn-update-client-video').click(() => {
+        const src = $('#client-video-in').val();
+        if (src) {
+          $('#video-preview img').hide();
+          $('#video-preview video').attr('src', src).show();
+        } else {
+          $('#video-preview video').attr('src', '').hide();
+          $('#video-preview img').show();
+        }
+      });
 
-                function getStatus_notRunning() {
+      $('#btn-shutdown').click(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send('shutdown');
+        }
+      });
+      $('#btn-reboot-jetson').click(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send('reboot-jetson');
+        }
+      });
 
-                    $("#status").removeClass('online').addClass('offline');
-                    $("#status").html( "Offline" );
-                }
+      $('#btn-shutdown-jetson').click(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send('shutdown-jetson');
+        }
+      });
+
+      $('#btn-toggle-moveleft').click(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send('toggle-moveleft');
+        }
+      });
+
+      $('#btn-toggle-moveright').click(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send('toggle-moveright');
+        }
+      });
+
+      $('#btn-toggle-moveup').click(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send('toggle-moveup');
+        }
+      });
+
+      $('#btn-toggle-movedown').click(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send('toggle-movedown');
+        }
+      });
+
+      $('#btn-toggle-zoomin').click(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send('toggle-zoomin');
+        }
+      });
+
+      $('#btn-toggle-zoomout').click(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send('toggle-zoomout');
+        }
+      });
 
 
-          });
-        </script>
+      //server = "82.7.160.220";
+      setInterval(getSystem, 3000);
 
-    </body>
+      function getSystem() {
+
+        $.get("http://" + server + ":8000/jetson_state", function (data) {
+
+          if (data.status == "running") {
+
+            $("#status").removeClass('offline').addClass('online');
+            $("#status").html("Online");
+
+            if ($("#auto-connect").is(":checked") == true && $("#btn-connect").hasClass('btn-connected') == false) {
+              $("#btn-connect").trigger("click");
+            }
+
+
+          }
+          else {
+            getStatus_notRunning();
+          }
+
+
+        }).fail(function (e) {
+          getStatus_notRunning();
+        });
+
+      }
+
+      function getStatus_notRunning() {
+
+        $("#status").removeClass('online').addClass('offline');
+        $("#status").html("Offline");
+      }
+
+
+    });
+  </script>
+
+</body>
+
 </html>
