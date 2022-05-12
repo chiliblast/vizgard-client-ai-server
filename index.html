@@ -155,10 +155,28 @@
                             Close
                         </button>
                         <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                            onclick="updateConfig(true);onCloseModal();">
+                            Save and reboot
+                        </button>
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal"
                             onclick="updateConfig();onCloseModal();">
-                            Save changes
+                            Save
                         </button>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-danger d-none" id="basicToastBtn"></button>
+        <!-- Toaster -->
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div id="basicToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header bg-primary text-dark">
+                    <h5 class="my-0 me-auto">Success</h5>
+                    <button type="button" class="btn-close ml-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body text-dark">
+                    Config file updated
                 </div>
             </div>
         </div>
@@ -190,6 +208,22 @@
                 </div>
                 <div class="row">
                     <div class="col-3">
+                        <h5>GPU Usage</h5>
+                    </div>
+                    <div class="col-9">
+                        <span id="gpu_usage"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <h5>GPU Temp</h5>
+                    </div>
+                    <div class="col-9">
+                        <span id="gpu_temp"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
                         <h5>Storage</h5>
                     </div>
                     <div class="col-9">
@@ -212,10 +246,10 @@
                 <button type="button" class="btn btn-success btn-sm" id="shutdown">Shutdown</button>
             </div>
 
-            <div class="p-1">
+            <!-- <div class="p-1">
                 <button type="button" class="btn btn-success btn-sm" id="sleep">Sleep</button>
                 <button type="button" class="btn btn-success btn-sm" id="wake">Wake</button>
-            </div>
+            </div> -->
 
         </div>
 
@@ -228,13 +262,19 @@
     <script src="js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
 
     <script>
+        let server = $(location).attr('hostname');
+        server = "82.7.160.220";
+        let port = 8673;
 
         $(document).ready(function () {
             getConfigList();
+            document.querySelector("#basicToastBtn").onclick = function () {
+                new bootstrap.Toast(document.querySelector('#basicToast')).show();
+            }
         });
 
         function getConfigList() {
-            $.get("http://" + '82.7.160.220' + ":8000/list-config", (data) => {
+            $.get("http://" + server + ":8000/list-config", (data) => {
                 let configList = '';
                 let firstConfig = 'vizgard.cfg';
                 data['list-config'] = data['list-config'].sort(function (x, y) { return x == firstConfig ? -1 : y == firstConfig ? 1 : 0; }); // moving vizgard.cfg to first index
@@ -250,28 +290,30 @@
             });
         }
 
-        function updateConfig() {
+        function updateConfig(reboot = false) {
             let fileName = $('#fileNameInput').val().replace('.cfg', '') + '.cfg';
             let body = { file: $('#modal-body').val() }
             let formData = new FormData();
             formData.append("file", new Blob([$('#modal-body').val()]));
             $.ajax({
                 type: 'POST',
-                url: "http://" + '82.7.160.220' + ":8000/update-file/" + fileName,
+                url: "http://" + server + ":8000/update-file/" + fileName,
                 data: formData,
                 processData: false,
                 contentType: false
             }).done(function (data) {
+                $('#basicToastBtn').click();
                 getConfigList();
-                alert("Uploaded : " + data?.uploaded);
+                if (reboot) {
+                    $('#fortifai-reboot').click();
+                }
             });
-
         }
 
         function editConfig() {
             let fileName = $($(event.target).siblings('h6')[0]).text();
             $('#fileNameInput').val(fileName);
-            $.get("http://" + '82.7.160.220' + ":8000/get-file/" + fileName, (data) => {
+            $.get("http://" + server + ":8000/get-file/" + fileName, (data) => {
                 $('#modal-body').val(data);
             })
         }
@@ -279,6 +321,9 @@
         function onCloseModal() {
             $('#fileNameInput').val('');
             $('#modal-body').val('');
+            setTimeout(() => {
+                $('.btn-success').blur();
+            }, 1000)
         }
 
 
@@ -288,40 +333,26 @@
                 this.blur();
             });
 
-            let server = $(location).attr('hostname');
-            // server = "82.7.160.220";
-
-
             //-------------------------------------------------fortifai
 
             $("#fortifai-reboot").click(function () {
-
-                let body = { "ip": "127.0.0.1", "port": 8673 };
-
-                $.post("http://" + server + ":8000/fortifai-reboot", body, function (data) {
+                //let body = { "ip": "127.0.0.1", "port": 8673 };
+                $.post("http://" + server + ":8000/fortifai-reboot?p=" + port, function (data) {
                     console.log(data.response);
-
                 });
-
             });
 
             $("#start").click(function () {
-
                 $.post("http://" + server + ":8000/start", function (data) {
                     console.log(data.response);
                     //$("#status").html( data.response );
                 });
-
             });
 
             $("#fortifai-shutdown").click(function () {
-
-                let body = { "ip": "127.0.0.1", "port": 8673 };
-
-                $.post("http://" + server + ":8000/fortifai-shutdown", body, function (data) {
-
+                //let body = { "ip": "127.0.0.1", "port": 8673 };
+                $.post("http://" + server + ":8000/fortifai-shutdown?p=" + port, function (data) {
                     console.log(data.response);
-
                 });
 
             });
@@ -330,42 +361,29 @@
             //------------------------------------------------system
 
             $("#reboot").click(function () {
-
-                let body = { "ip": "127.0.0.1", "port": 8673 };
-
-                $.post("http://" + server + ":8000/reboot", body, function (data) {
+                //let body = { "ip": "127.0.0.1", "port": 8673 };
+                $.post("http://" + server + ":8000/reboot?p=" + port, function (data) {
                     console.log(data.response);
-
                 });
-
             });
 
             $("#shutdown").click(function () {
-
-                let body = { "ip": "127.0.0.1", "port": 8673 };
-
-                $.post("http://" + server + ":8000/shutdown", body, function (data) {
+                //let body = { "ip": "127.0.0.1", "port": 8673 };
+                $.post("http://" + server + ":8000/shutdown?p=" + port, function (data) {
                     console.log(data.response);
-
                 });
-
             });
 
-
+            getSystem();
             setInterval(getSystem, 3000);
 
             function getSystem() {
 
                 $.get("http://" + server + ":8000/jetson_state", function (data) {
-
                     //console.log(data);
-
-
                     if (data.status == "running") {
-
                         $("#status").removeClass('offline').addClass('online');
                         $("#status").html("Online");
-
                     }
                     else {
                         $("#status").removeClass('online').addClass('offline');
@@ -376,6 +394,10 @@
                     average_cpu_usage = average_cpu_usage.toFixed(1);
                     $("#cpu_usage").html(average_cpu_usage + " " + data.cpu_usage.unit);
                     $("#cpu_temp").html(data.cpu_temp.value + " " + data.cpu_temp.unit);
+
+                    $("#gpu_temp").html(data?.gpu_temp?.value + " " + data?.gpu_temp?.unit);
+                    $("#gpu_usage").html(data?.gpu_usage?.value + " " + data?.gpu_usage?.unit);
+
                     $("#storage").html(data.storage.value + " " + data.storage.unit);
                     $("#serial_number").html(data.serial_number);
 
@@ -398,6 +420,8 @@
 
                 $("#cpu_usage").html("");
                 $("#cpu_temp").html("");
+                $("#gpu_usage").html('');
+                $("#gpu_temp").html('');
                 $("#storage").html("");
                 $("#serial_number").html("");
 
@@ -406,12 +430,7 @@
                 $("#sleep").prop("disabled", true);
                 $("#wake").prop("disabled", true);
             }
-
         });
-
-
-
-
 
     </script>
 

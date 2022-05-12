@@ -148,3 +148,11 @@ body {
     background: #f7f9fc;
     border-radius: 15px;
 }
+
+.toast-header {
+    background-color: #12f08d !important;
+}
+
+.toast-body h5 {
+    color: black;
+}
