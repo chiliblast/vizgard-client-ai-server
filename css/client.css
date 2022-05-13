@@ -1,0 +1,92 @@
+#main-info {
+    margin-left: 20px;
+}
+
+#video-preview {
+    position: relative;
+    height: 33vw;
+
+}
+
+#video-preview canvas,
+#video-preview video,
+#video-preview img {
+    width: 100%;
+    position: absolute;
+}
+
+.btn-connected {
+    background-color: #12ef8c !important;
+}
+
+.btn-disconnected {
+    background-color: red !important;
+}
+
+#server-version {
+    padding: 5px;
+    float: right;
+}
+
+.video-input div {
+    font-size: 15px;
+    margin-bottom: 2px;
+}
+
+.json-content {
+    padding-left: 0px;
+}
+
+#json-section {
+    height: 500px;
+    overflow: auto;
+    overflow-y: hidden;
+}
+
+#json-section pre {
+    height: 35.5vw;
+}
+
+.server-input {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    width: 100%;
+    ;
+}
+
+.server-input .btn {
+    margin-top: 0px;
+    height: 26px;
+    line-height: 0.5 !important;
+}
+
+.server-input span {
+    margin-top: 1px;
+}
+
+#commands-section div {
+
+    margin: 3px;
+    padding: 3px;
+    border: solid 1px #b7b7b7;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#commands-section div input {
+    float: right;
+}
+
+.PositionInput {
+    font-size: 15px;
+}
+
+.preset-input .btn {
+    margin-left: 1px;
+}
+
+.shutdown .btn {
+    margin-left: 2px;
+}

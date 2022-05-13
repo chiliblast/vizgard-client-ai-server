@@ -173,9 +173,9 @@
 
           <div id="cmd-toggle-detection">Object Detection <input type="checkbox" class="form-check-input" /></div>
           <div id="cmd-toggle-model">Toggle Model</div>
-          <div id="cmd-toggle-single-tracking">Single Object Tracking <input type="checkbox" class="form-check-input" />
+          <div id="cmd-toggle-single-track-keyboard">Single Object Tracking <input type="checkbox" class="form-check-input" />
           </div>
-          <div id="cmd-toggle-auto-single-track">Auto Single Track <input type="checkbox" class="form-check-input" />
+          <div id="cmd-toggle-single-track">Auto Single Track <input type="checkbox" class="form-check-input" />
           </div>
           <div id="cmd-toggle-pose-estimation">Pose Estimation <input type="checkbox" class="form-check-input" /></div>
           <div id="cmd-toggle-face-redaction">Face Redaction <input type="checkbox" class="form-check-input" /></div>
@@ -377,8 +377,8 @@
             // TODO: Unify naming convention for code generalization
             $('#cmd-toggle-detection input').prop('checked', json.detection);
             $('#cmd-toggle-pose-estimation input').prop('checked', json.poseEstimation);
-            $('#cmd-toggle-single-tracking input').prop('checked', json.singleTracking);
-            $('#cmd-toggle-auto-single-track input').prop('checked', json.autoSingleTrack);
+            $('#cmd-toggle-single-track-keyboard input').prop('checked', json.singleTracking);
+            $('#cmd-toggle-single-track input').prop('checked', json.autoSingleTrack);
             $('#cmd-toggle-face-redaction input').prop('checked', json.faceRedaction);
             $('#cmd-toggle-aruco input').prop('checked', json.arucoDetection);
             $('#cmd-toggle-enhancement input').prop('checked', json.enhancement);
@@ -399,7 +399,7 @@
         ws.onopen = () => $('#btn-connect').html('Connected!').removeClass('btn-disconnected').addClass('btn-connected')
       });
 
-      ['detection', 'model', 'single-tracking', 'pose-estimation', 'auto-single-track', 'face-redaction', 'aruco', 'enhancement', 'stabilization', 'graphics-display', 'camera-calibration', 'pixel-counts', 'long-range-mode', 'frame-grab', 'record-video', 'record-position'].forEach(feature =>
+      ['detection', 'model', 'single-track-keyboard', 'pose-estimation', 'single-track', 'face-redaction', 'aruco', 'enhancement', 'stabilization', 'graphics-display', 'camera-calibration', 'pixel-counts', 'long-range-mode', 'frame-grab', 'record-video', 'record-position'].forEach(feature =>
         $('#cmd-toggle-' + feature).click(e => {
           if (ws.readyState === WebSocket.OPEN) {
             ws.send('toggle-' + feature);
