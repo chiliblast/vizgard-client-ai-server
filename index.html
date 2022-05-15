@@ -18,6 +18,7 @@
     <link href="css/style.css" rel="stylesheet">
     <link href="css/client.css" rel="stylesheet">
 
+
 </head>
 
 <body>
@@ -32,9 +33,9 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.html">Client</a>
+                        <a class="nav-link active" aria-current="page" href="#">Client</a>
                     </li>
-                    <li class="nav-item device">
+                    <li class="nav-item device d-none">
                         <a class="nav-link" href="device.html">Device</a>
                     </li>
                 </ul>
@@ -78,8 +79,6 @@
             </div>
         </div>
 
-
-
         <div id="main-info">&nbsp;</div>
 
         <div class="row">
@@ -90,10 +89,10 @@
                     <div id="cmd-toggle-detection">Object Detection <input type="checkbox" class="form-check-input" />
                     </div>
                     <div id="cmd-toggle-model">Toggle Model</div>
-                    <div id="cmd-toggle-single-tracking">Single Object Tracking <input type="checkbox"
+                    <div id="cmd-toggle-single-track-keyboard">Single Object Tracking <input type="checkbox"
                             class="form-check-input" />
                     </div>
-                    <div id="cmd-toggle-auto-single-track">Auto Single Track <input type="checkbox"
+                    <div id="cmd-toggle-single-track">Auto Single Track <input type="checkbox"
                             class="form-check-input" />
                     </div>
                     <div id="cmd-toggle-pose-estimation">Pose Estimation <input type="checkbox"
@@ -140,16 +139,30 @@
                         <div class="col-8">
                             <div class="server-input input-group-sm preset-input">
                                 <span>Camera Preset&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                <button id="cmd-toggle-preset-1" class="btn btn-success btn-sm" type="button">1</button>
-                                <button id="cmd-toggle-preset-2" class="btn btn-success btn-sm" type="button">2</button>
-                                <button id="cmd-toggle-preset-3" class="btn btn-success btn-sm" type="button">3</button>
-                                <button id="cmd-toggle-preset-4" class="btn btn-success btn-sm" type="button">4</button>
-                                <button id="cmd-toggle-preset-5" class="btn btn-success btn-sm" type="button">5</button>
-                                <button id="cmd-toggle-preset-6" class="btn btn-success btn-sm" type="button">6</button>
-                                <button id="cmd-toggle-preset-7" class="btn btn-success btn-sm" type="button">7</button>
-                                <button id="cmd-toggle-preset-8" class="btn btn-success btn-sm" type="button">8</button>
-                                <button id="cmd-toggle-preset-9" class="btn btn-success btn-sm" type="button">9</button>
-                                <button class="btn btn-success btn-sm" type="button">Save</button>
+                                <button id="cmd-toggle-preset-1" class="btn btn-success btn-sm preset"
+                                    type="button">1</button>
+                                <button id="cmd-toggle-preset-2" class="btn btn-success btn-sm preset"
+                                    type="button">2</button>
+                                <button id="cmd-toggle-preset-3" class="btn btn-success btn-sm preset"
+                                    type="button">3</button>
+                                <button id="cmd-toggle-preset-4" class="btn btn-success btn-sm preset"
+                                    type="button">4</button>
+                                <button id="cmd-toggle-preset-5" class="btn btn-success btn-sm preset"
+                                    type="button">5</button>
+                                <button id="cmd-toggle-preset-6" class="btn btn-success btn-sm preset"
+                                    type="button">6</button>
+                                <button id="cmd-toggle-preset-7" class="btn btn-success btn-sm preset"
+                                    type="button">7</button>
+                                <button id="cmd-toggle-preset-8" class="btn btn-success btn-sm preset"
+                                    type="button">8</button>
+                                <button id="cmd-toggle-preset-9" class="btn btn-success btn-sm preset"
+                                    type="button">9</button>
+                                <div class="ms-3 form-check form-switch">
+                                    <input class="form-check-input presetinput" type="checkbox" role="switch"
+                                        id="save-preset">
+                                </div>
+                                <span style="margin-left: 3px;">Save</span>
+                                <!-- <button class="btn btn-success btn-sm" type="button">Save</button> -->
                             </div>
                         </div>
                         <div class="col-4">
@@ -157,8 +170,6 @@
                                 class="btn btn-success btn-sm">Switch Video Input</button>
                         </div>
                     </div>
-
-
 
                     <div class="video-input mt-2">
 
@@ -202,7 +213,6 @@
                             VizEdge</button>
                     </div>
 
-
                     <div class="PositionInput">
                         <label for="PositionInput">Input Status: </label>:
                         <div id="gps"></div>
@@ -211,17 +221,13 @@
                 </div>
             </div>
 
-            <div class="col-3 json-content">
+            <div class="col-3">
                 <div id="json-section">
                     <pre></pre>
                 </div>
             </div>
 
         </div>
-
-
-
-
 
     </main>
 
@@ -233,21 +239,23 @@
     <!--script src="js/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script-->
     <script src="js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
     <script>
-        if (navigator.appVersion.indexOf("Win") != -1) {
-            $('li.device').remove();
-        }
         $(() => {
 
             $("button").click(function () {
                 this.blur();
+                if (!$(this)[0].classList.contains('preset')) {
+                    if ($("#save-preset").is(":checked") == true) {
+                        $('input.presetinput[type=checkbox]').click();
+                    }
+                }
             });
 
-            $("input").click(function () {
-                this.blur();
-            });
+            // $("input").click(function () {
+            //     this.blur();
+            // });
 
             let server = $(location).attr('hostname');
-            // server = "82.7.160.220";
+            //server = "82.7.160.220";
             $("#server-address").val(server);
 
             const canvas = document.getElementById('canvas-bounding-box');
@@ -315,8 +323,8 @@
                         // TODO: Unify naming convention for code generalization
                         $('#cmd-toggle-detection input').prop('checked', json.detection);
                         $('#cmd-toggle-pose-estimation input').prop('checked', json.poseEstimation);
-                        $('#cmd-toggle-single-tracking input').prop('checked', json.singleTracking);
-                        $('#cmd-toggle-auto-single-track input').prop('checked', json.autoSingleTrack);
+                        $('#cmd-toggle-single-track-keyboard input').prop('checked', json.singleTracking);
+                        $('#cmd-toggle-single-track input').prop('checked', json.autoSingleTrack);
                         $('#cmd-toggle-face-redaction input').prop('checked', json.faceRedaction);
                         $('#cmd-toggle-aruco input').prop('checked', json.arucoDetection);
                         $('#cmd-toggle-enhancement input').prop('checked', json.enhancement);
@@ -337,7 +345,7 @@
                 ws.onopen = () => $('#btn-connect').html('Connected!').removeClass('btn-disconnected').addClass('btn-connected')
             });
 
-            ['detection', 'model', 'single-tracking', 'pose-estimation', 'auto-single-track', 'face-redaction', 'aruco', 'enhancement', 'stabilization', 'graphics-display', 'camera-calibration', 'pixel-counts', 'long-range-mode', 'frame-grab', 'record-video', 'record-position'].forEach(feature =>
+            ['detection', 'model', 'single-track-keyboard', 'pose-estimation', 'single-track', 'face-redaction', 'aruco', 'enhancement', 'stabilization', 'graphics-display', 'camera-calibration', 'pixel-counts', 'long-range-mode', 'frame-grab', 'record-video', 'record-position'].forEach(feature =>
                 $('#cmd-toggle-' + feature).click(e => {
                     if (ws.readyState === WebSocket.OPEN) {
                         ws.send('toggle-' + feature);
@@ -347,8 +355,14 @@
 
             ['1', '2', '3', '4', '5', '6', '7', '8', '9'].forEach(preset =>
                 $('#cmd-toggle-preset-' + preset).click(e => {
-                    if (ws.readyState === WebSocket.OPEN) {
-                        ws.send('toggle-preset-' + preset);
+                    if ($("#save-preset").is(":checked") == true) {
+                        if (ws?.readyState === WebSocket.OPEN) {
+                            ws.send('toggle-save-preset-' + preset);
+                        }
+                    } else {
+                        if (ws?.readyState === WebSocket.OPEN) {
+                            ws.send('toggle-preset-' + preset);
+                        }
                     }
                 })
             );
@@ -442,43 +456,57 @@
                 }
             });
 
-
-            //server = "82.7.160.220";
             setInterval(getSystem, 3000);
-
             function getSystem() {
-
                 $.get("http://" + server + ":8000/jetson_state", function (data) {
-
+                    if (data?.cpu_temp) {
+                        $('li.device').removeClass('d-none');
+                    } else {
+                        $('li.device').addClass('d-none');
+                    }
                     if (data.status == "running") {
-
                         $("#status").removeClass('offline').addClass('online');
                         $("#status").html("Online");
-
                         if ($("#auto-connect").is(":checked") == true && $("#btn-connect").hasClass('btn-connected') == false) {
                             $("#btn-connect").trigger("click");
                         }
-
-
-                    }
-                    else {
+                    } else {
                         getStatus_notRunning();
                     }
-
-
                 }).fail(function (e) {
+                    $('li.device').addClass('d-none');
                     getStatus_notRunning();
                 });
 
             }
 
             function getStatus_notRunning() {
-
                 $("#status").removeClass('online').addClass('offline');
-                // $("#status").html("Offline");
+                $("#status").html("");
             }
 
-
+            function statusCheck() {
+                $.get("http://" + server + ":8000/jetson_state", function (data) {
+                    if (data?.cpu_temp) {
+                        $('li.device').removeClass('d-none');
+                    } else {
+                        $('li.device').addClass('d-none');
+                    }
+                    if (data.status == "running") {
+                        console.log('Running');
+                        $('li.device').removeClass('d-none');
+                    } else {
+                        console.log('Not running');
+                        $('li.device').addClass('d-none');
+                        getStatus_notRunning();
+                    }
+                }).fail(function (e) {
+                    console.log('Not running');
+                    $('li.device').addClass('d-none');
+                    getStatus_notRunning();
+                });
+            }
+            statusCheck();
         });
     </script>
 

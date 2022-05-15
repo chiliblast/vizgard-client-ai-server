@@ -38,8 +38,8 @@
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="index.html">Client</a>
                     </li>
-                    <li class="nav-item device">
-                        <a class="nav-link active" href="device.html">Device</a>
+                    <li class="nav-item device d-none">
+                        <a class="nav-link active" href="#">Device</a>
                     </li>
                 </ul>
             </div>
@@ -50,14 +50,14 @@
 
         <div class="m-1 p-3 rounded border border-success">
 
-
             <div class="row">
                 <div class="col-4">
                     <div>
                         <h4>Software</h4>
                     </div>
-                    <div>
+                    <div class="d-flex justify-content-between">
                         <h5>FirtifAI</h5>
+                        <span id="firtifAI" style="margin-right: 24%;"></span>
                     </div>
                     <div class="d-flex justify-content-between">
                         <h5>Status</h5>
@@ -77,35 +77,6 @@
                 </div>
             </div>
 
-            <!--   <div style="width: 65%;">
-                 <div class="row">
-                        <div class="col-3">
-                            <h4>Software</h4>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3">
-                            <h5>FirtifAI</h5>
-                        </div>
-                        <div class="col-9">
-                            <span></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3">
-                            <h5>Status</h5>
-                        </div>
-                        <div class="col-9">
-                            <span id="status"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-1">
-                    <button type="button" class="btn btn-success btn-sm" id="fortifai-reboot">Reboot</button>
-                    <button type="button" class="btn btn-success btn-sm" id="start">Start</button>
-                    <button type="button" class="btn btn-success btn-sm" id="fortifai-shutdown">Stop</button>
-                </div> -->
-
         </div>
 
         <!-- Config Modal -->
@@ -120,14 +91,23 @@
                     <div class="modal-body">
                         <textarea id="modal-body"></textarea>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                            onclick="onCloseModal()">Close
-                        </button>
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                            data-bs-target="#fileNameModal">
-                            Save changes
-                        </button>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <div>
+                            <button type="button" class="btn btn-danger float-left" data-bs-toggle="modal"
+                                data-bs-target="#deleteModal">
+                                Delete
+                            </button>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                onclick="onCloseModal()">Close
+                            </button>
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                data-bs-target="#fileNameModal">
+                                Save changes
+                            </button>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -167,16 +147,103 @@
             </div>
         </div>
 
-        <button type="button" class="btn btn-danger d-none" id="basicToastBtn"></button>
+        <!-- Delete Modal -->
+        <div class="delete-modal modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Deleted files cannot be recovered. Are you sure?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            onclick="onCloseModal();">
+                            No
+                        </button>
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                            onclick="deleteConfigFile();onCloseModal();">
+                            Yes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- File Upload Modal -->
+        <div class="file-upload-modal modal fade" id="fileUploadModal" tabindex="-1"
+            aria-labelledby="fileUploadModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="fileUploadModalLabel">Upload File</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="preview-zone d-none">
+                                <div class="box box-solid">
+                                    <div class="box-header with-border">
+                                        <div><b class="uploaded-file-name">Pick licence file</b></div>
+                                        <div class="box-tools pull-right">
+                                            <button type="button" class="btn btn-danger btn-xs remove-preview">
+                                                <i class="fa fa-times"></i> Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="box-body"></div>
+                                </div>
+                            </div>
+                            <div class="dropzone-wrapper">
+                                <div class="dropzone-desc">
+                                    <p class="mb-0">Click to select a licence file or drop file here</p>
+                                    <p>.lic licence files only</p>
+                                </div>
+                                <input type="file" name="filetoupload" class="dropzone">
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            onclick="onCloseModal();">
+                            Cancel
+                        </button>
+                        <button type="button" class="btn btn-success" onclick="uploadLicenceFile();">
+                            Upload
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-danger d-none" id="successToastBtn"></button>
+
         <!-- Toaster -->
         <div class="toast-container position-fixed top-0 end-0 p-3">
-            <div id="basicToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="toast-header bg-primary text-dark">
                     <h5 class="my-0 me-auto">Success</h5>
                     <button type="button" class="btn-close ml-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
-                <div class="toast-body text-dark">
-                    Config file updated
+                <div class="toast-body text-dark toaster-success-body">
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-danger d-none" id="errorToastBtn"></button>
+
+        <!-- Toaster -->
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header bg-danger text-light">
+                    <h5 class="my-0 me-auto">Error</h5>
+                    <button type="button" class="btn-close ml-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body text-dark toaster-error-body">
                 </div>
             </div>
         </div>
@@ -234,9 +301,22 @@
                     <div class="col-3">
                         <h5>Serial</h5>
                     </div>
-                    <div class="col-9">
+                    <div class="col-4" style="line-height: 24px;">
                         <span id="serial_number"></span>
+                        <button type="button" class="btn btn-success btn-sm ms-3" id="copy-clipboard"
+                            style="width:45px !important;height: 24px;padding: 0px;">
+                            Copy
+                        </button>
                     </div>
+                    <div class="col-3" style="line-height: 24px;">
+                        <span id="licensed"></span>
+                        <button type="button" class="btn btn-success btn-sm ms-3" id="update-licence"
+                            style="width:60px !important;height: 24px;padding: 0px;" data-bs-toggle="modal"
+                            data-bs-target="#fileUploadModal">
+                            Update
+                        </button>
+                    </div>
+
                 </div>
 
             </div>
@@ -262,20 +342,35 @@
     <script src="js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
 
     <script>
-        if (navigator.appVersion.indexOf("Win") != -1) {
-            if ($(location).attr('href').includes('device.html')) {
-                window.location.href = $(location).attr('href').replace('device.html', 'index.html');
-            }
-            $('li.device').remove();
-        }
+
+        var interval;
+        var licenceFileToUpload;
+
         let server = $(location).attr('hostname');
-        // server = "82.7.160.220";
+        //server = "82.7.160.220";
         let port = 8673;
 
         $(document).ready(function () {
             getConfigList();
-            document.querySelector("#basicToastBtn").onclick = function () {
-                new bootstrap.Toast(document.querySelector('#basicToast')).show();
+            document.querySelector("#successToastBtn").onclick = function () {
+                new bootstrap.Toast(document.querySelector('#successToast')).show();
+            }
+            document.querySelector("#errorToastBtn").onclick = function () {
+                new bootstrap.Toast(document.querySelector('#errorToast')).show();
+            }
+        });
+
+        document.getElementById('modal-body').addEventListener('keydown', function (e) {
+            if (e.key == 'Tab') {
+                e.preventDefault();
+                let start = this.selectionStart;
+                let end = this.selectionEnd;
+                // set textarea value to: text before caret + tab + text after caret
+                this.value = this.value.substring(0, start) +
+                    "\t" + this.value.substring(end);
+                // put caret at right position again
+                this.selectionStart =
+                    this.selectionEnd = start + 1;
             }
         });
 
@@ -308,7 +403,8 @@
                 processData: false,
                 contentType: false
             }).done(function (data) {
-                $('#basicToastBtn').click();
+                $('#successToastBtn').click();
+                $('div.toaster-success-body').text('Config file updated');
                 getConfigList();
                 if (reboot) {
                     $('#fortifai-reboot').click();
@@ -332,6 +428,112 @@
             }, 1000)
         }
 
+        function deleteConfigFile() {
+            let fileName = $('#fileNameInput').val().replace('.cfg', '') + '.cfg';
+            $.ajax({
+                url: "http://" + server + ":8000/delete-file/" + fileName,
+                type: 'DELETE',
+                success: (result) => {
+                    $('#successToastBtn').click();
+                    $('div.toaster-success-body').text('Config file deleted!');
+                    getConfigList();
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Status: " + textStatus); alert("Error: " + errorThrown);
+                }
+            });
+        }
+
+        function displayToast(action, body) {
+            if (action === 'success') {
+                $('#successToastBtn').click();
+                $('div.toaster-success-body').text(body);
+            } else if (action === 'error') {
+                $('#errorToastBtn').click();
+                $('div.toaster-error-body').text(body);
+            }
+        }
+
+        function readFile(input) {
+            licenceFileToUpload = input;
+            if (input.files && input.files[0]) {
+                if (!input.value.includes('.lic')) {
+                    displayToast('error', 'Select a file having .lic extension!');
+                    return
+                }
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    let wrapperZone = $(input).parent();
+                    let previewZone = $(input).parent().parent().find('.preview-zone');
+                    wrapperZone.removeClass('dragover');
+                    previewZone.removeClass('d-none');
+                    $('.uploaded-file-name').text(input.value.split("fakepath")[1].replace("\\", ''));
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function reset(e) {
+            e.wrap('<form>').closest('form').get(0).reset();
+            e.unwrap();
+        }
+
+        $(".dropzone").change(function () {
+            licenceFileToUpload = undefined;
+            readFile(this);
+        });
+
+        $('.dropzone-wrapper').on('dragover', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $(this).addClass('dragover');
+        });
+
+        $('.dropzone-wrapper').on('dragleave', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $(this).removeClass('dragover');
+        });
+
+        $('.remove-preview').on('click', function () {
+            licenceFileToUpload = undefined;
+            $('.uploaded-file-name').text('Pick licence file');
+            var previewZone = $(this).parents('.preview-zone');
+            var dropzone = $(this).parents('.form-group').find('.dropzone');
+            previewZone.addClass('d-none');
+            reset(dropzone);
+        });
+
+        $('#copy-clipboard').on('click', function () {
+            navigator.clipboard.writeText($('#serial_number').text()); /* Copy the serial number into clipboard */
+            displayToast('success', 'Serial number copied to clipboard!');
+        });
+
+
+
+        function uploadLicenceFile() {
+            console.log(licenceFileToUpload);
+
+            if (licenceFileToUpload !== undefined && licenceFileToUpload.files[0]) {
+                let formData = new FormData();
+                formData.append("file", licenceFileToUpload.files[0]);
+                $.ajax({
+                    type: 'POST',
+                    url: "http://" + server + ":8000/update-file/vizgard.lic",
+                    data: formData,
+                    processData: false,
+                    contentType: false
+                }).done(function (data) {
+                    console.log(data);
+                    $('.modal').modal('hide');
+                    onCloseModal();
+                    displayToast('success', 'Licence file updated!');
+                });
+            } else {
+                displayToast('error', 'Please select a file!');
+            }
+
+        }
 
         $(() => {
 
@@ -342,22 +544,50 @@
             //-------------------------------------------------fortifai
 
             $("#fortifai-reboot").click(function () {
+                clearInterval(interval);
+                $("#status").removeClass('online offline').addClass('amber');
+                $("#status").text('Rebooting');
                 //let body = { "ip": "127.0.0.1", "port": 8673 };
                 $.post("http://" + server + ":8000/fortifai-reboot?p=" + port, function (data) {
+                    interval = setInterval(getSystem, 3000);
+                    $('#successToastBtn').click();
+                    $('div.toaster-success-body').text('Reboot request sent.');
+                    $("#status").text('Online');
+                    $("#status").removeClass('offline amber').addClass('online');
                     console.log(data.response);
                 });
             });
 
             $("#start").click(function () {
-                $.post("http://" + server + ":8000/start", function (data) {
-                    console.log(data.response);
-                    //$("#status").html( data.response );
-                });
+                if ($('#licensed').text() === 'No licence') {
+                    displayToast('error', 'No licence available');
+                } else {
+                    clearInterval(interval);
+                    $("#status").removeClass('online offline').addClass('amber');
+                    $("#status").text('Starting');
+                    $.post("http://" + server + ":8000/start", function (data) {
+                        interval = setInterval(getSystem, 3000);
+                        displayToast('success', 'FortifAI running');
+                        $("#status").text('Online');
+                        $("#status").removeClass('offline amber').addClass('online');
+                        console.log(data.response);
+                        //$("#status").html( data.response );
+                    });
+                }
+
             });
 
             $("#fortifai-shutdown").click(function () {
+                clearInterval(interval);
+                $("#status").removeClass('online offline').addClass('amber');
+                $("#status").text('Stopping');
                 //let body = { "ip": "127.0.0.1", "port": 8673 };
                 $.post("http://" + server + ":8000/fortifai-shutdown?p=" + port, function (data) {
+                    interval = setInterval(getSystem, 3000);
+                    $('#successToastBtn').click();
+                    $('div.toaster-success-body').text('Fortifai stopped.');
+                    $("#status").removeClass('online amber').addClass('offline');
+                    $("#status").text('Offline');
                     console.log(data.response);
                 });
 
@@ -367,45 +597,57 @@
             //------------------------------------------------system
 
             $("#reboot").click(function () {
+                $("#status").removeClass('online offline').addClass('amber');
+                $("#status").text('Rebooting System');
                 //let body = { "ip": "127.0.0.1", "port": 8673 };
                 $.post("http://" + server + ":8000/reboot?p=" + port, function (data) {
+                    $('#successToastBtn').click();
+                    $('div.toaster-success-body').text('Reboot system request sent.');
                     console.log(data.response);
                 });
             });
 
             $("#shutdown").click(function () {
+                $("#status").removeClass('online offline').addClass('amber');
+                $("#status").text('Shutting down');
                 //let body = { "ip": "127.0.0.1", "port": 8673 };
                 $.post("http://" + server + ":8000/shutdown?p=" + port, function (data) {
+                    $('#successToastBtn').click();
+                    $('div.toaster-success-body').text('Shutting down system request sent.');
                     console.log(data.response);
                 });
             });
 
             getSystem();
-            setInterval(getSystem, 3000);
-
-            function intToFloat(num, decPlaces = 1) {
-                return num.toFixed(decPlaces);
-            }
+            interval = setInterval(getSystem, 3000);
 
             function getSystem() {
 
                 $.get("http://" + server + ":8000/jetson_state", function (data) {
-                    //console.log(data);
-                    if (data.status == "running") {
-                        $("#status").removeClass('offline').addClass('online');
-                        $("#status").html("Online");
+                    if (data?.cpu_temp) {
+                        $('li.device').removeClass('d-none');
+                    } else {
+                        window.location.href = window.location.href.replace('device.html', 'index.html');
+                        $('li.device').addClass('d-none');
                     }
-                    else {
-                        $("#status").removeClass('online').addClass('offline');
+
+                    if (data.status == "running") {
+                        $("#status").removeClass('offline amber').addClass('online');
+                        $("#status").html("Online");
+                    } else if (data.status === 'stopped') {
+                        $("#status").removeClass('online amber').addClass('offline');
+                        $("#status").text('Offline');
+                    } else {
+                        $("#status").removeClass('online amber').addClass('offline');
                         $("#status").html("Offline");
                     }
 
                     let average_cpu_usage = (parseFloat(data.cpu_usage.cpu0) + parseFloat(data.cpu_usage.cpu1) + parseFloat(data.cpu_usage.cpu2) + parseFloat(data.cpu_usage.cpu3) + parseFloat(data.cpu_usage.cpu4) + parseFloat(data.cpu_usage.cpu5) + parseFloat(data.cpu_usage.cpu6) + parseFloat(data.cpu_usage.cpu7)) / 8;
                     average_cpu_usage = average_cpu_usage.toFixed(1);
                     $("#cpu_usage").html(average_cpu_usage + " " + data.cpu_usage.unit);
-                    $("#cpu_temp").html(intToFloat(data.cpu_temp.value) + " " + data.cpu_temp.unit);
+                    $("#cpu_temp").html(data.cpu_temp.value + " " + data.cpu_temp.unit);
 
-                    $("#gpu_temp").html(intToFloat(data?.gpu_temp?.value) + " " + data?.gpu_temp?.unit);
+                    $("#gpu_temp").html(data?.gpu_temp?.value + " " + data?.gpu_temp?.unit);
                     $("#gpu_usage").html(data?.gpu_usage?.value + " " + data?.gpu_usage?.unit);
 
                     $("#storage").html(data.storage.value + " " + data.storage.unit);
@@ -415,9 +657,18 @@
                     $("#shutdown").prop("disabled", false);
                     $("#sleep").prop("disabled", false);
                     $("#wake").prop("disabled", false);
+                    $('#firtifAI').text(data['fortifai-version']);
+                    $('#licensed').text(data['license-valid'] ? 'Licensed' : 'No licence');
+                    if (data['license-valid']) {
+                        $('#licensed').removeClass('offline').addClass('online');
+                    } else {
 
-
+                        $('#fortifai-shutdown').click();
+                        displayToast('error', 'No licence available');
+                        $('#licensed').removeClass('online').addClass('offline');
+                    }
                 }).fail(function (e) {
+                    window.location.href = window.location.href.replace('device.html', 'index.html');
                     getStatus_fail();
                 });
 
@@ -425,7 +676,7 @@
 
             function getStatus_fail() {
 
-                $("#status").removeClass('online').addClass('offline');
+                $("#status").removeClass('online amber').addClass('offline');
                 $("#status").html("Offline");
 
                 $("#cpu_usage").html("");
