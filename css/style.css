@@ -241,3 +241,43 @@ body {
     border-radius: 0;
     margin-bottom: 0;
 }
+
+.form-check-input:focus {
+    box-shadow: none;
+}
+
+.btn,
+.btn-check:focus+.btn-success,
+.btn-success:focus {
+    box-shadow: none !important;
+}
+
+
+ul.remove-bullets {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.remove-bullets>li {
+    display: flex;
+}
+
+ul.remove-bullets>li>input {
+    margin-top: 0.13rem;
+}
+
+ul.remove-bullets>li>p {
+    font-size: 13px;
+}
+
+#pull-progress>li {
+    display: inline-flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+a.darkgray {
+    color: darkgray !important;
+}

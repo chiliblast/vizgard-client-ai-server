@@ -46,13 +46,12 @@
     <main>
 
         <div class="row">
-            <div class="col-4">
+            <div class="col-sm-12 col-md-2 col-lg-4">
                 <h4 style="margin-left: 20px;">Client</h4>
             </div>
-            <div class="col-8">
+            <div class="col-sm-12 col-md-10 col-lg-8">
                 <div style="float: right;margin-right: 20px; margin-top: 15px; margin-bottom: -5px;">
                     <div class="server-input input-group-sm" style="font-size: 15px;">
-
                         <span id="status"
                             style="margin-right: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 
@@ -79,22 +78,22 @@
             </div>
         </div>
 
-        <div id="main-info">&nbsp;</div>
+        <div class="row py-2">
+            <div id="main-info">&nbsp;</div>
+        </div>
 
         <div class="row">
-            <div class="col-2">
+            <div class="col-sm-12 col-md-4 col-lg-2">
 
-                <div id="commands-section" class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
+                <div id="commands-section" class="d-flex flex-column flex-shrink-0 ps-3 text-white bg-dark">
 
                     <div id="cmd-toggle-detection">Object Detection <input type="checkbox" class="form-check-input" />
                     </div>
                     <div id="cmd-toggle-model">Toggle Model</div>
                     <div id="cmd-toggle-single-track-keyboard">Single Object Tracking <input type="checkbox"
-                            class="form-check-input" />
-                    </div>
+                            class="form-check-input" /> </div>
                     <div id="cmd-toggle-single-track">Auto Single Track <input type="checkbox"
-                            class="form-check-input" />
-                    </div>
+                            class="form-check-input" /> </div>
                     <div id="cmd-toggle-pose-estimation">Pose Estimation <input type="checkbox"
                             class="form-check-input" /></div>
                     <div id="cmd-toggle-face-redaction">Face Redaction <input type="checkbox"
@@ -120,22 +119,25 @@
                     </div>
                     <div id="cmd-toggle-record-position">CSV Logging<input type="checkbox" class="form-check-input" />
                     </div>
-
+                    <div id="cmd-toggle-camera-1-on">Camera 1<input type="checkbox" class="form-check-input" /></div>
+                    <div id="cmd-toggle-camera-2-on">Camera 2<input type="checkbox" class="form-check-input" /></div>
                 </div>
 
             </div>
 
-            <div class="col-7">
-
-                <div class="d-flex flex-column flex-shrink-0 text-white">
-
-                    <div id="video-preview">
-                        <img src="images/blacklogo.jpg">
-                        <video autoplay style="display: none;"></video>
-                        <canvas id="canvas-bounding-box"></canvas>
+            <div class="col-sm-12 col-md-8 col-lg-7">
+                <div class="row px-0">
+                    <div class="col-sm-12 mb-2 px-3">
+                        <div id="video-preview">
+                            <img src="images/blacklogo.jpg">
+                            <video autoplay style="display: none;"></video>
+                            <canvas id="canvas-bounding-box"></canvas>
+                        </div>
                     </div>
+                </div>
+                <div class="row px-1">
 
-                    <div class="row mt-2">
+                    <div class="col-sm-12 d-flex">
                         <div class="col-8">
                             <div class="server-input input-group-sm preset-input">
                                 <span>Camera Preset&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -162,30 +164,49 @@
                                         id="save-preset">
                                 </div>
                                 <span style="margin-left: 3px;">Save</span>
-                                <!-- <button class="btn btn-success btn-sm" type="button">Save</button> -->
                             </div>
                         </div>
                         <div class="col-4">
                             <button id="btn-switch-video" style="width: 150px;float: right;" type="button"
-                                class="btn btn-success btn-sm">Switch Video Input</button>
+                                class="btn btn-success btn-sm">Switch Camera</button>
                         </div>
                     </div>
 
                     <div class="video-input mt-2">
 
-                        <div class="server-input input-group-sm">
-                            <span>Server Video In&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            <div style="width: 75%">
+                        <div class="server-input input-group-sm mt-1">
+                            <span>Cam 1 Video In&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <div style="width: 65%">
                                 <input id="server-video-in" type="text" value="" class="form-control">
                             </div>
                             &nbsp;
-                            <button id="btn-update-server-video-in" class="btn btn-success btn-sm"
-                                type="button">Update</button>
+                            <button id="btn-update-server-video-in" class="btn btn-success btn-sm" type="button">
+                                Update
+                            </button>
+                            <div class="ms-3 form-check form-switch">
+                                <input class="form-check-input presetinput" type="checkbox" role="switch">
+                            </div>
+                            <span style="margin-left: 3px;">SDI/USB</span>
+                        </div>
+
+                        <div class="server-input input-group-sm mt-1">
+                            <span>Cam 2 Video In&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <div style="width: 65%">
+                                <input id="server-video-in-2" type="text" value="" class="form-control">
+                            </div>
+                            &nbsp;
+                            <button id="btn-update-server-video-in-2" class="btn btn-success btn-sm" type="button">
+                                Update
+                            </button>
+                            <div class="ms-3 form-check form-switch">
+                                <input class="form-check-input presetinput" type="checkbox" role="switch">
+                            </div>
+                            <span style="margin-left: 3px;">SDI/USB</span>
                         </div>
 
                         <div class="server-input input-group-sm mt-1">
                             <span>Server Video Out&nbsp;</span>
-                            <div style="width: 75%">
+                            <div style="width: 65%">
                                 <input id="server-video-out" type="text" value="" class="form-control">
                             </div>
                             &nbsp;
@@ -195,7 +216,7 @@
 
                         <div class="server-input input-group-sm mt-1">
                             <span>Client Video In&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            <div style="width: 75%">
+                            <div style="width: 65%">
                                 <input id="client-video-in" type="text" value="" class="form-control">
                             </div>
                             &nbsp;
@@ -203,16 +224,37 @@
                                 type="button">Update</button>
                         </div>
 
-                    </div>
+                        <div class="server-input input-group-sm mt-1">
+                            <span>Coordinate In&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <div style="width: 65%">
+                                <input id="coordinate-input" type="text" value="" class="form-control">
+                            </div>
+                            &nbsp;
+                            <button id="btn-update-coordinate" class="btn btn-success btn-sm"
+                                type="button">Update</button>
+                        </div>
 
-                    <div class="server-input input-group-sm shutdown">
-                        <button id="btn-shutdown" class="btn btn-success btn-sm" type="button">Shutdown Server</button>
-                        <button id="btn-reboot-jetson" class="btn btn-success btn-sm" type="button">Reboot
-                            VizEdge</button>
-                        <button id="btn-shutdown-jetson" class="btn btn-success btn-sm" type="button">Shutdown
-                            VizEdge</button>
                     </div>
+                </div>
+                <div class="col-sm-12 d-flex server-input input-group-sm shutdown my-2">
+                    <div class="col-sm-2">
+                        <button id="btn-shutdown" class="btn btn-success btn-sm" type="button">
+                            Shutdown Server
+                        </button>
+                    </div>
+                    <div class="col-sm-2">
+                        <button id="btn-reboot-jetson" class="btn btn-success btn-sm" type="button">
+                            Reboot VizEdge
+                        </button>
+                    </div>
+                    <div class="col-sm-2">
+                        <button id="btn-shutdown-jetson" class="btn btn-success btn-sm" type="button">
+                            Shutdown VizEdge
+                        </button>
+                    </div>
+                </div>
 
+                <div class="d-flex flex-column flex-shrink-0 text-white">
                     <div class="PositionInput">
                         <label for="PositionInput">Input Status: </label>:
                         <div id="gps"></div>
@@ -221,7 +263,7 @@
                 </div>
             </div>
 
-            <div class="col-3">
+            <div class="col-sm-12 col-md-3 col-lg-3">
                 <div id="json-section">
                     <pre></pre>
                 </div>
@@ -240,6 +282,9 @@
     <script src="js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
     <script>
         $(() => {
+
+            var data;
+            var timeout;
 
             $("button").click(function () {
                 this.blur();
@@ -285,6 +330,7 @@
                 ws.onmessage = e => {
                     const json = JSON.parse(e.data);
                     if (json.objects) {
+                        console.log(json);
                         // main info
                         $('#main-info').html(`${json.width} x ${json.height} | FPS Capture: ${json.fpsCap} | FPS Detection: ${json.fpsDet} | Delay: ${json.delay}`);
                         if (json.width != canvas.width) canvas.width = json.width;
@@ -297,9 +343,25 @@
 
                         // draw bounding boxes on canvas
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
-                        json.objects.forEach(({ singleTracking, x, y, w, h }) => {
+                        json.objects.forEach(({ singleTracking, x, y, w, h, name, id }) => {
+
                             ctx.beginPath();
                             ctx.strokeStyle = singleTracking ? '#ffa500' : '#50ff00';
+                            ctx.font = "30px Arial";
+                            ctx.fillStyle = "#50ff00";
+                            ctx.arc(json.width / 2, json.height / 2, 40, 0, 2 * Math.PI, false);
+                            ctx.fillText('+', (json.width / 2) - 9, (json.height / 2) + 10);
+                            if ($('#cmd-toggle-graphics-display input').is(":checked")) {
+                                ctx.fillText(json.cameraServerStatus, 20, 45);
+                                if (data) {
+                                    ctx.fillText(data, 20, 85);
+                                }
+                                ctx.fillText(json.gpsFromServer.split(',')[1], 20, 1000);
+                                ctx.fillText(json.gpsFromServer.split(',')[2], 20, 1035);
+                                ctx.fillText(json.gpsFromServer.split(',')[3], 20, 1070);
+                                ctx.fillText(json.currentModelname, 1800, 1070);
+                            }
+
                             if (singleTracking) {
                                 var delta = Math.max(w, h);
                                 delta = delta / 5
@@ -314,6 +376,9 @@
                             }
                             ctx.lineWidth = 2;
                             ctx.rect(x, y, w, h);
+                            ctx.font = "16px Arial";
+                            let text = name + ((id == null || id == undefined || id == 'null') ? '' : ' ,ID: ' + id);
+                            ctx.fillText(text, x, y - 5);
                             ctx.stroke();
                         });
                     } else {
@@ -336,16 +401,18 @@
                         $('#cmd-toggle-frame-grab input').prop('checked', json.frameGrab);
                         $('#cmd-toggle-record-video input').prop('checked', json.recordingVideo);
                         $('#cmd-toggle-record-position input').prop('checked', json.recordPositionDtaa);
+                        $('#cmd-toggle-camera-1-on input').prop('checked', json.camera1On);
+                        $('#cmd-toggle-camera-2-on input').prop('checked', json.camera2On);
                         $('#cmd-toggle-model').html('Toggle Model');
                         for (const c in json.classes) {
-                            $('#cmd-toggle-model').append(`<div data-class="${c}">${c}<input type="checkbox" ${json.classes[c] && 'checked'}></div>`);
+                            $('#cmd-toggle-model').append(`<div class="${c.toLowerCase()}" data-class="${c}">${c}<input type="checkbox" class="${c.toLowerCase()}" ${json.classes[c] && 'checked'}></div>`);
                         }
                     }
                 }
                 ws.onopen = () => $('#btn-connect').html('Connected!').removeClass('btn-disconnected').addClass('btn-connected')
             });
 
-            ['detection', 'model', 'single-track-keyboard', 'pose-estimation', 'single-track', 'face-redaction', 'aruco', 'enhancement', 'stabilization', 'graphics-display', 'camera-calibration', 'pixel-counts', 'long-range-mode', 'frame-grab', 'record-video', 'record-position'].forEach(feature =>
+            ['detection', 'model', 'single-track-keyboard', 'pose-estimation', 'single-track', 'face-redaction', 'aruco', 'enhancement', 'stabilization', 'graphics-display', 'camera-calibration', 'pixel-counts', 'long-range-mode', 'frame-grab', 'record-video', 'record-position', 'camera-1-on', 'camera-2-on'].forEach(feature =>
                 $('#cmd-toggle-' + feature).click(e => {
                     if (ws.readyState === WebSocket.OPEN) {
                         ws.send('toggle-' + feature);
@@ -368,6 +435,14 @@
             );
 
             $('#cmd-toggle-model').on('click', 'div', function (e) {
+                if (timeout) clearTimeout(timeout);
+                let text = $(this).find('input')[0].className;
+                text = text.charAt(0).toUpperCase() + text.slice(1);
+                $(this).find('input').is(":checked") ? data = text + ' Disabled' : data = text + ' Enabled';
+                timeout = setTimeout(() => {
+                    data = '';
+                }, 4000)
+
                 e.stopPropagation();
                 if (ws.readyState === WebSocket.OPEN) {
                     ws.send(`toggle-model-class ${$(this).data('class')}`);
@@ -400,6 +475,12 @@
                 } else {
                     $('#video-preview video').attr('src', '').hide();
                     $('#video-preview img').show();
+                }
+            });
+
+            $('#btn-update-coordinate').click(() => {
+                if (ws.readyState === WebSocket.OPEN) {
+                    ws.send(`update-coordinate ${$('#coordinate-input').val()}`)
                 }
             });
 
@@ -456,6 +537,127 @@
                 }
             });
 
+            // $('#cmd-toggle-graphics-display input').on('change', function () {
+            // });
+
+            $(document).on('change', '#cmd-toggle-model input', function () {
+                if (timeout) clearTimeout(timeout);
+                let text = $(this)[0].className;
+                text = text.charAt(0).toUpperCase() + text.slice(1);
+                this.checked ? data = text + ' Enabled' : data = text + ' Disabled';
+                timeout = setTimeout(() => {
+                    data = '';
+                }, 4000)
+            });
+
+            $(document).on('click', '#cmd-toggle-model div', function () {
+                if (timeout) clearTimeout(timeout);
+                let text = $(this)[0].className;
+                text = text.charAt(0).toUpperCase() + text.slice(1);
+                this.checked ? data = text + ' Enabled' : data = text + ' Disabled';
+                timeout = setTimeout(() => {
+                    data = '';
+                }, 4000)
+            });
+
+            $('#cmd-toggle-single-track input').on('change', function () {
+                if (timeout) clearTimeout(timeout);
+                this.checked ? data = 'Auto Track Enabled' : data = 'Auto Track Disabled';
+                timeout = setTimeout(() => {
+                    data = '';
+                }, 3000)
+            });
+            $('#cmd-toggle-pose-estimation input').on('change', function () {
+                if (timeout) clearTimeout(timeout);
+                this.checked ? data = 'Pose Graphic Enabled' : data = 'Pose Graphic Disabled';
+                timeout = setTimeout(() => {
+                    data = '';
+                }, 3000)
+            });
+            $('#cmd-toggle-face-redaction input').on('change', function () {
+                if (timeout) clearTimeout(timeout);
+                this.checked ? data = 'Face Redaction Enabled' : data = 'Face Redaction Disabled';
+                timeout = setTimeout(() => {
+                    data = '';
+                }, 3000)
+            });
+            $('#cmd-toggle-aruco input').on('change', function () {
+                if (timeout) clearTimeout(timeout);
+                this.checked ? data = 'ArUco Marker Enabled' : data = 'ArUco Marker Disabled';
+                timeout = setTimeout(() => {
+                    data = '';
+                }, 3000)
+            });
+            $('#cmd-toggle-enhancement input').on('change', function () {
+                if (timeout) clearTimeout(timeout);
+                this.checked ? data = 'Image Enhancement Enabled' : data = 'Image Enhancement Disabled';
+                timeout = setTimeout(() => {
+                    data = '';
+                }, 3000)
+            });
+            $('#cmd-toggle-stabilization input').on('change', function () {
+                if (timeout) clearTimeout(timeout);
+                this.checked ? data = 'Video Stabilization Enabled' : data = 'Video Stabilization Disabled';
+                timeout = setTimeout(() => {
+                    data = '';
+                }, 3000)
+            });
+            $('#cmd-toggle-camera-calibration input').on('change', function () {
+                if (timeout) clearTimeout(timeout);
+                this.checked ? data = 'Calibrate Mode Enabled' : data = 'Calibrate Mode Disabled';
+                timeout = setTimeout(() => {
+                    data = '';
+                }, 3000)
+            });
+            $('#cmd-toggle-pixel-counts input').on('change', function () {
+                if (timeout) clearTimeout(timeout);
+                this.checked ? data = 'Pixel Counter Enabled' : data = 'Pixel Counter Disabled';
+                timeout = setTimeout(() => {
+                    data = '';
+                }, 3000)
+            });
+            $('#cmd-toggle-long-range-mode input').on('change', function () {
+                if (timeout) clearTimeout(timeout);
+                this.checked ? data = 'Long Range Mode Enabled' : data = 'Long Range Mode Disabled';
+                timeout = setTimeout(() => {
+                    data = '';
+                }, 3000)
+            });
+            $('#cmd-toggle-frame-grab input').on('change', function () {
+                if (timeout) clearTimeout(timeout);
+                this.checked ? data = 'Frame Grab Enabled' : data = 'Frame Grab Disabled';
+                timeout = setTimeout(() => {
+                    data = '';
+                }, 3000)
+            });
+            $('#cmd-toggle-record-video input').on('change', function () {
+                if (timeout) clearTimeout(timeout);
+                this.checked ? data = 'Record Video Enabled' : data = 'Record Video Disabled';
+                timeout = setTimeout(() => {
+                    data = '';
+                }, 3000)
+            });
+            $('#cmd-toggle-record-position input').on('change', function () {
+                if (timeout) clearTimeout(timeout);
+                this.checked ? data = 'Logging Enabled' : data = 'Logging Disabled';
+                timeout = setTimeout(() => {
+                    data = '';
+                }, 3000)
+            });
+            $('#cmd-toggle-camera-1-on input').on('change', function () {
+                if (timeout) clearTimeout(timeout);
+                this.checked ? data = 'Camera 1 Enabled' : data = 'Camera 1 Disabled';
+                timeout = setTimeout(() => {
+                    data = '';
+                }, 3000)
+            });
+            $('#cmd-toggle-camera-2-on input').on('change', function () {
+                if (timeout) clearTimeout(timeout);
+                this.checked ? data = 'Camera 2 Enabled' : data = 'Camera 2 Disabled';
+                timeout = setTimeout(() => {
+                    data = '';
+                }, 3000)
+            });
             setInterval(getSystem, 3000);
             function getSystem() {
                 $.get("http://" + server + ":8000/jetson_state", function (data) {

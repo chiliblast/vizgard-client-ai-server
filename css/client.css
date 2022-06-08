@@ -38,7 +38,7 @@
 }
 
 #json-section {
-    height: 500px;
+    /* height: 500px; */
     overflow: auto;
     overflow-y: hidden;
 }
@@ -89,4 +89,10 @@
 
 .shutdown .btn {
     margin-left: 2px;
+}
+
+@media (max-width: 768px) {
+    #video-preview {
+        height: 58vw;
+    }
 }

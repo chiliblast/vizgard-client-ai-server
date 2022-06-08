@@ -20,6 +20,34 @@
         .btn {
             width: 100px !important;
         }
+
+        input[type='radio']:after {
+            width: 15px;
+            height: 15px;
+            border-radius: 15px;
+            top: -3px;
+            left: -1px;
+            position: relative;
+            /* background-color: #d1d3d1; */
+            background-color: #fff;
+            content: '';
+            display: inline-block;
+            visibility: visible;
+            /* border: 2px solid gray; */
+        }
+
+        input[type='radio']:checked:after {
+            width: 15px;
+            height: 15px;
+            border-radius: 15px;
+            top: -3px;
+            left: -1px;
+            position: relative;
+            background-color: #12ef8c;
+            content: '';
+            display: inline-block;
+            visibility: visible;
+        }
     </style>
 
 </head>
@@ -65,8 +93,11 @@
                     </div>
                     <div class="p-1">
                         <button type="button" class="btn btn-success btn-sm" id="fortifai-reboot">Reboot</button>
-                        <button type="button" class="btn btn-success btn-sm" id="start">Start</button>
-                        <button type="button" class="btn btn-success btn-sm" id="fortifai-shutdown">Stop</button>
+                        <button type="button" class="btn btn-success btn-sm" id="start-stop-btn">Stop</button>
+                        <button type="button" class="btn btn-secondary btn-sm" id="update-btn" data-bs-toggle="modal"
+                            data-bs-target="#updateManagerModal" onclick="onUpdateModalOpen()">
+                            Update
+                        </button>
                     </div>
 
                 </div>
@@ -220,6 +251,46 @@
             </div>
         </div>
 
+        <!-- Update Manager Modal -->
+        <div class="config-modal modal fade" id="updateManagerModal" tabindex="-1"
+            aria-labelledby="updateManagerModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateManagerModalLabel">Update Manager</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="update-modal-body">
+                        <h5>App</h5>
+                        <ul class="remove-bullets" id="update-app-list"></ul>
+                        <h5>Model</h5>
+                        <ul class="remove-bullets" id="update-model-list"></ul>
+                        <div id="pull-progress">
+
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <div>
+                            <button type="button" class="btn btn-success float-left"
+                                onclick="updates=false;getUpdates()">
+                                Check for Update
+                            </button>
+                        </div>
+                        <div>
+                            <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                onclick="onCloseModal()">Close
+                            </button> -->
+                            <button type="button" class="btn btn-success" id="start-update" disabled
+                                onclick="startUpdate()">
+                                Start Update
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <button type="button" class="btn btn-danger d-none" id="successToastBtn"></button>
 
         <!-- Toaster -->
@@ -342,9 +413,16 @@
     <script src="js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
 
     <script>
-
+        if (window.location.protocol === 'http:') {
+            $('#copy-clipboard').addClass('d-none');
+        } else {
+            $('#copy-clipboard').removeClass('d-none');
+        }
         var interval;
         var licenceFileToUpload;
+        var updates = false;
+        var pullProgress = false;
+        var config;
 
         let server = $(location).attr('hostname');
         //server = "82.7.160.220";
@@ -382,6 +460,7 @@
                 data['list-config'].forEach((config, index) => {
                     configList += `
                     <li class="text-center">
+                        <input type="radio" id="${'radio' + index}" name="config_radio" value="${config}">
                         <h6 class="text-capitalize">${config}</h6>
                         <button type="button" class="btn btn-success btn-sm edit" data-bs-toggle="modal" data-bs-target="#configModal" onclick="editConfig()">Edit</button>
                     </li>
@@ -509,7 +588,84 @@
             displayToast('success', 'Serial number copied to clipboard!');
         });
 
+        function onUpdateModalOpen() {
+            $.get("http://" + server + ":8000/get-local-version", function (data) {
+                console.log(data);
+                let updateAppBody = '';
+                data['vizgard-app'].forEach((app, index) => {
+                    updateAppBody += `
+                    <li>
+                        <input class="form-check-input app-checkbox" type="checkbox" ${app?.default && 'disabled'} id="${'app-checkbox-' + index}">
+                        <h6 class="text-capitalize ps-2">${app?.ShortId}</h6>
+                        <p class="online ps-2 mb-0">${app?.default ? 'Default' : '<a class="darkgray" href="#">Make Default</a>'}</p>
+                    </li>`
+                })
+                $('#update-app-list').html(updateAppBody);
+                updateAppBody = '';
+                data['vizgard-config'].forEach((app, index) => {
+                    updateAppBody += `
+                    <li>
+                        <input class="form-check-input config-checkbox" type="checkbox" ${app?.default && 'disabled'} id="${'config-checkbox-' + index}" >
+                        <h6 class="text-capitalize ps-2">${app?.ShortId}</h6>
+                        <p class="online ps-2 mb-0">
+                            ${app?.default ? 'Default' : '<a class="darkgray" href="#">Make Default</a>'} 
+                            ${app?.ShortId == config['shortID'] && config['update-available'] ? 'Update Available' : ''}
+                        </p>
+                    </li>
+                    `
+                })
+                $('#update-model-list').html(updateAppBody);
+            });
+        }
 
+        $(document).on('change', 'input.app-checkbox', function () {
+            if ($('input.app-checkbox:checked').length > 0 || $('input.config-checkbox:checked').length > 0) {
+                $('#start-update').prop('disabled', false);
+            } else {
+                $('#start-update').prop('disabled', true);
+            }
+        })
+
+        $(document).on('change', 'input.config-checkbox', function () {
+            if ($('input.app-checkbox:checked').length > 0 || $('input.config-checkbox:checked').length > 0) {
+                $('#start-update').prop('disabled', false);
+            } else {
+                $('#start-update').prop('disabled', true);
+            }
+        })
+
+        $(document).on('click', 'a.darkgray', function () {
+            let id = $(this).parent().siblings('h6').text()
+            $.post("http://" + server + ":8000/set-vizgard-app-version?p=" + port + "&Id=" + id, function (data) {
+                displayToast('success', data.status);
+                onUpdateModalOpen();
+            });
+        })
+
+
+        function startUpdate() {
+            // let app = 0;
+            // let config = 0;
+            // if ($('#app-checkbox-0').is(":checked") || $('#app-checkbox-1').is(":checked")) {
+            //     app += 1;
+            // }
+            // if ($('#config-checkbox-0').is(":checked")) {
+            //     config += 1;
+            // }
+            // console.log($('.app-checkbox:checked').length);
+            // console.log($('.config-checkbox:checked').length);
+
+            if ($('.app-checkbox:checked').length > 0) {
+                $.post("http://" + server + ":8000/update-vizgard-config?tag=JP46.Im0020.V0010&p=" + port, function (data) {
+                    displayToast('success', 'App updated successfully!');
+                });
+            }
+            if ($('.config-checkbox:checked').length > 0) {
+                $.post("http://" + server + ":8000/update-vizgard-config?tag=JP46.V0010&p=" + port, function (data) {
+                    displayToast('success', 'Model updated successfully!');
+                });
+            }
+        }
 
         function uploadLicenceFile() {
             console.log(licenceFileToUpload);
@@ -532,8 +688,32 @@
             } else {
                 displayToast('error', 'Please select a file!');
             }
-
         }
+
+        function getUpdates() {
+            // $.post("http://" + server + ":8000/check-for-update-vizgard-config?tag=JP46.V0010", function (data) {
+            //     console.log(data);
+            //     if (data['update-available']) {
+            //         $('#update-btn').removeClass('btn-secondary').addClass('btn-success');
+            //         updates = true;
+            //     } else {
+            //         if (!updates)
+            //             $('#update-btn').removeClass('btn-success').addClass('btn-secondary');
+            //     }
+            // });
+            $.post("http://" + server + ":8000/check-for-update-vizgard-config?tag=JP46.V0010", function (data) {
+                config = data;
+                console.log(config);
+                if (data['update-available']) {
+                    $('#update-btn').removeClass('btn-secondary').addClass('btn-success');
+                    updates = true;
+                } else {
+                    if (!updates)
+                        $('#update-btn').removeClass('btn-success').addClass('btn-secondary');
+                }
+            });
+        }
+        getUpdates();
 
         $(() => {
 
@@ -548,8 +728,8 @@
                 $("#status").removeClass('online offline').addClass('amber');
                 $("#status").text('Rebooting');
                 //let body = { "ip": "127.0.0.1", "port": 8673 };
-                $.post("http://" + server + ":8000/fortifai-reboot?p=" + port, function (data) {
-                    interval = setInterval(getSystem, 3000);
+                $.post("http://" + server + ":8000/fortifai-reboot/default?p=" + port, function (data) {
+                    interval = setInterval(getSystem, 1000);
                     $('#successToastBtn').click();
                     $('div.toaster-success-body').text('Reboot request sent.');
                     $("#status").text('Online');
@@ -558,24 +738,63 @@
                 });
             });
 
-            $("#start").click(function () {
+            $("#start-stop-btn").click(function () {
+                if ($(this).text() == 'Start') {
+
+                    if ($('#licensed').text() === 'No licence') {
+                        displayToast('error', 'No licence available');
+                    } else {
+                        clearInterval(interval);
+                        $("#status").removeClass('online offline').addClass('amber');
+                        $("#status").text('Starting');
+                        $.post("http://" + server + ":8000/start/default", function (data) {
+                            interval = setInterval(getSystem, 1000);
+                            displayToast('success', 'FortifAI running');
+                            $("#status").text('Online');
+                            $("#status").removeClass('offline amber').addClass('online');
+                            console.log(data.response);
+                            //$("#status").html( data.response );
+                        });
+                    }
+
+                } else if ($(this).text() == 'Stop') {
+                    clearInterval(interval);
+                    $("#status").removeClass('online offline').addClass('amber');
+                    $("#status").text('Stopping');
+                    //let body = { "ip": "127.0.0.1", "port": 8673 };
+                    $.post("http://" + server + ":8000/fortifai-shutdown?p=" + port, function (data) {
+                        interval = setInterval(getSystem, 1000);
+                        $('#successToastBtn').click();
+                        $('div.toaster-success-body').text('Fortifai stopped.');
+                        $("#status").removeClass('online amber').addClass('offline');
+                        $("#status").text('Offline');
+                        console.log(data.response);
+                    });
+                }
+            });
+
+            $('#update-btn').click(function () {
+
+            })
+
+            $(document).on('change', 'input[type=radio][name=config_radio]', function () {
                 if ($('#licensed').text() === 'No licence') {
                     displayToast('error', 'No licence available');
                 } else {
                     clearInterval(interval);
                     $("#status").removeClass('online offline').addClass('amber');
                     $("#status").text('Starting');
-                    $.post("http://" + server + ":8000/start", function (data) {
-                        interval = setInterval(getSystem, 3000);
-                        displayToast('success', 'FortifAI running');
+                    $.post("http://" + server + ":8000/start/" + this.value, function (data) {
+                        interval = setInterval(getSystem, 1000);
+                        $('#successToastBtn').click();
+                        $('div.toaster-success-body').text('Config updated');
                         $("#status").text('Online');
                         $("#status").removeClass('offline amber').addClass('online');
                         console.log(data.response);
                         //$("#status").html( data.response );
                     });
                 }
-
-            });
+            })
 
             $("#fortifai-shutdown").click(function () {
                 clearInterval(interval);
@@ -583,14 +802,13 @@
                 $("#status").text('Stopping');
                 //let body = { "ip": "127.0.0.1", "port": 8673 };
                 $.post("http://" + server + ":8000/fortifai-shutdown?p=" + port, function (data) {
-                    interval = setInterval(getSystem, 3000);
+                    interval = setInterval(getSystem, 1000);
                     $('#successToastBtn').click();
                     $('div.toaster-success-body').text('Fortifai stopped.');
                     $("#status").removeClass('online amber').addClass('offline');
                     $("#status").text('Offline');
                     console.log(data.response);
                 });
-
             });
 
 
@@ -619,25 +837,40 @@
             });
 
             getSystem();
-            interval = setInterval(getSystem, 3000);
+            interval = setInterval(getSystem, 1000);
 
             function getSystem() {
 
                 $.get("http://" + server + ":8000/jetson_state", function (data) {
+                    pullProgress = data?.pull_progress?.done;
                     if (data?.cpu_temp) {
                         $('li.device').removeClass('d-none');
                     } else {
                         window.location.href = window.location.href.replace('device.html', 'index.html');
                         $('li.device').addClass('d-none');
                     }
+                    if (!data?.pull_progress?.done) {
+                        let progress = '';
+                        progress += `
+                        < div class="config-list" >
+                            <h5>Progress</h5>
+                            <ul id="progress-list">
+                                <li> Current: ${data?.pull_progress?.current}</li>    
+                                <li> Total: ${data?.pull_progress?.total} </li>    
+                                <li> Done: ${data?.pull_progress?.done} </li>    
+                            </ul>
+                        </ >
+                        `
+                        $('#pull-progress').html(progress);
+                    }
+                    $("input[name=config_radio][value='" + data['actual-config-file'] + "']").prop('checked', true);
 
                     if (data.status == "running") {
                         $("#status").removeClass('offline amber').addClass('online');
                         $("#status").html("Online");
-                    } else if (data.status === 'stopped') {
-                        $("#status").removeClass('online amber').addClass('offline');
-                        $("#status").text('Offline');
+                        $('#start-stop-btn').text('Stop');
                     } else {
+                        $('#start-stop-btn').text('Start');
                         $("#status").removeClass('online amber').addClass('offline');
                         $("#status").html("Offline");
                     }
@@ -662,9 +895,10 @@
                     if (data['license-valid']) {
                         $('#licensed').removeClass('offline').addClass('online');
                     } else {
-
-                        $('#fortifai-shutdown').click();
-                        displayToast('error', 'No licence available');
+                        if ($('#status').text() !== 'Offline') {
+                            $('#fortifai-shutdown').click();
+                            displayToast('error', 'No licence available');
+                        }
                         $('#licensed').removeClass('online').addClass('offline');
                     }
                 }).fail(function (e) {
