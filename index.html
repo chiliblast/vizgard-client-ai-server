@@ -89,7 +89,16 @@
 
                     <div id="cmd-toggle-detection">Object Detection <input type="checkbox" class="form-check-input" />
                     </div>
-                    <div id="cmd-toggle-model">Toggle Model</div>
+                    <div id="cmd-toggle-model">
+                        Toggle Model
+                    </div>
+                    <div id="toggle-model-status">
+                        Class Filter
+                        <span class="collapse-btn" onclick="collapseBtn()"
+                            style="margin-right: 9px;float: right;cursor:pointer;">
+                            –
+                        </span>
+                    </div>
                     <div id="cmd-toggle-single-track-keyboard">Single Object Tracking <input type="checkbox"
                             class="form-check-input" /> </div>
                     <div id="cmd-toggle-single-track">Auto Single Track <input type="checkbox"
@@ -119,8 +128,8 @@
                     </div>
                     <div id="cmd-toggle-record-position">CSV Logging<input type="checkbox" class="form-check-input" />
                     </div>
-                    <div id="cmd-toggle-camera-1-on">Camera 1<input type="checkbox" class="form-check-input" /></div>
-                    <div id="cmd-toggle-camera-2-on">Camera 2<input type="checkbox" class="form-check-input" /></div>
+                    <!-- <div id="cmd-toggle-camera-1-on">Camera 1<input type="checkbox" class="form-check-input" /></div>
+                    <div id="cmd-toggle-camera-2-on">Camera 2<input type="checkbox" class="form-check-input" /></div> -->
                 </div>
 
             </div>
@@ -184,7 +193,8 @@
                                 Update
                             </button>
                             <div class="ms-3 form-check form-switch">
-                                <input class="form-check-input presetinput" type="checkbox" role="switch">
+                                <input class="form-check-input presetinput" type="checkbox" role="switch"
+                                    id="camera-1-status">
                             </div>
                             <span style="margin-left: 3px;">SDI/USB</span>
                         </div>
@@ -199,7 +209,8 @@
                                 Update
                             </button>
                             <div class="ms-3 form-check form-switch">
-                                <input class="form-check-input presetinput" type="checkbox" role="switch">
+                                <input class="form-check-input presetinput" type="checkbox" role="switch"
+                                    id="camera-2-status">
                             </div>
                             <span style="margin-left: 3px;">SDI/USB</span>
                         </div>
@@ -281,6 +292,28 @@
     <!--script src="js/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script-->
     <script src="js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
     <script>
+        var toggleModelState = false;
+
+        function collapseBtn() {
+            console.log('Collapse Button Called');
+            if ($('.collapse-btn').text() == '–') {
+                toggleModelState = false;
+                $('.collapse-btn').text('+')
+                $('.collapse-btn').parent().find('div').addClass('zero-height')
+            } else {
+                toggleModelState = true;
+                $('.collapse-btn').text('–')
+                $('.collapse-btn').parent().find('div').removeClass('zero-height')
+            }
+        }
+
+        function addClassToToggleDivs() {
+            if ($('.collapse-btn').text() == '+') {
+                $('.collapse-btn').parent().find('div').addClass('zero-height')
+            }
+        }
+
+
         $(() => {
 
             var data;
@@ -300,7 +333,7 @@
             // });
 
             let server = $(location).attr('hostname');
-            //server = "82.7.160.220";
+            server = "82.7.160.220";
             $("#server-address").val(server);
 
             const canvas = document.getElementById('canvas-bounding-box');
@@ -330,7 +363,7 @@
                 ws.onmessage = e => {
                     const json = JSON.parse(e.data);
                     if (json.objects) {
-                        console.log(json);
+                        // console.log(json);
                         // main info
                         $('#main-info').html(`${json.width} x ${json.height} | FPS Capture: ${json.fpsCap} | FPS Detection: ${json.fpsDet} | Delay: ${json.delay}`);
                         if (json.width != canvas.width) canvas.width = json.width;
@@ -401,11 +434,21 @@
                         $('#cmd-toggle-frame-grab input').prop('checked', json.frameGrab);
                         $('#cmd-toggle-record-video input').prop('checked', json.recordingVideo);
                         $('#cmd-toggle-record-position input').prop('checked', json.recordPositionDtaa);
-                        $('#cmd-toggle-camera-1-on input').prop('checked', json.camera1On);
-                        $('#cmd-toggle-camera-2-on input').prop('checked', json.camera2On);
-                        $('#cmd-toggle-model').html('Toggle Model');
+
+                        // $('#cmd-toggle-camera-1-on input').prop('checked', json.camera1_status);
+                        // $('#cmd-toggle-camera-2-on input').prop('checked', json.camera2_status);
+
+                        $('#camera-1-status').prop('checked', json.camera1_status);
+                        $('#camera-2-status').prop('checked', json.camera1_status);
+
+                        $('.collapse-btn').parent().find('div').remove();
                         for (const c in json.classes) {
-                            $('#cmd-toggle-model').append(`<div class="${c.toLowerCase()}" data-class="${c}">${c}<input type="checkbox" class="${c.toLowerCase()}" ${json.classes[c] && 'checked'}></div>`);
+                            $('#toggle-model-status').append(`<div class="${c.toLowerCase()}" data-class="${c}"><label for="${c + 1}">${c}</label><input type="checkbox" id="${c + 1}" class="${c.toLowerCase()}" ${json.classes[c] && 'checked'}></div>`);
+                        }
+                        addClassToToggleDivs();
+                        console.log(toggleModelState)
+                        if (toggleModelState) {
+                            // collapseBtn();
                         }
                     }
                 }
@@ -433,21 +476,6 @@
                     }
                 })
             );
-
-            $('#cmd-toggle-model').on('click', 'div', function (e) {
-                if (timeout) clearTimeout(timeout);
-                let text = $(this).find('input')[0].className;
-                text = text.charAt(0).toUpperCase() + text.slice(1);
-                $(this).find('input').is(":checked") ? data = text + ' Disabled' : data = text + ' Enabled';
-                timeout = setTimeout(() => {
-                    data = '';
-                }, 4000)
-
-                e.stopPropagation();
-                if (ws.readyState === WebSocket.OPEN) {
-                    ws.send(`toggle-model-class ${$(this).data('class')}`);
-                }
-            });
 
             $('#btn-update-server-video-in').click(() => {
                 if (ws.readyState === WebSocket.OPEN) {
@@ -537,20 +565,24 @@
                 }
             });
 
-            // $('#cmd-toggle-graphics-display input').on('change', function () {
-            // });
-
-            $(document).on('change', '#cmd-toggle-model input', function () {
+            $('#toggle-model-status').on('click', 'div', function (e) {
+                e.stopPropagation();
+                console.log('Hello1');
                 if (timeout) clearTimeout(timeout);
-                let text = $(this)[0].className;
+                let text = $(this).find('input')[0].className;
                 text = text.charAt(0).toUpperCase() + text.slice(1);
-                this.checked ? data = text + ' Enabled' : data = text + ' Disabled';
+                $(this).find('input').is(":checked") ? data = text + ' Disabled' : data = text + ' Enabled';
                 timeout = setTimeout(() => {
                     data = '';
                 }, 4000)
+                if (ws.readyState === WebSocket.OPEN) {
+                    ws.send(`toggle-model-class ${$(this).data('class')}`);
+                }
             });
 
-            $(document).on('click', '#cmd-toggle-model div', function () {
+            $(document).on('change', '#toggle-model-status input', function (e) {
+                e.stopPropagation();
+                console.log('Hello2');
                 if (timeout) clearTimeout(timeout);
                 let text = $(this)[0].className;
                 text = text.charAt(0).toUpperCase() + text.slice(1);
@@ -558,6 +590,20 @@
                 timeout = setTimeout(() => {
                     data = '';
                 }, 4000)
+                if (ws.readyState === WebSocket.OPEN) {
+                    ws.send(`toggle-model-class ${$(this).data('class')}`);
+                }
+            });
+
+            $(document).on('click', '#toggle-model-status div', function (e) {
+                console.log('Hello3');
+                // if (timeout) clearTimeout(timeout);
+                // let text = $(this)[0].className;
+                // text = text.charAt(0).toUpperCase() + text.slice(1);
+                // this.checked ? data = text + ' Enabled' : data = text + ' Disabled';
+                // timeout = setTimeout(() => {
+                //     data = '';
+                // }, 4000)
             });
 
             $('#cmd-toggle-single-track input').on('change', function () {
@@ -630,6 +676,20 @@
                     data = '';
                 }, 3000)
             });
+            $('#cmd-toggle-camera-1-on input').on('change', function () {
+                if (timeout) clearTimeout(timeout);
+                this.checked ? data = 'Camera 1 Enabled' : data = 'Camera 1 Disabled';
+                timeout = setTimeout(() => {
+                    data = '';
+                }, 3000)
+            });
+            $('#cmd-toggle-camera-2-on input').on('change', function () {
+                if (timeout) clearTimeout(timeout);
+                this.checked ? data = 'Camera 2 Enabled' : data = 'Camera 2 Disabled';
+                timeout = setTimeout(() => {
+                    data = '';
+                }, 3000)
+            });
             $('#cmd-toggle-record-video input').on('change', function () {
                 if (timeout) clearTimeout(timeout);
                 this.checked ? data = 'Record Video Enabled' : data = 'Record Video Disabled';
@@ -644,14 +704,14 @@
                     data = '';
                 }, 3000)
             });
-            $('#cmd-toggle-camera-1-on input').on('change', function () {
+            $('#camera-1-status').on('change', function () {
                 if (timeout) clearTimeout(timeout);
                 this.checked ? data = 'Camera 1 Enabled' : data = 'Camera 1 Disabled';
                 timeout = setTimeout(() => {
                     data = '';
                 }, 3000)
             });
-            $('#cmd-toggle-camera-2-on input').on('change', function () {
+            $('#camera-2-status').on('change', function () {
                 if (timeout) clearTimeout(timeout);
                 this.checked ? data = 'Camera 2 Enabled' : data = 'Camera 2 Disabled';
                 timeout = setTimeout(() => {
@@ -710,6 +770,7 @@
             }
             statusCheck();
         });
+
     </script>
 
 </body>

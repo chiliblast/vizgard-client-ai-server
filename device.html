@@ -261,31 +261,68 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="update-modal-body">
+                        <!-- <div class="d-flex">
+                            <div>
+                              
+                            </div>
+                            <div class="d-flex justify-content-end text-right ms-auto">
+                                
+                            </div>
+                        </div> -->
                         <h5>App</h5>
                         <ul class="remove-bullets" id="update-app-list"></ul>
-                        <h5>Model</h5>
+                        <h5 class="pt-2">Model</h5>
                         <ul class="remove-bullets" id="update-model-list"></ul>
-                        <div id="pull-progress">
-
+                        <div id="pull-progress"></div>
+                        <div class="text-center pt-3">
+                            <p class="default-msg text-dark mb-0"></p>
                         </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-between">
                         <div>
-                            <button type="button" class="btn btn-success float-left"
-                                onclick="updates=false;getUpdates()">
+                            <button type="button" class="btn btn-danger" id="delete-version" data-bs-toggle="modal"
+                                disabled data-bs-target="#deleteUpdateManager">
+                                Delete
+                            </button>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-success" onclick="updates=false;getUpdates()">
                                 Check for Update
                             </button>
                         </div>
                         <div>
-                            <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                onclick="onCloseModal()">Close
-                            </button> -->
-                            <button type="button" class="btn btn-success" id="start-update" disabled
+                            <button type="button" class="btn btn-success float-end" id="start-update" disabled
                                 onclick="startUpdate()">
                                 Start Update
                             </button>
                         </div>
 
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Update Manager Modal -->
+        <div class="delete-update-manager-modal modal fade" id="deleteUpdateManager" tabindex="-1"
+            aria-labelledby="deleteUpdateManagerLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteUpdateManagerLabel">Confirm Delete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            onclick="onCloseModal();">
+                            No
+                        </button>
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                            onclick="deleteUpdateManager();onCloseModal();">
+                            Yes
+                        </button>
                     </div>
                 </div>
             </div>
@@ -423,9 +460,13 @@
         var updates = false;
         var pullProgress = false;
         var config;
+        var app;
+        var makeDefault = false;
+        var deleteShortId;
 
         let server = $(location).attr('hostname');
-        //server = "82.7.160.220";
+        server = "82.7.160.220";
+        // let port = 7001;
         let port = 8673;
 
         $(document).ready(function () {
@@ -591,13 +632,30 @@
         function onUpdateModalOpen() {
             $.get("http://" + server + ":8000/get-local-version", function (data) {
                 console.log(data);
+                console.log(app)
                 let updateAppBody = '';
+                if (app['update-available']) {
+                    updateAppBody += `
+                    <li>
+                        <input class="form-check-input app-checkbox" type="checkbox" id="${'app-checkbox-' + 0}">
+                        <h6 style="width: 140px;" class="text-capitalize ps-2">${app?.shortID}</h6>
+                        <span style="width: 59px;text-align: center;" class="default-msg mx-2">${app?.Created ? (new Date(app?.Created)) : '–'}</span>
+                        <p class="ps-2 mb-0">
+                            <span class="online">Update Available</span>
+                        </p>
+                    </li>
+                    `
+                }
                 data['vizgard-app'].forEach((app, index) => {
                     updateAppBody += `
                     <li>
-                        <input class="form-check-input app-checkbox" type="checkbox" ${app?.default && 'disabled'} id="${'app-checkbox-' + index}">
-                        <h6 class="text-capitalize ps-2">${app?.ShortId}</h6>
-                        <p class="online ps-2 mb-0">${app?.default ? 'Default' : '<a class="darkgray" href="#">Make Default</a>'}</p>
+                        <input class="form-check-input app-checkbox" type="checkbox" ${app?.default && 'disabled'} id="${'app-checkbox-' + (index + 1)}">
+                        <h6 style="width: 140px;" class="text-capitalize ps-2">${app?.ShortId}</h6>
+                        <span style="width: 59px;" class="default-msg mx-2">${formatDate(new Date(app?.Created))} </span>
+                        <p class="darkgray ps-2 mb-0">
+                            ${app?.default ? 'Default' : '<a class="make-default" href="#">Make Default</a>'}
+                            ${app?.ShortId == app['shortID'] && app['update-available'] ? 'Update Available' : ''}
+                        </p>
                     </li>`
                 })
                 $('#update-app-list').html(updateAppBody);
@@ -605,10 +663,11 @@
                 data['vizgard-config'].forEach((app, index) => {
                     updateAppBody += `
                     <li>
-                        <input class="form-check-input config-checkbox" type="checkbox" ${app?.default && 'disabled'} id="${'config-checkbox-' + index}" >
-                        <h6 class="text-capitalize ps-2">${app?.ShortId}</h6>
-                        <p class="online ps-2 mb-0">
-                            ${app?.default ? 'Default' : '<a class="darkgray" href="#">Make Default</a>'} 
+                        <input class="form-check-input config-checkbox" type="checkbox" ${app?.default && 'disabled'} id="${'config-checkbox-' + (index + 1)}" >
+                        <h6 style="width: 140px;" class="text-capitalize ps-2">${app?.ShortId}</h6>
+                        <span class="default-msg mx-2">${formatDate(new Date(app?.Created))} </span>
+                        <p class="darkgray ps-2 mb-0">
+                            ${app?.default ? 'Default' : '<a class="make-default" href="#">Make Default</a>'} 
                             ${app?.ShortId == config['shortID'] && config['update-available'] ? 'Update Available' : ''}
                         </p>
                     </li>
@@ -618,28 +677,60 @@
             });
         }
 
+        function deleteUpdateManager() {
+            $.ajax({
+                url: "http://" + server + ":8000/delete-by-short-id?Id=" + deleteShortId,
+                type: 'DELETE',
+                success: (result) => {
+                    $('#successToastBtn').click();
+                    $('div.toaster-success-body').text('Deleted!');
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Status: " + textStatus); alert("Error: " + errorThrown);
+                }
+            });
+        }
+
+
         $(document).on('change', 'input.app-checkbox', function () {
+            deleteShortId = $(this).siblings('h6').text()
+            $('input.app-checkbox').not(this).prop('checked', false);
             if ($('input.app-checkbox:checked').length > 0 || $('input.config-checkbox:checked').length > 0) {
                 $('#start-update').prop('disabled', false);
+                $('#delete-version').prop('disabled', false);
             } else {
+                $('#delete-version').prop('disabled', true);
                 $('#start-update').prop('disabled', true);
             }
         })
 
         $(document).on('change', 'input.config-checkbox', function () {
+            deleteShortId = $(this).siblings('h6').text()
+            $('input.config-checkbox').not(this).prop('checked', false);
             if ($('input.app-checkbox:checked').length > 0 || $('input.config-checkbox:checked').length > 0) {
                 $('#start-update').prop('disabled', false);
+                $('#delete-version').prop('disabled', false);
             } else {
+                $('#delete-version').prop('disabled', true);
                 $('#start-update').prop('disabled', true);
             }
         })
 
-        $(document).on('click', 'a.darkgray', function () {
+        $(document).on('click', 'a.make-default', function () {
+            makeDefault = true;
+            $('p.default-msg').html(`Updating. Please wait...`)
             let id = $(this).parent().siblings('h6').text()
-            $.post("http://" + server + ":8000/set-vizgard-app-version?p=" + port + "&Id=" + id, function (data) {
-                displayToast('success', data.status);
-                onUpdateModalOpen();
-            });
+            try {
+                $.post("http://" + server + ":8000/set-vizgard-app-version?p=" + port + "&Id=" + id, function (data) {
+                    displayToast('success', data.status);
+                    onUpdateModalOpen();
+                    $('p.default-msg').html(``)
+                    makeDefault = false;
+                });
+            } catch (err) {
+                makeDefault = false;
+                throw new Error('some error')
+            }
         })
 
 
@@ -691,16 +782,17 @@
         }
 
         function getUpdates() {
-            // $.post("http://" + server + ":8000/check-for-update-vizgard-config?tag=JP46.V0010", function (data) {
-            //     console.log(data);
-            //     if (data['update-available']) {
-            //         $('#update-btn').removeClass('btn-secondary').addClass('btn-success');
-            //         updates = true;
-            //     } else {
-            //         if (!updates)
-            //             $('#update-btn').removeClass('btn-success').addClass('btn-secondary');
-            //     }
-            // });
+            $.post("http://" + server + ":8000/check-for-update-vizgard-app?tag=JP46.Im0020.V0010", function (data) {
+                console.log(data);
+                app = data;
+                if (data['update-available']) {
+                    $('#update-btn').removeClass('btn-secondary').addClass('btn-success');
+                    updates = true;
+                } else {
+                    if (!updates)
+                        $('#update-btn').removeClass('btn-success').addClass('btn-secondary');
+                }
+            });
             $.post("http://" + server + ":8000/check-for-update-vizgard-config?tag=JP46.V0010", function (data) {
                 config = data;
                 console.log(config);
@@ -714,6 +806,10 @@
             });
         }
         getUpdates();
+
+        function formatDate(date) {
+            return ("0" + (date.getDate())).slice(-2) + '/' + ("0" + (date.getMonth() + 1)).slice(-2) + '/' + (date.getYear().toLocaleString().length == 3 ? ('' + date.getYear()).slice(-2) : date.getYear());
+        }
 
         $(() => {
 
@@ -773,10 +869,6 @@
                 }
             });
 
-            $('#update-btn').click(function () {
-
-            })
-
             $(document).on('change', 'input[type=radio][name=config_radio]', function () {
                 if ($('#licensed').text() === 'No licence') {
                     displayToast('error', 'No licence available');
@@ -784,7 +876,7 @@
                     clearInterval(interval);
                     $("#status").removeClass('online offline').addClass('amber');
                     $("#status").text('Starting');
-                    $.post("http://" + server + ":8000/start/" + this.value, function (data) {
+                    $.post("http://" + server + ":8000/fortifai-reboot/" + this.value + "?p=" + port, function (data) {
                         interval = setInterval(getSystem, 1000);
                         $('#successToastBtn').click();
                         $('div.toaster-success-body').text('Config updated');
@@ -852,14 +944,14 @@
                     if (!data?.pull_progress?.done) {
                         let progress = '';
                         progress += `
-                        < div class="config-list" >
+                        <div class="config-list">
                             <h5>Progress</h5>
                             <ul id="progress-list">
-                                <li> Current: ${data?.pull_progress?.current}</li>    
-                                <li> Total: ${data?.pull_progress?.total} </li>    
-                                <li> Done: ${data?.pull_progress?.done} </li>    
+                                <li>Current: ${data?.pull_progress?.current}</li>    
+                                <li>Total: ${data?.pull_progress?.total}</li>    
+                                <li>Done: ${data?.pull_progress?.done}</li>    
                             </ul>
-                        </ >
+                        </div>
                         `
                         $('#pull-progress').html(progress);
                     }
@@ -875,8 +967,15 @@
                         $("#status").html("Offline");
                     }
 
-                    let average_cpu_usage = (parseFloat(data.cpu_usage.cpu0) + parseFloat(data.cpu_usage.cpu1) + parseFloat(data.cpu_usage.cpu2) + parseFloat(data.cpu_usage.cpu3) + parseFloat(data.cpu_usage.cpu4) + parseFloat(data.cpu_usage.cpu5) + parseFloat(data.cpu_usage.cpu6) + parseFloat(data.cpu_usage.cpu7)) / 8;
-                    average_cpu_usage = average_cpu_usage.toFixed(1);
+                    let average_cpu_usage = 0;
+                    for (let i = 0; i <= (Object.keys(data?.cpu_usage).length - 2); i++) {
+                        let key = 'cpu' + i;
+                        average_cpu_usage += parseFloat(data?.cpu_usage[key]);
+                    }
+                    average_cpu_usage = (average_cpu_usage / (Object.keys(data?.cpu_usage).length - 1)).toFixed(1);
+                    // console.log(average_cpu_usage)
+                    // let average_cpu_usage = (parseFloat(data?.cpu_usage?.cpu0) + parseFloat(data?.cpu_usage?.cpu1) + parseFloat(data?.cpu_usage?.cpu2) + parseFloat(data?.cpu_usage?.cpu3) + parseFloat(data?.cpu_usage?.cpu4) + parseFloat(data?.cpu_usage?.cpu5) + parseFloat(data?.cpu_usage?.cpu6) + parseFloat(data?.cpu_usage?.cpu7)) / 8;
+                    // average_cpu_usage = average_cpu_usage.toFixed(1);
                     $("#cpu_usage").html(average_cpu_usage + " " + data.cpu_usage.unit);
                     $("#cpu_temp").html(data.cpu_temp.value + " " + data.cpu_temp.unit);
 

@@ -91,6 +91,22 @@
     margin-left: 2px;
 }
 
+.collapse-btn {
+    font-weight: 900;
+}
+
+.zero-height {
+    display: none;
+}
+
+#toggle-model-status input {
+    margin-top: 4.5px;
+}
+
+#toggle-model-status {
+    cursor: auto !important;
+}
+
 @media (max-width: 768px) {
     #video-preview {
         height: 58vw;

@@ -279,5 +279,9 @@ ul.remove-bullets>li>p {
 }
 
 a.darkgray {
-    color: darkgray !important;
+    color: darkslategray !important;
+}
+
+.default-msg {
+    font-size: 14px !important;
 }
