@@ -114,10 +114,16 @@ body {
     margin-top: 0px;
     height: 26px;
     line-height: 0.5 !important;
+    box-shadow: none !important;
+
 }
 
 .modal {
     z-index: 9999;
+}
+
+.device-tab {
+  
 }
 
 .modal .modal-content {
@@ -140,6 +146,14 @@ body {
     padding: 0.375rem 0.75rem;
     font-size: 1rem;
 }
+
+@media (min-width: 576px) {
+    .update-manager-model {
+        max-width: 600px;
+    }
+}
+
+
 
 .scrollable-container::-webkit-scrollbar {
     margin-top: 10px;
@@ -249,7 +263,7 @@ body {
 .btn,
 .btn-check:focus+.btn-success,
 .btn-success:focus {
-    box-shadow: none !important;
+    /* box-shadow: none !important; */
 }
 
 
