@@ -348,27 +348,9 @@ a.darkgray {
     }
 
     #btn-settings {
-        width: 130px !important;
-        padding: 7.5px 0px !important;
+        width: 155px !important;
     }
 
-    .tabset-imgs {
-        left: 0 !important;
-    }
-
-    .tabset {
-        width: 63% !important;
-        padding-left: 0px !important;
-    }
-
-    .auto-connect-input {
-        justify-content: end !important;
-    }
-
-    .tabset .tab-panel {
-        position: absolute !important;
-        width: 100% !important;
-    }
 }
 
 @media (max-width: 768px) {
@@ -406,25 +388,6 @@ a.darkgray {
     }
 
     #btn-settings {
-        width: 130px !important;
-        padding: 7.5px 0px !important;
-    }
-
-    .tabset-imgs {
-        left: 0 !important;
-    }
-
-    .tabset {
-        width: 63% !important;
-        padding-left: 0px !important;
-    }
-
-    .auto-connect-input {
-        justify-content: end !important;
-    }
-
-    .tabset .tab-panel {
-        position: absolute !important;
-        width: 100% !important;
+        width: 155px !important;
     }
 }

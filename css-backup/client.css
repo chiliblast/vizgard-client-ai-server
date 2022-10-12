@@ -210,7 +210,7 @@ footer:hover>.settings-menu {
 .tabset {
     text-align: left;
     width: 95%;
-    padding-left: 35px;
+    padding-left: 50px;
 }
 
 .tabs-view {
@@ -226,7 +226,7 @@ footer:hover>.settings-menu {
     z-index: 4;
     position: absolute;
     top: 0;
-    left: 35px;
+    left: 50px;
     display: flex;
 }
 

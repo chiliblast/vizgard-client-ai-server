@@ -1,77 +1,6 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="images/favicon.png" />
-    <title>AI Server</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
-    <link href="css/style.css" rel="stylesheet">
-
-    <style>
-        .btn {
-            width: 100px !important;
-        }
-
-        input[type='radio']:after {
-            width: 15px;
-            height: 15px;
-            border-radius: 15px;
-            top: -3px;
-            left: -1px;
-            position: relative;
-            /* background-color: #d1d3d1; */
-            background-color: #fff;
-            content: '';
-            display: inline-block;
-            visibility: visible;
-        }
-
-        input[type='radio']:checked:after {
-            width: 15px;
-            height: 15px;
-            border-radius: 15px;
-            top: -3px;
-            left: -1px;
-            position: relative;
-            background-color: #12ef8c;
-            content: '';
-            display: inline-block;
-            visibility: visible;
-        }
-    </style>
-
-</head>
+<link href="css/device.css" rel="stylesheet">
 
 <body class="device-tab">
-
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-        <div class="container-fluid">
-            <img src="images/logo.png" height="30px">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="index.html">Client</a>
-                    </li>
-                    <li class="nav-item device d-none">
-                        <a class="nav-link active" href="#">Device</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
     <main class="container main-content">
 
@@ -83,7 +12,7 @@
                         <h4>Software</h4>
                     </div>
                     <div class="d-flex justify-content-between">
-                        <h5>Version</h5>
+                        <h5>FortifAI</h5>
                         <span id="fortifAI" style="margin-right: 24%;"></span>
                     </div>
                     <div class="d-flex justify-content-between">
@@ -427,10 +356,10 @@
                     </div>
                     <div class="col-sm-4 col-md-4 col-lg-3" style="line-height: 24px;">
                         <span id="serial_number"></span>
-                        <!-- <button type="button" class="btn btn-success btn-sm ms-3" id="copy-clipboard"
+                        <button type="button" class="btn btn-success btn-sm ms-3" id="copy-clipboard"
                             style="width:45px !important;height: 24px;padding: 0px;">
                             Copy
-                        </button> -->
+                        </button>
                     </div>
                     <div class="col-sm-4 col-md-4 col-lg-4" style="line-height: 24px;">
                         <span id="licensed"></span>
@@ -460,8 +389,7 @@
     </main>
 
 
-    <script src="bootstrap/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+
 
     <script>
         if (window.location.protocol === 'http:') {
@@ -481,7 +409,7 @@
 
         let server = $(location).attr('hostname');
         //server = "82.7.160.220";
-        let port = 8001;
+        let port = 7001;
         // let port = 8673;
 
         $(document).ready(function () {
@@ -780,6 +708,17 @@
         })
 
         function startUpdate() {
+            // let app = 0;
+            // let config = 0;
+            // if ($('#app-checkbox-0').is(":checked") || $('#app-checkbox-1').is(":checked")) {
+            //     app += 1;
+            // }
+            // if ($('#config-checkbox-0').is(":checked")) {
+            //     config += 1;
+            // }
+            // console.log($('.app-checkbox:checked').length);
+            // console.log($('.config-checkbox:checked').length);
+
             if ($('.app-checkbox:checked').length > 0) {
                 $.post("http://" + server + ":8000/update-ai_server-app?tag=JP46.Im0020.V0010&p=" + port, function (data) {
                     displayToast('success', 'App updated successfully!');
@@ -795,6 +734,8 @@
         }
 
         function uploadLicenceFile() {
+            console.log(licenceFileToUpload);
+
             if (licenceFileToUpload !== undefined && licenceFileToUpload.files[0]) {
                 let formData = new FormData();
                 formData.append("file", licenceFileToUpload.files[0]);
@@ -970,8 +911,8 @@
                     if (data?.cpu_temp) {
                         $('li.device').removeClass('d-none');
                     } else {
-                        window.location.href = window.location.href.replace('device.html', 'index.html');
-                        // window.location.href = window.location.href.replace('#/device', '#/');
+                        //window.location.href = window.location.href.replace('device.html', 'index.html');
+                        window.location.href = window.location.href.replace('#/device', '#/');
                         $('li.device').addClass('d-none');
                     }
                     let progress = '';
@@ -1055,8 +996,8 @@
                         $('#licensed').removeClass('online').addClass('offline');
                     }
                 }).fail(function (e) {
-                    window.location.href = window.location.href.replace('device.html', 'index.html');
-                    // window.location.href = window.location.href.replace('#/device', '#/');
+                    //window.location.href = window.location.href.replace('device.html', 'index.html');
+                    window.location.href = window.location.href.replace('#/device', '#/');
                     getStatus_fail();
                 });
 
