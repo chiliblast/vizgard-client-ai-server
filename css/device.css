@@ -1,0 +1,31 @@
+.btn {
+    width: 100px !important;
+}
+
+input[type='radio']:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -3px;
+    left: -1px;
+    position: relative;
+    /* background-color: #d1d3d1; */
+    background-color: #fff;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    /* border: 2px solid gray; */
+}
+
+input[type='radio']:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -3px;
+    left: -1px;
+    position: relative;
+    background-color: #12ef8c;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+}

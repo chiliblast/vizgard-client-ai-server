@@ -1,0 +1,1090 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <title>AI Server</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <link href="css/style.css" rel="stylesheet">
+
+    <style>
+        .btn {
+            width: 100px !important;
+        }
+
+        input[type='radio']:after {
+            width: 15px;
+            height: 15px;
+            border-radius: 15px;
+            top: -3px;
+            left: -1px;
+            position: relative;
+            /* background-color: #d1d3d1; */
+            background-color: #fff;
+            content: '';
+            display: inline-block;
+            visibility: visible;
+        }
+
+        input[type='radio']:checked:after {
+            width: 15px;
+            height: 15px;
+            border-radius: 15px;
+            top: -3px;
+            left: -1px;
+            position: relative;
+            background-color: #12ef8c;
+            content: '';
+            display: inline-block;
+            visibility: visible;
+        }
+    </style>
+
+</head>
+
+<body class="device-tab">
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+        <div class="container-fluid">
+            <img src="images/logo.png" height="30px">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="index.html">Client</a>
+                    </li>
+                    <li class="nav-item device d-none">
+                        <a class="nav-link active" href="#">Device</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container main-content">
+
+        <div class="m-1 p-3 rounded border border-success">
+
+            <div class="row">
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div>
+                        <h4>Software</h4>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <h5>Version</h5>
+                        <span id="fortifAI" style="margin-right: 24%;"></span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <h5>Status</h5>
+                        <span id="status" style="margin-right: 24%;"></span>
+                    </div>
+                    <div class="p-1 top-btn">
+                        <button type="button" class="btn btn-success btn-sm" id="ai_server-reboot">Reboot</button>
+                        <button type="button" class="btn btn-success btn-sm" id="start-stop-btn">Stop</button>
+                        <button type="button" class="btn btn-secondary btn-sm" id="update-btn" data-bs-toggle="modal"
+                            data-bs-target="#updateManagerModal" onclick="onUpdateModalOpen()">
+                            Update
+                        </button>
+                    </div>
+
+                </div>
+                <div class="col-sm-8 col-md-8 col-lg-8 d-flex align-items-center scrollable-container"
+                    style="overflow-x: auto;">
+                    <div class="config-list">
+                        <ul id="config-list"></ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Config Modal -->
+        <div class="config-modal modal fade" id="configModal" tabindex="-1" aria-labelledby="configModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="configModalLabel">Config Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <textarea id="modal-body"></textarea>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <div>
+                            <button type="button" class="btn btn-danger float-left" data-bs-toggle="modal"
+                                data-bs-target="#deleteModal">
+                                Delete
+                            </button>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                onclick="onCloseModal()">Close
+                            </button>
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                data-bs-target="#fileNameModal">
+                                Save changes
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- File Name Modal -->
+        <div class="config-modal modal fade" id="fileNameModal" tabindex="-1" aria-labelledby="fileNameModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="fileNameModalLabel">Config Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="fileNameInput" class="form-label">Enter File Name</label>
+                        <input type="text" class="form-control" id="fileNameInput" placeholder=""
+                            aria-describedby="filenameHelp">
+                        <small id="filenameHelp" class="form-text text-muted">
+                            Same name will overwrite the content in the existing file.
+                        </small>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            onclick="onCloseModal()">
+                            Close
+                        </button>
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                            onclick="updateConfig(true);onCloseModal();">
+                            Save and reboot
+                        </button>
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                            onclick="updateConfig();onCloseModal();">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Modal -->
+        <div class="delete-modal modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Deleted files cannot be recovered. Are you sure?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            onclick="onCloseModal();">
+                            No
+                        </button>
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                            onclick="deleteConfigFile();onCloseModal();">
+                            Yes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- File Upload Modal -->
+        <div class="file-upload-modal modal fade" id="fileUploadModal" tabindex="-1"
+            aria-labelledby="fileUploadModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="fileUploadModalLabel">Upload File</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="preview-zone d-none">
+                                <div class="box box-solid">
+                                    <div class="box-header with-border">
+                                        <div><b class="uploaded-file-name">Pick licence file</b></div>
+                                        <div class="box-tools pull-right">
+                                            <button type="button" class="btn btn-danger btn-xs remove-preview">
+                                                <i class="fa fa-times"></i> Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="box-body"></div>
+                                </div>
+                            </div>
+                            <div class="dropzone-wrapper">
+                                <div class="dropzone-desc">
+                                    <p class="mb-0">Click to select a licence file or drop file here</p>
+                                    <p>.lic licence files only</p>
+                                </div>
+                                <input type="file" name="filetoupload" class="dropzone">
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            onclick="onCloseModal();">
+                            Cancel
+                        </button>
+                        <button type="button" class="btn btn-success" onclick="uploadLicenceFile();">
+                            Upload
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Update Manager Modal -->
+        <div class="config-modal modal fade" id="updateManagerModal" tabindex="-1"
+            aria-labelledby="updateManagerModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable update-manager-model">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateManagerModalLabel">Update Manager</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="update-modal-body">
+                        <!-- <div class="d-flex">
+                            <div>
+                              
+                            </div>
+                            <div class="d-flex justify-content-end text-right ms-auto">
+                                
+                            </div>
+                        </div> -->
+                        <h5>App</h5>
+                        <ul class="remove-bullets" id="update-app-list"></ul>
+                        <h5 class="pt-2">Model</h5>
+                        <ul class="remove-bullets" id="update-model-list"></ul>
+                        <div id="pull-progress" class="pt-1"></div>
+                        <div class="text-center pt-3">
+                            <p class="default-msg text-dark mb-0"></p>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <div>
+                            <button type="button" class="btn btn-danger" id="delete-version" data-bs-toggle="modal"
+                                disabled data-bs-target="#deleteUpdateManager">
+                                Delete
+                            </button>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-success" onclick="updates=false;getUpdates()">
+                                Check for Update
+                            </button>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-success float-end" id="start-update" disabled
+                                onclick="startUpdate()">
+                                Start Update
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Update Manager Modal -->
+        <div class="delete-update-manager-modal modal fade" id="deleteUpdateManager" tabindex="-1"
+            aria-labelledby="deleteUpdateManagerLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteUpdateManagerLabel">Confirm Delete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            onclick="onCloseModal();">
+                            No
+                        </button>
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                            onclick="deleteUpdateManager();onCloseModal();">
+                            Yes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-danger d-none" id="successToastBtn"></button>
+
+        <!-- Toaster -->
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header bg-primary text-dark">
+                    <h5 class="my-0 me-auto">Success</h5>
+                    <button type="button" class="btn-close ml-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body text-dark toaster-success-body">
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-danger d-none" id="errorToastBtn"></button>
+
+        <!-- Toaster -->
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header bg-danger text-light">
+                    <h5 class="my-0 me-auto">Error</h5>
+                    <button type="button" class="btn-close ml-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body text-dark toaster-error-body">
+                </div>
+            </div>
+        </div>
+
+        <div class="m-1 p-3 rounded border border-success">
+
+            <div style="width: 65%;">
+
+                <div class="row">
+                    <div class="col-3">
+                        <h4>System</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-3">
+                        <h5>CPU Usage</h5>
+                    </div>
+                    <div class="col-sm-6 col-md-5 col-lg-9">
+                        <span id="cpu_usage"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-3">
+                        <h5>CPU Temp</h5>
+                    </div>
+                    <div class="col-sm-6 col-md-5 col-lg-9">
+                        <span id="cpu_temp"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-3">
+                        <h5>Memory</h5>
+                    </div>
+                    <div class="col-sm-6 col-md-5 col-lg-9">
+                        <span id="memory"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-3">
+                        <h5>GPU Usage</h5>
+                    </div>
+                    <div class="col-sm-6 col-md-5 col-lg-9">
+                        <span id="gpu_usage"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-3">
+                        <h5>GPU Temp</h5>
+                    </div>
+                    <div class="col-sm-6 col-md-5 col-lg-9">
+                        <span id="gpu_temp"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-3">
+                        <h5>Storage</h5>
+                    </div>
+                    <div class="col-sm-6 col-md-5 col-lg-9">
+                        <span id="storage"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-3">
+                        <h5>Ramdisk</h5>
+                    </div>
+                    <div class="col-sm-6 col-md-5 col-lg-9">
+                        <span id="ramdisk"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-3">
+                        <h5>Serial</h5>
+                    </div>
+                    <div class="col-sm-4 col-md-4 col-lg-3" style="line-height: 24px;">
+                        <span id="serial_number"></span>
+                        <!-- <button type="button" class="btn btn-success btn-sm ms-3" id="copy-clipboard"
+                            style="width:45px !important;height: 24px;padding: 0px;">
+                            Copy
+                        </button> -->
+                    </div>
+                    <div class="col-sm-4 col-md-4 col-lg-4" style="line-height: 24px;">
+                        <span id="licensed"></span>
+                        <button type="button" class="btn btn-success btn-sm ms-3" id="update-licence"
+                            style="width:60px !important;height: 24px;padding: 0px;" data-bs-toggle="modal"
+                            data-bs-target="#fileUploadModal">
+                            Update
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="p-1">
+                <button type="button" class="btn btn-success btn-sm" id="reboot">Reboot</button>
+                <button type="button" class="btn btn-success btn-sm" id="shutdown">Shutdown</button>
+            </div>
+
+            <!-- <div class="p-1">
+                <button type="button" class="btn btn-success btn-sm" id="sleep">Sleep</button>
+                <button type="button" class="btn btn-success btn-sm" id="wake">Wake</button>
+            </div> -->
+
+        </div>
+
+    </main>
+
+
+    <script src="bootstrap/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+
+    <script>
+        if (window.location.protocol === 'http:') {
+            $('#copy-clipboard').addClass('d-none');
+        } else {
+            $('#copy-clipboard').removeClass('d-none');
+        }
+        var interval;
+        var progressCount = 0;
+        var licenceFileToUpload;
+        var updates = false;
+        var pullProgress = false;
+        var config;
+        var app;
+        var makeDefault = false;
+        var deleteShortId;
+
+        let server = $(location).attr('hostname');
+        server = "82.7.160.220";
+        let port = 8001;
+        // let port = 8673;
+
+        $(document).ready(function () {
+            getConfigList();
+            document.querySelector("#successToastBtn").onclick = function () {
+                new bootstrap.Toast(document.querySelector('#successToast')).show();
+            }
+            document.querySelector("#errorToastBtn").onclick = function () {
+                new bootstrap.Toast(document.querySelector('#errorToast')).show();
+            }
+        });
+
+        document.getElementById('modal-body').addEventListener('keydown', function (e) {
+            if (e.key == 'Tab') {
+                e.preventDefault();
+                let start = this.selectionStart;
+                let end = this.selectionEnd;
+                // set textarea value to: text before caret + tab + text after caret
+                this.value = this.value.substring(0, start) +
+                    "\t" + this.value.substring(end);
+                // put caret at right position again
+                this.selectionStart =
+                    this.selectionEnd = start + 1;
+            }
+        });
+
+        function getConfigList() {
+            $.get("http://" + server + ":8000/list-config", (data) => {
+                let configList = '';
+                let firstConfig = 'ai_server.cfg';
+                data['list-config'] = data['list-config'].sort(function (x, y) { return x == firstConfig ? -1 : y == firstConfig ? 1 : 0; }); // moving ai_server.cfg to first index
+                data['list-config'].forEach((config, index) => {
+                    configList += `
+                    <li class="text-center">
+                        <input type="radio" id="${'radio' + index}" name="config_radio" value="${config}">
+                        <h6 class="text-capitalize">${config}</h6>
+                        <button type="button" class="btn btn-success btn-sm edit" data-bs-toggle="modal" data-bs-target="#configModal" onclick="editConfig()">Edit</button>
+                    </li>
+                    `
+                });
+                $('#config-list').html(configList);
+            });
+        }
+
+        function updateConfig(reboot = false) {
+            let fileName = $('#fileNameInput').val().replace('.cfg', '') + '.cfg';
+            let body = { file: $('#modal-body').val() }
+            let formData = new FormData();
+            formData.append("file", new Blob([$('#modal-body').val()]));
+            $.ajax({
+                type: 'POST',
+                url: "http://" + server + ":8000/update-file/" + fileName,
+                data: formData,
+                processData: false,
+                contentType: false
+            }).done(function (data) {
+                $('#successToastBtn').click();
+                $('div.toaster-success-body').text('Config file updated');
+                getConfigList();
+                if (reboot) {
+                    $('#ai_server-reboot').click();
+                }
+            });
+        }
+
+        function editConfig() {
+            let fileName = $($(event.target).siblings('h6')[0]).text();
+            $('#fileNameInput').val(fileName);
+            $.get("http://" + server + ":8000/get-file/" + fileName, (data) => {
+                $('#modal-body').val(data);
+            })
+        }
+
+        function onCloseModal() {
+            $('#fileNameInput').val('');
+            $('#modal-body').val('');
+            setTimeout(() => {
+                $('.btn-success').blur();
+            }, 1000)
+        }
+
+        function deleteConfigFile() {
+            let fileName = $('#fileNameInput').val().replace('.cfg', '') + '.cfg';
+            $.ajax({
+                url: "http://" + server + ":8000/delete-file/" + fileName,
+                type: 'DELETE',
+                success: (result) => {
+                    $('#successToastBtn').click();
+                    $('div.toaster-success-body').text('Config file deleted!');
+                    getConfigList();
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Status: " + textStatus); alert("Error: " + errorThrown);
+                }
+            });
+        }
+
+        function displayToast(action, body) {
+            if (action === 'success') {
+                $('#successToastBtn').click();
+                $('div.toaster-success-body').text(body);
+            } else if (action === 'error') {
+                $('#errorToastBtn').click();
+                $('div.toaster-error-body').text(body);
+            }
+        }
+
+        function readFile(input) {
+            licenceFileToUpload = input;
+            if (input.files && input.files[0]) {
+                if (!input.value.includes('.lic')) {
+                    displayToast('error', 'Select a file having .lic extension!');
+                    return
+                }
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    let wrapperZone = $(input).parent();
+                    let previewZone = $(input).parent().parent().find('.preview-zone');
+                    wrapperZone.removeClass('dragover');
+                    previewZone.removeClass('d-none');
+                    $('.uploaded-file-name').text(input.value.split("fakepath")[1].replace("\\", ''));
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function reset(e) {
+            e.wrap('<form>').closest('form').get(0).reset();
+            e.unwrap();
+        }
+
+        $(".dropzone").change(function () {
+            licenceFileToUpload = undefined;
+            readFile(this);
+        });
+
+        $('.dropzone-wrapper').on('dragover', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $(this).addClass('dragover');
+        });
+
+        $('.dropzone-wrapper').on('dragleave', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $(this).removeClass('dragover');
+        });
+
+        $('.remove-preview').on('click', function () {
+            licenceFileToUpload = undefined;
+            $('.uploaded-file-name').text('Pick licence file');
+            var previewZone = $(this).parents('.preview-zone');
+            var dropzone = $(this).parents('.form-group').find('.dropzone');
+            previewZone.addClass('d-none');
+            reset(dropzone);
+        });
+
+        $('#copy-clipboard').on('click', function () {
+            navigator.clipboard.writeText($('#serial_number').text()); /* Copy the serial number into clipboard */
+            displayToast('success', 'Serial number copied to clipboard!');
+        });
+
+        function onUpdateModalOpen() {
+            $('#update-app-list').html('');
+            $('#update-model-list').html('');
+            $.get("http://" + server + ":8000/get-local-version", function (data) {
+                console.log(data);
+                console.log(app)
+                let updateAppBody = '';
+                if (app?.updateavailable) {
+                    updateAppBody += `
+                    <li>
+                        <input class="form-check-input app-checkbox" type="checkbox" id="${'app-checkbox-' + 0}">
+                        <h6 style="width: 140px;" class="text-capitalize ps-2">${app?.shortID}</h6>
+                        <span style="width: 135.48px;text-align: center;" class="default-msg mx-2">${app?.Created ? (app?.Created) : '–'}</span>
+                        <p class="ps-2 mb-0">
+                            <span class="online">Update Available</span>
+                        </p>
+                    </li>
+                    `
+                }
+                data['ai_server-app'].forEach((app, index) => {
+                    updateAppBody += `
+                    <li>
+                        <input class="form-check-input app-checkbox" type="checkbox" ${app?.default && 'disabled'} id="${'app-checkbox-' + (index + 1)}">
+                        <h6 style="width: 140px;" class="text-capitalize ps-2">${app?.ShortId}</h6>
+                        <span style="width: 135.48px;" class="default-msg mx-2">${app?.Created} </span>
+                        <p class="darkgray ps-2 mb-0">
+                            ${app?.default ? 'Default' : '<a class="make-default app-make-default" href="#">Make Default</a>'}
+                            ${app?.ShortId == app?.shortID && app?.updateavailable ? 'Update Available' : ''}
+                        </p>
+                    </li>`
+                })
+                $('#update-app-list').html(updateAppBody);
+                updateAppBody = '';
+                if (config?.updateavailable) {
+                    updateAppBody += `
+                    <li>
+                        <input class="form-check-input config-checkbox" type="checkbox" id="${'config-checkbox-' + 0}">
+                        <h6 style="width: 140px;" class="text-capitalize ps-2">${config?.shortID}</h6>
+                        <span style="width: 135.48px;text-align: center;" class="default-msg mx-2">${config?.Created}</span>
+                        <p class="ps-2 mb-0">
+                            <span class="online">Update Available</span>
+                        </p>
+                    </li>
+                    `
+                }
+                data['ai_server-config'].forEach((cfg, index) => {
+                    updateAppBody += `
+                    <li>
+                        <input class="form-check-input config-checkbox" type="checkbox" ${cfg?.default && 'disabled'} id="${'config-checkbox-' + (index + 1)}" >
+                        <h6 style="width: 140px;" class="text-capitalize ps-2">${cfg?.ShortId}</h6>
+                        <span style="width: 135.48px;text-align: center;" class="default-msg mx-2">${cfg?.Created} </span>
+                        <p class="darkgray ps-2 mb-0">
+                            ${cfg?.default ? 'Default' : '<a class="make-default config-make-default" href="#">Make Default</a>'} 
+                            ${cfg?.ShortId == config?.shortID && config?.updateavailable ? 'Update Available' : ''}
+                        </p>
+                    </li>
+                    `
+                })
+                $('#update-model-list').html(updateAppBody);
+            });
+        }
+
+        function deleteUpdateManager() {
+            $.ajax({
+                url: "http://" + server + ":8000/delete-by-short-id?Id=" + deleteShortId,
+                type: 'DELETE',
+                success: (result) => {
+                    $('#successToastBtn').click();
+                    $('div.toaster-success-body').text('Deleted!');
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Status: " + textStatus); alert("Error: " + errorThrown);
+                }
+            });
+        }
+
+
+        $(document).on('change', 'input.app-checkbox', function () {
+            deleteShortId = $(this).siblings('h6').text()
+            $('input.app-checkbox').not(this).prop('checked', false);
+            if ($('input.app-checkbox:checked').length > 0 || $('input.config-checkbox:checked').length > 0) {
+                $('#start-update').prop('disabled', false);
+                $('#delete-version').prop('disabled', false);
+            } else {
+                $('#delete-version').prop('disabled', true);
+                $('#start-update').prop('disabled', true);
+            }
+        })
+
+        $(document).on('change', 'input.config-checkbox', function () {
+            deleteShortId = $(this).siblings('h6').text()
+            $('input.config-checkbox').not(this).prop('checked', false);
+            if ($('input.app-checkbox:checked').length > 0 || $('input.config-checkbox:checked').length > 0) {
+                $('#start-update').prop('disabled', false);
+                $('#delete-version').prop('disabled', false);
+            } else {
+                $('#delete-version').prop('disabled', true);
+                $('#start-update').prop('disabled', true);
+            }
+        })
+
+        $(document).on('click', 'a.app-make-default', function () {
+            makeDefault = true;
+            $('p.default-msg').html(`Updating. Please wait...`)
+            let id = $(this).parent().siblings('h6').text()
+            try {
+                $.post("http://" + server + ":8000/set-ai_server-app-version?p=" + port + "&Id=" + id, function (data) {
+                    displayToast('success', data.status);
+                    onUpdateModalOpen();
+                    $('p.default-msg').html(``)
+                    makeDefault = false;
+                });
+            } catch (err) {
+                makeDefault = false;
+                throw new Error('some error')
+            }
+        })
+
+        $(document).on('click', 'a.config-make-default', function () {
+            makeDefault = true;
+            $('p.default-msg').html(`Updating. Please wait...`)
+            let id = $(this).parent().siblings('h6').text()
+            try {
+                $.post("http://" + server + ":8000/set-ai_server-config-version?p=" + port + "&Id=" + id, function (data) {
+                    displayToast('success', data.status);
+                    onUpdateModalOpen();
+                    $('p.default-msg').html(``)
+                    makeDefault = false;
+                });
+            } catch (err) {
+                makeDefault = false;
+                throw new Error('some error')
+            }
+        })
+
+        function startUpdate() {
+            if ($('.app-checkbox:checked').length > 0) {
+                $.post("http://" + server + ":8000/update-ai_server-app?tag=JP46.Im0020.V0010&p=" + port, function (data) {
+                    displayToast('success', 'App updated successfully!');
+                    getUpdates();
+                });
+            }
+            if ($('.config-checkbox:checked').length > 0) {
+                $.post("http://" + server + ":8000/update-ai_server-config?tag=JP46.V0010&p=" + port, function (data) {
+                    displayToast('success', 'Model updated successfully!');
+                    getUpdates();
+                });
+            }
+        }
+
+        function uploadLicenceFile() {
+            if (licenceFileToUpload !== undefined && licenceFileToUpload.files[0]) {
+                let formData = new FormData();
+                formData.append("file", licenceFileToUpload.files[0]);
+                $.ajax({
+                    type: 'POST',
+                    url: "http://" + server + ":8000/update-file/ai_server.lic",
+                    data: formData,
+                    processData: false,
+                    contentType: false
+                }).done(function (data) {
+                    console.log(data);
+                    $('.modal').modal('hide');
+                    onCloseModal();
+                    displayToast('success', 'Licence file updated!');
+                });
+            } else {
+                displayToast('error', 'Please select a file!');
+            }
+        }
+
+        function getUpdates() {
+            setTimeout(() => {
+                onUpdateModalOpen();
+            }, 1000)
+            $.post("http://" + server + ":8000/check-for-update-ai_server-app?tag=JP46.Im0020.V0010", function (data) {
+                console.log(data);
+                app = data;
+                if (data['updateavailable']) {
+                    $('#update-btn').removeClass('btn-secondary').addClass('btn-success');
+                    updates = true;
+                } else {
+                    if (!updates)
+                        $('#update-btn').removeClass('btn-success').addClass('btn-secondary');
+                }
+            });
+            $.post("http://" + server + ":8000/check-for-update-ai_server-config?tag=JP46.V0010", function (data) {
+                config = data;
+                console.log(config);
+                if (data['updateavailable']) {
+                    $('#update-btn').removeClass('btn-secondary').addClass('btn-success');
+                    updates = true;
+                } else {
+                    if (!updates)
+                        $('#update-btn').removeClass('btn-success').addClass('btn-secondary');
+                }
+            });
+        }
+        getUpdates();
+
+        function formatDate(date) {
+            return ("0" + (date.getDate())).slice(-2) + '/' + ("0" + (date.getMonth() + 1)).slice(-2) + '/' + (date.getYear().toLocaleString().length == 3 ? ('' + date.getYear()).slice(-2) : date.getYear());
+        }
+
+        $(() => {
+
+            $("button").click(function () {
+                this.blur();
+            });
+
+            //-------------------------------------------------ai_server
+
+            $("#ai_server-reboot").click(function () {
+                // clearInterval(interval);
+                $("#status").removeClass('online offline').addClass('amber');
+                $("#status").text('Rebooting');
+                $.post("http://" + server + ":8000/ai_server-reboot/default?p=" + port, function (data) {
+                    // interval = setInterval(getSystem, 1000);
+                    $('#successToastBtn').click();
+                    $('div.toaster-success-body').text('Reboot request sent.');
+                    $("#status").text('Online');
+                    $("#status").removeClass('offline amber').addClass('online');
+                    console.log(data.response);
+                });
+            });
+
+            $("#start-stop-btn").click(function () {
+                if ($(this).text() == 'Start') {
+
+                    if ($('#licensed').text() === 'No licence') {
+                        displayToast('error', 'No licence available');
+                    } else {
+                        // clearInterval(interval);
+                        $("#status").removeClass('online offline').addClass('amber');
+                        $("#status").text('Starting');
+                        $.post("http://" + server + ":8000/start/default", function (data) {
+                            // interval = setInterval(getSystem, 1000);
+                            displayToast('success', 'AI server running');
+                            $("#status").text('Online');
+                            $("#status").removeClass('offline amber').addClass('online');
+                            console.log(data.response);
+                            //$("#status").html( data.response );
+                        });
+                    }
+
+                } else if ($(this).text() == 'Stop') {
+                    // clearInterval(interval);
+                    $("#status").removeClass('online offline').addClass('amber');
+                    $("#status").text('Stopping');
+                    $.post("http://" + server + ":8000/ai_server-shutdown?p=" + port, function (data) {
+                        // interval = setInterval(getSystem, 1000);
+                        $('#successToastBtn').click();
+                        $('div.toaster-success-body').text('AI server stopped.');
+                        $("#status").removeClass('online amber').addClass('offline');
+                        $("#status").text('Offline');
+                        console.log(data.response);
+                    });
+                }
+            });
+
+            $(document).on('change', 'input[type=radio][name=config_radio]', function () {
+                if ($('#licensed').text() === 'No licence') {
+                    displayToast('error', 'No licence available');
+                } else {
+                    // clearInterval(interval);
+                    $("#status").removeClass('online amber').addClass('offline');
+                    $("#status").text('Offline');
+                    $.post("http://" + server + ":8000/ai_server-reboot/" + this.value + "?p=" + port, function (data) {
+                        // interval = setInterval(getSystem, 1000);
+                        $('#successToastBtn').click();
+                        $('div.toaster-success-body').text('Config updated');
+                        $("#status").text('Online');
+                        $("#status").removeClass('offline amber').addClass('online');
+                        console.log(data.response);
+                        //$("#status").html( data.response );
+                    });
+                }
+            })
+
+            $("#ai_server-shutdown").click(function () {
+                // clearInterval(interval);
+                $("#status").removeClass('online offline').addClass('amber');
+                $("#status").text('Stopping');
+                $.post("http://" + server + ":8000/ai_server-shutdown?p=" + port, function (data) {
+                    // interval = setInterval(getSystem, 1000);
+                    $('#successToastBtn').click();
+                    $('div.toaster-success-body').text('AI server stopped.');
+                    $("#status").removeClass('online amber').addClass('offline');
+                    $("#status").text('Offline');
+                    console.log(data.response);
+                });
+            });
+
+
+            //------------------------------------------------system
+
+            $("#reboot").click(function () {
+                $("#status").removeClass('online offline').addClass('amber');
+                $("#status").text('Rebooting System');
+                $.post("http://" + server + ":8000/reboot?p=" + port, function (data) {
+                    $('#successToastBtn').click();
+                    $('div.toaster-success-body').text('Reboot system request sent.');
+                    console.log(data.response);
+                });
+            });
+
+            $("#shutdown").click(function () {
+                $("#status").removeClass('online offline').addClass('amber');
+                $("#status").text('Shutting down');
+                $.post("http://" + server + ":8000/shutdown?p=" + port, function (data) {
+                    $('#successToastBtn').click();
+                    $('div.toaster-success-body').text('Shutting down system request sent.');
+                    console.log(data.response);
+                });
+            });
+
+            getSystem();
+            interval = setInterval(getSystem, 1000);
+
+            function getSystem() {
+
+                $.get("http://" + server + ":8000/jetson_state", function (data) {
+                    pullProgress = data?.pull_progress?.done;
+                    if (data?.cpu_temp) {
+                        $('li.device').removeClass('d-none');
+                    } else {
+                        window.location.href = window.location.href.replace('device.html', 'index.html');
+                        // window.location.href = window.location.href.replace('#/device', '#/');
+                        $('li.device').addClass('d-none');
+                    }
+                    let progress = '';
+                    if (!data?.pull_progress?.done) {
+                        progress += `
+                        <div class="config-list">
+                            <h5 class="mb-0">Progress</h5>
+                            <ul id="progress-list" class="pt-1 w-100">
+                                <li>Current: ${data?.pull_progress?.current}</li>    
+                                <li>Total: ${data?.pull_progress?.total}</li>    
+                                <li>Progress: ${data?.pull_progress?.percentage}%</li>    
+                                <li>Status: In Progress...</li>    
+                            </ul>
+                        </div>
+                        `
+                        $('#pull-progress').html(progress);
+                    } else if (data?.pull_progress?.total == data?.pull_progress?.current && data?.pull_progress?.done && data?.pull_progress.total > 0) {
+                        progress += `
+                        <div class="config-list">
+                            <h5 class="mb-0">Progress</h5>
+                            <ul id="progress-list" class="pt-1 w-100">
+                                <li>Update complete. Please restart AI server</li>    
+                            </ul>
+                        </div>
+                        `
+                        $('#pull-progress').html(progress);
+                        if (progressCount == 0) {
+                            setTimeout(() => {
+                                getUpdates();
+                            }, 5000)
+                        }
+                        progressCount += 1;
+                    } else {
+                        $('#pull-progress').html(``);
+                    }
+                    $("input[name=config_radio][value='" + data['actual-config-file'] + "']").prop('checked', true);
+
+                    if (data.status == "running") {
+                        $("#status").removeClass('offline amber').addClass('online');
+                        $("#status").html("Online");
+                        $('#start-stop-btn').text('Stop');
+                    } else {
+                        $('#start-stop-btn').text('Start');
+                        $("#status").removeClass('online amber').addClass('offline');
+                        $("#status").html("Offline");
+                    }
+
+                    let average_cpu_usage = 0;
+                    for (let i = 0; i <= (Object.keys(data?.cpu_usage).length - 2); i++) {
+                        let key = 'cpu' + i;
+                        average_cpu_usage += parseFloat(data?.cpu_usage[key]);
+                    }
+                    average_cpu_usage = (average_cpu_usage / (Object.keys(data?.cpu_usage).length - 1)).toFixed(1);
+                    // console.log(average_cpu_usage)
+                    // let average_cpu_usage = (parseFloat(data?.cpu_usage?.cpu0) + parseFloat(data?.cpu_usage?.cpu1) + parseFloat(data?.cpu_usage?.cpu2) + parseFloat(data?.cpu_usage?.cpu3) + parseFloat(data?.cpu_usage?.cpu4) + parseFloat(data?.cpu_usage?.cpu5) + parseFloat(data?.cpu_usage?.cpu6) + parseFloat(data?.cpu_usage?.cpu7)) / 8;
+                    // average_cpu_usage = average_cpu_usage.toFixed(1);
+                    $("#cpu_usage").html(average_cpu_usage + " " + data.cpu_usage.unit);
+                    $("#cpu_temp").html(data.cpu_temp.value + " " + data.cpu_temp.unit);
+                    $("#memory").html(data.memory.value + " " + data.memory.unit);
+
+                    $("#gpu_temp").html(data?.gpu_temp?.value + " " + data?.gpu_temp?.unit);
+                    $("#gpu_usage").html(data?.gpu_usage?.value + " " + data?.gpu_usage?.unit);
+
+                    $("#storage").html(data.storage.value + " " + data.storage.unit);
+                    $("#ramdisk").html(data.ramdisk.value + " " + data.ramdisk.unit);
+                    $("#serial_number").html(data.serial_number);
+
+                    $("#reboot").prop("disabled", false);
+                    $("#shutdown").prop("disabled", false);
+                    $("#sleep").prop("disabled", false);
+                    $("#wake").prop("disabled", false);
+                    $('#fortifAI').text(data['ai_server-version']);
+                    $('#licensed').text(data['license-valid'] ? 'Licensed' : 'No licence');
+                    if (data['license-valid']) {
+                        $('#licensed').removeClass('offline').addClass('online');
+                    } else {
+                        if ($('#status').text() !== 'Offline') {
+                            $('#ai_server-shutdown').click();
+                            displayToast('error', 'No licence available');
+                        }
+                        $('#licensed').removeClass('online').addClass('offline');
+                    }
+                }).fail(function (e) {
+                    window.location.href = window.location.href.replace('device.html', 'index.html');
+                    // window.location.href = window.location.href.replace('#/device', '#/');
+                    getStatus_fail();
+                });
+
+            }
+
+            function getStatus_fail() {
+
+                $("#status").removeClass('online amber').addClass('offline');
+                $("#status").html("Offline");
+
+                $("#cpu_usage").html("");
+                $("#cpu_temp").html("");
+                $("#memory").html("");
+                $("#gpu_usage").html('');
+                $("#gpu_temp").html('');
+                $("#storage").html("");
+                $("#ramdisk").html("");
+                $("#serial_number").html("");
+
+                $("#reboot").prop("disabled", true);
+                $("#shutdown").prop("disabled", true);
+                $("#sleep").prop("disabled", true);
+                $("#wake").prop("disabled", true);
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>
