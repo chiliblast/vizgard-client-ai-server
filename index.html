@@ -1420,20 +1420,20 @@
                 eventCanvas.width = eventsData[selectedIndex].highest.width;
                 eventCanvas.height = eventsData[selectedIndex].highest.height;
                 // setInterval(() => {
-                // if (eventsData[selectedIndex]) {
-                eventsData[selectedIndex].highest.objects.forEach(({ h, id, name, w, x, y }) => {
-                    // console.log(h, id, name, w, x, y)
-                    ctxEvent.beginPath();
-                    ctxEvent.font = "12px Arial";
-                    ctxEvent.lineWidth = 2;
-                    ctxEvent.rect(x, y, w, h);
-                    ctxEvent.stroke();
-                    // ctxEvent.fillStyle = "#50ff00";
-                    // ctxEvent.strokeStyle = '#50ff00';
-                    // let text = name + ((id == null || id == undefined || id == 'null') ? '' : ' ,ID: ' + id);
-                    // ctxEvent.fillText(text, x, y - 5);
-                })
-                // }
+                    // if (eventsData[selectedIndex]) {
+                        eventsData[selectedIndex].highest.objects.forEach(({ h, id, name, w, x, y }) => {
+                            // console.log(h, id, name, w, x, y)
+                            ctxEvent.beginPath();
+                            ctxEvent.font = "12px Arial";
+                            ctxEvent.lineWidth = 2;
+                            ctxEvent.rect(x, y, w, h);
+                            ctxEvent.stroke();
+                            // ctxEvent.fillStyle = "#50ff00";
+                            // ctxEvent.strokeStyle = '#50ff00';
+                            // let text = name + ((id == null || id == undefined || id == 'null') ? '' : ' ,ID: ' + id);
+                            // ctxEvent.fillText(text, x, y - 5);
+                        })
+                    // }
                 // }, 1000)
 
             })
