@@ -49,53 +49,116 @@
     </nav>
 
     <main id="toggle-margin-menu">
-
-
-        <div class="col-sm-12 col-md-12 col-lg-7 m-auto">
-            <div id="video-preview" class="mb-2">
-                <img src="images/blacklogo.jpg">
-                <video autoplay style="display: none;"></video>
-                <canvas id="canvas-bounding-box" style="z-index: 0"></canvas>
-                <canvas id="canvas-arrow-bounding-box" style="z-index: 1;user-select: none;"></canvas>
+        <div class="row">
+            <div class="col-sm-12 col-md-4 col-lg-2">
             </div>
+            <div class="col-sm-12 col-md-12 col-lg-7">
+                <div id="video-preview" class="mb-2">
+                    <img src="images/blacklogo.jpg">
+                    <video autoplay style="display: none;"></video>
+                    <canvas id="canvas-bounding-box" style="z-index: 0"></canvas>
+                    <canvas id="canvas-arrow-bounding-box" style="z-index: 1;user-select: none;"></canvas>
+                </div>
 
-            <div class="col-sm-12 d-flex convert-col">
-                <div class="col-sm-11 col-md-11 col-lg-9">
-                    <div class="server-input input-group-sm preset-input">
-                        <span>Preset&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                        <button id="cmd-toggle-preset-1" class="btn btn-success btn-sm preset" type="button">1</button>
-                        <button id="cmd-toggle-preset-2" class="btn btn-success btn-sm preset" type="button">2</button>
-                        <button id="cmd-toggle-preset-3" class="btn btn-success btn-sm preset" type="button">3</button>
-                        <button id="cmd-toggle-preset-4" class="btn btn-success btn-sm preset" type="button">4</button>
-                        <button id="cmd-toggle-preset-5" class="btn btn-success btn-sm preset" type="button">5</button>
-                        <button id="cmd-toggle-preset-6" class="btn btn-success btn-sm preset" type="button">6</button>
-                        <button id="cmd-toggle-preset-7" class="btn btn-success btn-sm preset" type="button">7</button>
-                        <button id="cmd-toggle-preset-8" class="btn btn-success btn-sm preset" type="button">8</button>
-                        <button id="cmd-toggle-preset-9" class="btn btn-success btn-sm preset" type="button">9</button>
-                        <div class="ms-2 form-check form-switch mt-1">
-                            <input class="form-check-input presetinput" type="checkbox" role="switch" id="save-preset">
+                <div class="col-sm-12 d-flex convert-col">
+                    <div class="col-sm-11 col-md-11 col-lg-9">
+                        <div class="server-input input-group-sm preset-input">
+                            <span>Preset&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <button id="cmd-toggle-preset-1" class="btn btn-success btn-sm preset"
+                                type="button">1</button>
+                            <button id="cmd-toggle-preset-2" class="btn btn-success btn-sm preset"
+                                type="button">2</button>
+                            <button id="cmd-toggle-preset-3" class="btn btn-success btn-sm preset"
+                                type="button">3</button>
+                            <button id="cmd-toggle-preset-4" class="btn btn-success btn-sm preset"
+                                type="button">4</button>
+                            <button id="cmd-toggle-preset-5" class="btn btn-success btn-sm preset"
+                                type="button">5</button>
+                            <button id="cmd-toggle-preset-6" class="btn btn-success btn-sm preset"
+                                type="button">6</button>
+                            <button id="cmd-toggle-preset-7" class="btn btn-success btn-sm preset"
+                                type="button">7</button>
+                            <button id="cmd-toggle-preset-8" class="btn btn-success btn-sm preset"
+                                type="button">8</button>
+                            <button id="cmd-toggle-preset-9" class="btn btn-success btn-sm preset"
+                                type="button">9</button>
+                            <div class="ms-2 form-check form-switch mt-1">
+                                <input class="form-check-input presetinput" type="checkbox" role="switch"
+                                    id="save-preset">
+                            </div>
+                            <span>Save</span>
+
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tour&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <button id="cmd-toggle-tour-1" class="btn btn-success btn-sm tour" type="button">1</button>
+                            <button id="cmd-toggle-tour-2" class="btn btn-success btn-sm tour" type="button">2</button>
+                            <button id="cmd-toggle-tour-3" class="btn btn-success btn-sm tour" type="button">3</button>
+                            <button id="cmd-toggle-tour-4" class="btn btn-success btn-sm tour" type="button">4</button>
+                            <button id="cmd-toggle-tour-5" class="btn btn-success btn-sm tour" type="button">5</button>
+
                         </div>
-                        <span>Save</span>
+                    </div>
+                    <div class="col-sm-1 col-md-1 col-lg-3">
+                        <button id="btn-switch-video" type="button" class="btn btn-success btn-sm">
+                            Switch
+                        </button>
+                    </div>
+                </div>
 
-                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tour&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                        <button id="cmd-toggle-tour-1" class="btn btn-success btn-sm tour" type="button">1</button>
-                        <button id="cmd-toggle-tour-2" class="btn btn-success btn-sm tour" type="button">2</button>
-                        <button id="cmd-toggle-tour-3" class="btn btn-success btn-sm tour" type="button">3</button>
-                        <button id="cmd-toggle-tour-4" class="btn btn-success btn-sm tour" type="button">4</button>
-                        <button id="cmd-toggle-tour-5" class="btn btn-success btn-sm tour" type="button">5</button>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-3 ps-0 pe-4 events-row">
+                <div id="events-list" class="events-show"></div>
+
+            </div>
+        </div>
+        <!-- Events Modal -->
+        <div class="events-modal modal fade" id="eventsModal" tabindex="-1" aria-labelledby="eventsModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eventsModalLabel">Event Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="events-modal-body"></div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <div>
+                            <button type="button" class="btn btn-danger float-left set-event-delete"
+                                data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                Delete
+                            </button>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                            </button>
+                        </div>
 
                     </div>
                 </div>
-                <div class="col-sm-1 col-md-1 col-lg-3">
-                    <button id="btn-switch-video" type="button" class="btn btn-success btn-sm">
-                        Switch
-                    </button>
+            </div>
+        </div>
+        <!-- Delete Modal -->
+        <div class="delete-modal modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Deleted files cannot be recovered. Are you sure?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            No
+                        </button>
+                        <button type="button" class="btn btn-success delete-event" data-bs-dismiss="modal">
+                            Yes
+                        </button>
+                    </div>
                 </div>
             </div>
-
         </div>
-
-
     </main>
 
     <footer>
@@ -127,7 +190,8 @@
                             title="Auto Camera">
                             <img src="images/camera-automation.png" alt="camera-automation">
                         </div>
-                        <div id="shortcut-auto-zoom" data-bs-toggle="tooltip" data-bs-placement="top" title="Auto Zoom">
+                        <div id="shortcut-auto-focus-one-shot" data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="Auto Focus One Shot">
                             <img src="images/aperture.png" alt="aperture">
                         </div>
                         <div id="shortcut-record-video" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -298,6 +362,13 @@
                             </div>
                         </section>
                         <section id="System" class="tab-panel">
+                            <div class="d-flex">
+                                <span style="margin-left: 3px;">Show Events</span>
+                                <div class="ms-3 form-check form-switch">
+                                    <input class="form-check-input presetinput" type="checkbox" role="switch"
+                                        id="cmd-toggle-show-events">
+                                </div>
+                            </div>
                             <div id="commands-section" class="d-flex flex-column flex-shrink-0 text-white bg-dark">
 
                                 <div id="cmd-toggle-frame-grab">Frame Grab <input type="checkbox"
@@ -366,6 +437,7 @@
     </footer>
     <script>
         var jsonData;
+        var eventsData;
         var toggleModelState = false;
         var cameraCalibrationToggle = false;
         var cameraCalibrationState = false;
@@ -447,7 +519,7 @@
             // });
 
             let server = $(location).attr('hostname');
-            server = "82.7.160.220";
+            //server = "82.7.160.220";
             $("#server-address").val(server);
 
             const canvas = document.getElementById('canvas-bounding-box');
@@ -584,10 +656,22 @@
                         }
                         // main info
                         // $('#main-info').html(`${json.width} x ${json.height} | FPS Capture: ${json.fpsCap} | FPS Detection: ${json.fpsDet} | Delay: ${json.delay}`);
+
                         if (json.width != canvas.width) canvas.width = ((json.width > 1920) ? 1920 : json.width);
                         if (json.height != canvas.height) canvas.height = ((json.height > 1080) ? 1080 : json.height);
                         if (json.width != canvas2.width) canvas2.width = ((json.width > 1920) ? 1920 : json.width);
                         if (json.height != canvas2.height) canvas2.height = ((json.height > 1080) ? 1080 : json.height);
+
+                        // var element = document.getElementById('canvas-bounding-box');
+                        // var positionInfo = element.getBoundingClientRect();
+                        // canvas.width = positionInfo.width;
+                        // canvas.height = positionInfo.height;
+                        // canvas2.width = positionInfo.width;
+                        // canvas2.height = positionInfo.height;
+                        // console.log(canvas2.width)
+                        // console.log(canvas2.height)
+
+
                         $('#gps').html(`Position: ${json.posStatus}`);
                         $('#ais').html(`AIS: ${json.aisStatus}`);
                         // objects json
@@ -720,7 +804,7 @@
                 })
             );
 
-            ['single-track-keyboard', 'auto-single-track', 'record-video', 'auto-zoom', 'record-position'].forEach(feature =>
+            ['single-track-keyboard', 'auto-single-track', 'record-video', 'auto-focus-one-shot', 'record-position'].forEach(feature =>
                 $('#shortcut-' + feature).click(e => {
                     $('#cmd-toggle-' + feature + ' input').prop('checked', !$('#cmd-toggle-' + feature + ' input').is(":checked"));
                     $('#cmd-toggle-' + feature + ' input').trigger('change');
@@ -1150,7 +1234,252 @@
                 });
             }
             statusCheck();
+
+
+            // ------------------------------------------------------------------------ Events Start ----------------------------------------------------------------------------------------------
+            async function getEventsList() {
+                let data;
+                await $.get("http://" + server + ":8000/list-full-events", (response) => {
+                    data = response.events.slice(0, 5)
+                    return data;
+                }).fail(function (e) {
+                    data = "Error";
+                    return data;
+                });
+                return data;
+            }
+
+            async function getEventFile(event, fileName) {
+                let data;
+                await $.get(`http://${server}:8000/get-file?event=${event}&filename=${fileName}`, (response) => {
+                    data = response;
+                    return data;
+                }).fail(function (e) {
+                    data = "Error";
+                    return data;
+                });
+                return data;
+            }
+
+            async function getThumbnail(fileName, number) {
+                const response = await fetch(`http://${server}:8000/get-thumbnail?event=${fileName}&filename=${number}`)
+                return await response.blob();
+            }
+
+            async function getFullImage(event, fileName) {
+                const response = await fetch(`http://${server}:8000/get-file?event=${event}&filename=${fileName}`)
+                return await response.blob();
+            }
+
+            async function getEvents() {
+                // console.log(await getEventsList())
+                let eventsList = await getEventsList();
+                eventsData = eventsList; // Store into global variable.
+                // console.log(eventsData);
+                for await (const [index, response] of eventsData.entries()) {
+                    let file = await getEventFile(response.event, 'event.json')
+                    eventsData[index].priority = file;
+                }
+                // console.log(eventsData);
+
+                for await (const [index, response] of eventsData.entries()) {
+                    let priority;
+                    let image;
+                    // console.log(index, response)
+                    for (const [key, value] of Object.entries(response.priority)) {
+                        // console.log(key.split(' ')[1], value);
+                        if (value.Priority === 'High') {
+                            image = key.split(' ')[1];
+                            priority = value;
+                        }
+                    }
+                    if (priority && image) {
+                        eventsData[index].highest = priority;
+                        eventsData[index].image = image;
+                    } else {
+                        // If there are no high priorities then look for medium
+                        for (const [key, value] of Object.entries(response.priority)) {
+                            if (value.Priority === 'Medium') {
+                                image = key.split(' ')[1];
+                                priority = value;
+                            }
+                        }
+                        if (priority && image) {
+                            eventsData[index].highest = priority;
+                            eventsData[index].image = image;
+                        } else {
+                            // If there are no medium priorities then look for low
+                            for (const [key, value] of Object.entries(response.priority)) {
+                                if (value.Priority === 'Low') {
+                                    image = key.split(' ')[1];
+                                    priority = value;
+                                }
+                            }
+                            if (priority && image) {
+                                eventsData[index].highest = priority;
+                                eventsData[index].image = image;
+                            }
+                        }
+                    }
+
+                }
+                console.log(eventsData);
+
+                let eventsListHTML = '';
+                for await (const [index, response] of eventsData.entries()) {
+                    let image = await getThumbnail(response.event, response.image + '.jpg')
+                    eventsListHTML += `
+                    <div class="d-flex mb-3 event-list-unique-class" data-bs-toggle="modal" data-bs-target="#eventsModal" id=${'event-' + index}>
+                            <div class="me-2">
+                                <img class="event-image" width="100" height="60" src=${URL.createObjectURL(image)} alt=${event + index}>
+                            </div>
+                            <div class="event-title">
+                                ${response.event}
+                            </div>
+                    </div>
+                    `
+                }
+                eventsListHTML += `
+                    <button id="refresh-event" type="button" class="btn btn-success btn-sm">
+                        Refresh
+                    </button>
+                `
+                $('#events-list').html(eventsListHTML);
+            }
+            getEvents();
+
+            function getEventDetail() {
+                $.get("http://" + server + ":8000/select-event?event=NodeID_2_Saturday-October-29-2022-23-27-08_Event", function (data) {
+                    console.log(data);
+                }).fail(function (e) {
+                    console.log(e);
+                });
+            }
+            // getEventDetail();
+
+
+            function deleteAllEvents() {
+                $.delete("http://" + server + ":8000/delete-all-events", function (data) {
+                    console.log(data);
+                }).fail(function (e) {
+                    console.log(e);
+                });
+            }
+            // deleteAllEvents();
+            // function deleteEvent() {
+            //     $.delete("http://" + server + ":8000/delete-event?event=NodeID_2_Saturday-October-29-2022-23-27-08_Event", function (data) {
+            //         console.log(data);
+            //     }).fail(function (e) {
+            //         console.log(e);
+            //     });
+            // }
+            // deleteEvent();
+
+            function downloadROI() {
+                $.get("http://" + server + ":8000/download-roi?event=NodeID_2_Saturday-October-29-2022-23-27-08_Event&frame=8&box=870.9375,494.677734,144.375,107.519531;860.9375,500.677734,150.375,100.519531;865.9375,450.677734,160.375,110.519531;855.9375,510.677734,145.375,115.519531", function (data) {
+                    console.log(data);
+                }).fail(function (e) {
+                    console.log(e);
+                });
+            }
+            $('body').on('click', '#refresh-event', async function () {
+                console.log('Refresh Called');
+                eventsData = null;
+                $('#events-list').html('');
+                getEvents();
+            })
+
+            $('body').on('click', 'div.event-list-unique-class', async function () {
+                let selectedIndex = $(this).attr('id').split('-')[1];
+                // console.log(selectedIndex);
+                console.log(eventsData[selectedIndex]);
+                let image = await getFullImage(eventsData[selectedIndex].event, eventsData[selectedIndex].image + '.jpg')
+                // console.log(JSON.stringify(eventsData[selectedIndex].highest, null, 2))
+
+                let modalBody = '';
+                modalBody += `
+                <div class="" id=${'event-' + selectedIndex}> 
+                    <div id="event-container">
+                        <img class="event-full-image" src=${URL.createObjectURL(image)} alt=${'event-' + selectedIndex}>
+                        <canvas id="event-canvas"></canvas>
+                    </div>
+                    <div>
+                        <pre class="events-pre">
+                            ${JSON.stringify(eventsData[selectedIndex].highest, null, 2)}
+                        </pre>
+                    </div>
+                </div>
+             
+                `
+                $('#events-modal-body').html(modalBody);
+                $('.modal-footer > div > .btn-danger').attr('id', 'event-' + selectedIndex)
+
+                $('#event-container').width(eventsData[selectedIndex].highest.width).height(eventsData[selectedIndex].highest.height);
+                const eventCanvas = document.getElementById('event-canvas');
+                const ctxEvent = eventCanvas.getContext('2d', { willReadFrequently: true });
+                eventCanvas.width = eventsData[selectedIndex].highest.width;
+                eventCanvas.height = eventsData[selectedIndex].highest.height;
+                // setInterval(() => {
+                // if (eventsData[selectedIndex]) {
+                eventsData[selectedIndex].highest.objects.forEach(({ h, id, name, w, x, y }) => {
+                    // console.log(h, id, name, w, x, y)
+                    ctxEvent.beginPath();
+                    ctxEvent.font = "12px Arial";
+                    ctxEvent.lineWidth = 2;
+                    ctxEvent.rect(x, y, w, h);
+                    ctxEvent.stroke();
+                    // ctxEvent.fillStyle = "#50ff00";
+                    // ctxEvent.strokeStyle = '#50ff00';
+                    // let text = name + ((id == null || id == undefined || id == 'null') ? '' : ' ,ID: ' + id);
+                    // ctxEvent.fillText(text, x, y - 5);
+                })
+                // }
+                // }, 1000)
+
+            })
+
+
+            $('body').on('click', '.delete-event', async function () {
+                let selectedIndex = $(this).attr('id').split('-')[1];
+                // await $.delete(`http://${server}:8000/delete-event?event=${eventsData[selectedIndex].event}`, function (data) {
+                //     console.log(data);
+                // }).fail(function (e) {
+                //     console.log(e);
+                // });
+                await $.ajax({
+                    url: `http://${server}:8000/delete-event?event=${eventsData[selectedIndex].event}`,
+                    type: 'DELETE',
+                    success: (result) => {
+                        console.log(result);
+                        $('#refresh-event').click();
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        console.log(e);
+
+                    }
+                });
+            })
+            $('body').on('click', '.set-event-delete', async function () {
+                let selectedIndex = $(this).attr('id').split('-')[1];
+                $('.modal-footer > .btn-success').attr('id', 'event-' + selectedIndex)
+            })
+
+            $('#cmd-toggle-show-events').on('change', function () {
+                // console.log(this.checked);
+                $('#events-list').toggleClass('events-show')
+            });
+
+
+
+
+
+
+            // ------------------------------------------------------------------------ Events End ----------------------------------------------------------------------------------------------
+
         });
+
+
+
     </script>
 
     <script>
@@ -1374,6 +1703,7 @@
         });
 
     </script>
+
 
 </body>
 

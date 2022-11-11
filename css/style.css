@@ -359,6 +359,16 @@ a.darkgray {
     .container-map {
         margin-left: 0px !important;
     }
+    #events-list {
+        margin-top: 20px !important;
+    }
+    .events-row {
+        padding: 0 23px !important;
+    }
+    .event-image {
+        width: 200px !important;
+        height: 100px !important;
+    }
 }
 
 @media (max-width: 768px) {
@@ -411,5 +421,8 @@ a.darkgray {
     .tabset .tab-panel {
         position: absolute !important;
         width: 100% !important;
+    }
+    #events-list {
+        margin-top: 20px !important;
     }
 }

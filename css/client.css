@@ -289,3 +289,63 @@ footer:hover>.settings-menu {
 .toggle-margin-menu #video-preview {
     height: calc(81vh - 300px) !important;
 }
+
+.event-title {
+    width: -webkit-fill-available;
+    font-size: 13px;
+    background: #D3D3D310;
+    padding: 5px;
+    text-align: left;
+}
+
+#events-list {
+    cursor: pointer;
+    text-align: center;
+}
+
+.events-pre {
+    white-space: pre-wrap;
+    /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;
+    /* Mozilla, since 1999 */
+    white-space: -pre-wrap;
+    /* Opera 4-6 */
+    white-space: -o-pre-wrap;
+    /* Opera 7 */
+    word-wrap: break-word;
+}
+
+#events-list:hover>div {
+    opacity: 0.5;
+}
+
+#events-list>div:hover {
+    opacity: 1 !important;
+}
+
+.events-show {
+    /* display: none; */
+}
+
+#event-container {
+    display: inline-block;
+    margin: 0 auto;
+    position: relative;
+    /* width: 1920px;
+    height: 1080px;
+    background: black;
+    border: 5px solid black;
+    border-radius: 10px;
+    box-shadow: 0 5px 50px #333 */
+}
+
+.event-full-image {
+    position: absolute;
+}
+
+#event-canvas {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+}
