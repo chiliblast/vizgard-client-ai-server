@@ -4,7 +4,7 @@
 
 #video-preview {
     position: relative;
-    height: 33vw;
+    height: 35vw;
 
 }
 
@@ -12,6 +12,7 @@
 #video-preview video,
 #video-preview img {
     width: 100%;
+    height: 100%;
     position: absolute;
 }
 
@@ -28,10 +29,6 @@
     float: right;
 }
 
-.video-input div {
-    font-size: 15px;
-    margin-bottom: 2px;
-}
 
 .json-content {
     padding-left: 0px;
@@ -57,12 +54,12 @@
 
 .server-input .btn {
     margin-top: 0px;
-    height: 26px;
+    height: 31px;
     line-height: 0.5 !important;
 }
 
 .server-input span {
-    margin-top: 1px;
+    margin-top: 3px;
 }
 
 #commands-section div {
@@ -128,7 +125,7 @@ footer {
 }
 
 .toggle-margin-menu {
-    margin-bottom: 320px !important;
+    /* margin-bottom: 320px !important; */
 }
 
 .settings-menu {
@@ -178,7 +175,7 @@ footer:hover>.settings-menu {
     display: inline-block;
     padding: 9px;
     cursor: pointer;
-    width: 80px;
+    width: 74px;
     text-align: center;
     color: white;
     /* background: #12f08d; */
@@ -266,4 +263,111 @@ footer:hover>.settings-menu {
 
 .tab-panels section {
     overflow: auto;
+}
+
+.container-map {
+    position: absolute;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    height: 240px;
+    margin-left: -35px;
+}
+
+#Maps {
+    padding: 0;
+}
+
+#map {
+    display: flex;
+    grid-row: 1;
+    grid-column: 1;
+    height: 100%;
+    width: 100%;
+}
+
+.toggle-margin-menu #video-preview {
+    height: calc(81vh - 300px) !important;
+}
+
+.event-title {
+    width: -webkit-fill-available;
+    font-size: 13px;
+    background: #D3D3D310;
+    padding: 5px;
+    text-align: left;
+}
+
+#events-list {
+    cursor: pointer;
+    text-align: center;
+}
+
+.events-pre {
+    white-space: pre-wrap;
+    /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;
+    /* Mozilla, since 1999 */
+    white-space: -pre-wrap;
+    /* Opera 4-6 */
+    white-space: -o-pre-wrap;
+    /* Opera 7 */
+    word-wrap: break-word;
+}
+
+#events-list:hover>div {
+    opacity: 0.5;
+}
+
+#events-list>div:hover {
+    opacity: 1 !important;
+}
+
+.events-show {
+    display: none;
+}
+
+#event-container {
+    display: inline-block;
+    margin: 0 auto;
+    position: relative;
+    /* width: 1920px;
+    height: 1080px;
+    background: black;
+    border: 5px solid black;
+    border-radius: 10px;
+    box-shadow: 0 5px 50px #333 */
+}
+
+.event-full-image {
+    position: absolute;
+}
+
+#event-canvas {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+}
+
+.mapboxgl-popup-tip {
+    border-top-color: transparent !important;
+    border-bottom-color: transparent !important;
+}
+
+.mapboxgl-popup-content {
+    color: #ff0000;
+    /* padding: 0px !important; */
+    background-color: #00000090 !important;
+    max-width: 200px !important;
+    box-shadow: none !important;
+    border-radius: 25px;
+}
+
+.mapboxgl-popup-content p {
+    margin-bottom: 0px !important;
+    /* font-size: 12px !important; */
+}
+
+.mapbox-red-text {
 }

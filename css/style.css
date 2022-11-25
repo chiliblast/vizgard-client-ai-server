@@ -326,25 +326,12 @@ a.darkgray {
     }
 
     .convert-col {
-        margin-top: 210px;
-        padding: 0 25px;
-    }
-
-    .video-input div {
-        font-size: 14px !important;
+        /* margin-top: 210px; */
+        padding: 0 10px;
     }
 
     .input-width {
         width: 53% !important;
-    }
-
-    .side-menu {
-        width: 25.333333%;
-        display: none;
-    }
-
-    .main-menu {
-        /* width: 72.666667%; */
     }
 
     #btn-settings {
@@ -369,11 +356,27 @@ a.darkgray {
         position: absolute !important;
         width: 100% !important;
     }
+    .container-map {
+        margin-left: 0px !important;
+    }
+    #events-list {
+        margin-top: 20px !important;
+    }
+    .events-row {
+        padding: 0 23px !important;
+    }
+    .event-image {
+        width: 200px !important;
+        height: 100px !important;
+    }
 }
 
 @media (max-width: 768px) {
+    .container-map {
+        margin-left: 0px !important;
+    }
     #video-preview {
-        height: 58vw;
+        height: 68vw !important;
     }
 
     h6.text-capitalize {
@@ -384,17 +387,9 @@ a.darkgray {
         position: absolute;
     }
 
-    .side-menu {
-        padding: 0;
-    }
-
     .convert-col {
-        margin-top: 190px;
-        padding: 0 25px;
-    }
-
-    .video-input div {
-        font-size: 13px !important;
+        /* margin-top: 190px; */
+        padding: 0 10px;
     }
 
     .input-width {
@@ -426,5 +421,8 @@ a.darkgray {
     .tabset .tab-panel {
         position: absolute !important;
         width: 100% !important;
+    }
+    #events-list {
+        margin-top: 20px !important;
     }
 }

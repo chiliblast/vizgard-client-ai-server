@@ -1,0 +1,223 @@
+{
+	"info": {
+		"_postman_id": "268e772b-fd23-4ba9-955c-7216f2c20e15",
+		"name": "127.0.0.1-2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18372981"
+	},
+	"item": [
+		{
+			"name": "82.7.160.220:8000/list-full-events",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "82.7.160.220:8000/list-full-events",
+					"host": [
+						"82",
+						"7",
+						"160",
+						"220"
+					],
+					"port": "8000",
+					"path": [
+						"list-full-events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "82.7.160.220:8000/select-event",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "82.7.160.220:8000/select-event?event=NodeID_2_Friday-October-28-2022-08-55-55_Event",
+					"host": [
+						"82",
+						"7",
+						"160",
+						"220"
+					],
+					"port": "8000",
+					"path": [
+						"select-event"
+					],
+					"query": [
+						{
+							"key": "event",
+							"value": "NodeID_2_Friday-October-28-2022-08-55-55_Event"
+						},
+						{
+							"key": "event",
+							"value": "NodeID_2_Saturday-October-29-2022-22-49-08_Event",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "82.7.160.220:8000/get-thumbnail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "82.7.160.220:8000/get-thumbnail?event=NodeID_2_Friday-October-28-2022-08-55-55_Event&filename=9.jpg",
+					"host": [
+						"82",
+						"7",
+						"160",
+						"220"
+					],
+					"port": "8000",
+					"path": [
+						"get-thumbnail"
+					],
+					"query": [
+						{
+							"key": "event",
+							"value": "NodeID_2_Friday-October-28-2022-08-55-55_Event"
+						},
+						{
+							"key": "filename",
+							"value": "9.jpg"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "82.7.160.220:8000/get-file",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "82.7.160.220:8000/get-file?event=NodeID_2_Friday-October-28-2022-08-55-55_Event&filename=9.jpg",
+					"host": [
+						"82",
+						"7",
+						"160",
+						"220"
+					],
+					"port": "8000",
+					"path": [
+						"get-file"
+					],
+					"query": [
+						{
+							"key": "event",
+							"value": "NodeID_2_Friday-October-28-2022-08-55-55_Event"
+						},
+						{
+							"key": "filename",
+							"value": "9.jpg"
+						},
+						{
+							"key": "filename",
+							"value": "event.json",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "82.7.160.220:8000/delete-all-events",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "82.7.160.220:8000/delete-all-events",
+					"host": [
+						"82",
+						"7",
+						"160",
+						"220"
+					],
+					"port": "8000",
+					"path": [
+						"delete-all-events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "82.7.160.220:8000/delete-event",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "82.7.160.220:8000/delete-event?event=NodeID_2_Friday-October-28-2022-08-55-55_Event",
+					"host": [
+						"82",
+						"7",
+						"160",
+						"220"
+					],
+					"port": "8000",
+					"path": [
+						"delete-event"
+					],
+					"query": [
+						{
+							"key": "event",
+							"value": "NodeID_2_Friday-October-28-2022-08-55-55_Event"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "82.7.160.220:8000/download-roi",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "82.7.160.220:8000/download-roi?event=NodeID_2_Friday-October-28-2022-08-55-55_Event&frame=8&box=870.9375,494.677734,144.375,107.519531;860.9375,500.677734,150.375,100.519531;865.9375,450.677734,160.375,110.519531;855.9375,510.677734,145.375,115.519531",
+					"host": [
+						"82",
+						"7",
+						"160",
+						"220"
+					],
+					"port": "8000",
+					"path": [
+						"download-roi"
+					],
+					"query": [
+						{
+							"key": "event",
+							"value": "NodeID_2_Friday-October-28-2022-08-55-55_Event"
+						},
+						{
+							"key": "filename",
+							"value": "8.jpg",
+							"disabled": true
+						},
+						{
+							"key": "frame",
+							"value": "8"
+						},
+						{
+							"key": "box",
+							"value": "870.9375,494.677734,144.375,107.519531",
+							"disabled": true
+						},
+						{
+							"key": "box",
+							"value": "870.9375,494.677734,144.375,107.519531;860.9375,500.677734,150.375,100.519531;865.9375,450.677734,160.375,110.519531;855.9375,510.677734,145.375,115.519531"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -91,7 +91,7 @@
                         <span id="status" style="margin-right: 24%;"></span>
                     </div>
                     <div class="p-1 top-btn">
-                        <button type="button" class="btn btn-success btn-sm" id="fortifai-reboot">Reboot</button>
+                        <button type="button" class="btn btn-success btn-sm" id="ai_server-reboot">Reboot</button>
                         <button type="button" class="btn btn-success btn-sm" id="start-stop-btn">Stop</button>
                         <button type="button" class="btn btn-secondary btn-sm" id="update-btn" data-bs-toggle="modal"
                             data-bs-target="#updateManagerModal" onclick="onUpdateModalOpen()">
@@ -542,7 +542,7 @@
                 $('div.toaster-success-body').text('Config file updated');
                 getConfigList();
                 if (reboot) {
-                    $('#fortifai-reboot').click();
+                    $('#ai_server-reboot').click();
                 }
             });
         }
@@ -854,13 +854,13 @@
                 this.blur();
             });
 
-            //-------------------------------------------------fortifai
+            //-------------------------------------------------ai_server
 
-            $("#fortifai-reboot").click(function () {
+            $("#ai_server-reboot").click(function () {
                 // clearInterval(interval);
                 $("#status").removeClass('online offline').addClass('amber');
                 $("#status").text('Rebooting');
-                $.post("http://" + server + ":8000/fortifai-reboot/default?p=" + port, function (data) {
+                $.post("http://" + server + ":8000/ai_server-reboot/default?p=" + port, function (data) {
                     // interval = setInterval(getSystem, 1000);
                     $('#successToastBtn').click();
                     $('div.toaster-success-body').text('Reboot request sent.');
@@ -881,7 +881,7 @@
                         $("#status").text('Starting');
                         $.post("http://" + server + ":8000/start/default", function (data) {
                             // interval = setInterval(getSystem, 1000);
-                            displayToast('success', 'FortifAI running');
+                            displayToast('success', 'AI server running');
                             $("#status").text('Online');
                             $("#status").removeClass('offline amber').addClass('online');
                             console.log(data.response);
@@ -893,10 +893,10 @@
                     // clearInterval(interval);
                     $("#status").removeClass('online offline').addClass('amber');
                     $("#status").text('Stopping');
-                    $.post("http://" + server + ":8000/fortifai-shutdown?p=" + port, function (data) {
+                    $.post("http://" + server + ":8000/ai_server-shutdown?p=" + port, function (data) {
                         // interval = setInterval(getSystem, 1000);
                         $('#successToastBtn').click();
-                        $('div.toaster-success-body').text('Fortifai stopped.');
+                        $('div.toaster-success-body').text('AI server stopped.');
                         $("#status").removeClass('online amber').addClass('offline');
                         $("#status").text('Offline');
                         console.log(data.response);
@@ -911,7 +911,7 @@
                     // clearInterval(interval);
                     $("#status").removeClass('online amber').addClass('offline');
                     $("#status").text('Offline');
-                    $.post("http://" + server + ":8000/fortifai-reboot/" + this.value + "?p=" + port, function (data) {
+                    $.post("http://" + server + ":8000/ai_server-reboot/" + this.value + "?p=" + port, function (data) {
                         // interval = setInterval(getSystem, 1000);
                         $('#successToastBtn').click();
                         $('div.toaster-success-body').text('Config updated');
@@ -923,14 +923,14 @@
                 }
             })
 
-            $("#fortifai-shutdown").click(function () {
+            $("#ai_server-shutdown").click(function () {
                 // clearInterval(interval);
                 $("#status").removeClass('online offline').addClass('amber');
                 $("#status").text('Stopping');
-                $.post("http://" + server + ":8000/fortifai-shutdown?p=" + port, function (data) {
+                $.post("http://" + server + ":8000/ai_server-shutdown?p=" + port, function (data) {
                     // interval = setInterval(getSystem, 1000);
                     $('#successToastBtn').click();
-                    $('div.toaster-success-body').text('Fortifai stopped.');
+                    $('div.toaster-success-body').text('AI server stopped.');
                     $("#status").removeClass('online amber').addClass('offline');
                     $("#status").text('Offline');
                     console.log(data.response);
@@ -993,7 +993,7 @@
                         <div class="config-list">
                             <h5 class="mb-0">Progress</h5>
                             <ul id="progress-list" class="pt-1 w-100">
-                                <li>Update complete. Please restart FortifAI</li>    
+                                <li>Update complete. Please restart AI server</li>    
                             </ul>
                         </div>
                         `
@@ -1043,13 +1043,13 @@
                     $("#shutdown").prop("disabled", false);
                     $("#sleep").prop("disabled", false);
                     $("#wake").prop("disabled", false);
-                    $('#fortifAI').text(data['fortifai-version']);
+                    $('#fortifAI').text(data['ai_server-version']);
                     $('#licensed').text(data['license-valid'] ? 'Licensed' : 'No licence');
                     if (data['license-valid']) {
                         $('#licensed').removeClass('offline').addClass('online');
                     } else {
                         if ($('#status').text() !== 'Offline') {
-                            $('#fortifai-shutdown').click();
+                            $('#ai_server-shutdown').click();
                             displayToast('error', 'No licence available');
                         }
                         $('#licensed').removeClass('online').addClass('offline');
